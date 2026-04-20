@@ -253,41 +253,67 @@ select {
   transform: translateY(calc(-2px - var(--space-2))) rotate(-45deg);
 }
 
-/* Mobile overlay */
+/* Mobile drawer */
 .mobile-overlay {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  max-width: 80vw;
   background-color: var(--signal);
   z-index: 105;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-8);
+  align-items: flex-start;
+  padding: calc(var(--nav-height) + var(--space-8)) var(--space-8) var(--space-8);
+  gap: var(--space-2);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform var(--duration-base) var(--ease-out),
+              visibility var(--duration-base) var(--ease-out);
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+}
+
+.mobile-nav.open {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.mobile-overlay__backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(var(--ink-rgb), 0.5);
+  z-index: 104;
   opacity: 0;
   visibility: hidden;
   transition: opacity var(--duration-base) var(--ease-out),
               visibility var(--duration-base) var(--ease-out);
 }
 
-.mobile-nav.open {
+.mobile-nav.open ~ .mobile-overlay__backdrop,
+.mobile-overlay__backdrop.open {
   opacity: 1;
   visibility: visible;
 }
 
 .mobile-overlay__link {
   font-family: var(--font-script);
-  font-size: var(--text-2xl);
+  font-size: var(--text-xl);
   color: var(--canvas);
   text-decoration: none;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
-  transition: opacity var(--duration-fast) var(--ease-out);
+  width: 100%;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  transition: background-color var(--duration-fast) var(--ease-out);
 }
 
 .mobile-overlay__link:hover {
-  opacity: 0.7;
+  background-color: rgba(var(--canvas-rgb), 0.1);
 }
 
 .mobile-overlay__link:focus-visible {
@@ -331,7 +357,7 @@ select {
   inset: 0;
   background-image: url('../photos/hero/hero-image.jpg');
   background-size: cover;
-  background-position: 80% top;
+  background-position: center top;
   background-repeat: no-repeat;
   z-index: 0;
 }
