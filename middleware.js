@@ -156,7 +156,7 @@ function passwordPage(error) {
     <h1>Almost Suriels</h1>
     <p>Opening soon</p>
     <form method="POST" action="/__check-password">
-      <input type="password" name="password" placeholder="Enter password" required autofocus>
+      <input type="text" name="password" placeholder="Enter password" required autofocus autocomplete="off">
       ${error ? '<span class="error">Incorrect password</span>' : ''}
       <button type="submit">Enter</button>
     </form>
