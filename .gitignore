@@ -10,21 +10,4 @@ image*.pdf
 downloads/
 .claude/
 
-# Scratch / reference files
-invitation*.html
-invitation*.jpeg
-palette*.html
-rsvp-card.html
-details-card.html
-details.jpg
-html*.png
-qr-code.png
-Screenshot*.png
-WhatsApp*.jpeg
-apps-script/
-export-cards.js
-print-exports/
-node_modules/
-package.json
-package-lock.json
-photos/_Bwgt0cs_StmeneONzoVX7g_59TnBGcdTHqJhyemFS4-Nw_cover_2k.png
+workspace/
