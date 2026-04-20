@@ -133,7 +133,7 @@ select {
   transition: box-shadow var(--duration-base) var(--ease-out);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .navbar {
     background-color: rgba(var(--canvas-rgb), 0.92);
     backdrop-filter: blur(var(--space-4));
@@ -322,7 +322,7 @@ select {
   border-radius: var(--radius-sm);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .navbar__links {
     display: flex;
   }
@@ -443,6 +443,30 @@ select {
 }
 
 @media (min-width: 768px) {
+  .hero__flourish {
+    display: flex;
+  }
+
+  .hero__names {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-3);
+  }
+
+  .hero__script {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-3);
+  }
+
+  .hero__date-segment {
+    font-size: var(--text-sm);
+  }
+
+  .hero__location {
+    font-size: var(--text-sm);
+  }
+}
+
+@media (min-width: 1024px) {
   .hero {
     align-items: center;
     justify-content: flex-start;
@@ -463,38 +487,9 @@ select {
     background-color: rgba(var(--canvas-rgb), 0.95);
     box-shadow: var(--shadow-lg);
   }
-
-  .hero__names {
-    font-size: var(--text-3xl);
-  }
-
-  .hero__flourish {
-    display: flex;
-  }
-
-  .hero__script {
-    font-size: var(--text-lg);
-    margin-bottom: var(--space-3);
-  }
-
-  .hero__names {
-    margin-bottom: var(--space-3);
-  }
-
-  .hero__date-segment {
-    font-size: var(--text-sm);
-  }
-
-  .hero__location {
-    font-size: var(--text-sm);
-  }
 }
 
-@media (min-width: 1024px) {
-  .hero {
-    padding-left: 0;
-  }
-
+@media (min-width: 1280px) {
   .hero__card {
     max-width: 560px;
     padding: var(--space-10) var(--space-20);
@@ -1935,7 +1930,9 @@ select {
 }
 
 .rsvp__confirm.active {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 @keyframes dance {
@@ -1948,32 +1945,33 @@ select {
 }
 
 .rsvp__confirm-emoji {
-  font-size: calc(var(--text-display) * 2);
-  margin-bottom: var(--space-6);
+  font-size: var(--text-display);
+  margin-bottom: var(--space-4);
   display: inline-block;
   animation: dance 1.2s ease-in-out infinite;
 }
 
 .rsvp__confirm-title {
   font-family: var(--font-display);
-  font-size: var(--text-4xl);
+  font-size: var(--text-2xl);
   font-weight: 600;
   color: var(--ink);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-3);
 }
 
 .rsvp__confirm-body {
   font-family: var(--font-body);
-  font-size: var(--text-lg);
+  font-size: var(--text-sm);
   color: var(--slate);
-  line-height: 1.7;
-  margin-bottom: var(--space-10);
+  line-height: 1.6;
+  margin-bottom: var(--space-6);
 }
 
 .rsvp__confirm-actions {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  width: 100%;
 }
 
 /* --- Celebration Panel --- */
@@ -1981,12 +1979,14 @@ select {
 .rsvp__celebration {
   display: none;
   text-align: center;
-  padding: var(--space-12) var(--space-6);
+  padding: var(--space-6) var(--space-4);
   animation: celebrationFadeIn var(--duration-slow) var(--ease-out) both;
 }
 
 .rsvp__celebration.active {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 @keyframes celebrationFadeIn {
@@ -2001,7 +2001,7 @@ select {
 }
 
 .rsvp__celebration-hearts {
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-3);
 }
 
 @keyframes heartFloat {
@@ -2013,37 +2013,37 @@ select {
 
 .rsvp__celebration-heart {
   display: inline-block;
-  font-size: var(--text-4xl);
+  font-size: var(--text-2xl);
   color: var(--signal);
   animation: heartFloat 0.8s var(--ease-out) both;
   margin: 0 var(--space-2);
 }
 
 .rsvp__celebration-heart--1 { animation-delay: 0.2s; }
-.rsvp__celebration-heart--2 { animation-delay: 0.5s; font-size: var(--text-display); }
+.rsvp__celebration-heart--2 { animation-delay: 0.5s; font-size: var(--text-3xl); }
 .rsvp__celebration-heart--3 { animation-delay: 0.8s; }
 
 .rsvp__celebration-title {
   font-family: var(--font-display);
-  font-size: var(--text-4xl);
+  font-size: var(--text-2xl);
   font-weight: 600;
   color: var(--ink);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-2);
   animation: celebrationFadeIn var(--duration-slow) var(--ease-out) 0.4s both;
 }
 
 .rsvp__celebration-subtitle {
   font-family: var(--font-script);
-  font-size: var(--text-2xl);
+  font-size: var(--text-xl);
   font-style: italic;
   color: var(--slate);
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-4);
   animation: celebrationFadeIn var(--duration-slow) var(--ease-out) 0.6s both;
 }
 
 .rsvp__celebration-divider {
   width: var(--space-32);
-  margin: 0 auto var(--space-8);
+  margin: 0 auto var(--space-4);
   color: var(--signal);
   opacity: 0.5;
   animation: celebrationFadeIn var(--duration-slow) var(--ease-out) 0.8s both;
@@ -2051,18 +2051,18 @@ select {
 
 .rsvp__celebration-registry {
   font-family: var(--font-body);
-  font-size: var(--text-lg);
+  font-size: var(--text-sm);
   color: var(--slate);
-  line-height: 1.7;
+  line-height: 1.6;
   max-width: 28ch;
-  margin: 0 auto var(--space-8);
+  margin: 0 auto var(--space-4);
   animation: celebrationFadeIn var(--duration-slow) var(--ease-out) 1s both;
 }
 
 .rsvp__celebration-btn {
   display: block;
   width: 100%;
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-2);
   animation: celebrationFadeIn var(--duration-slow) var(--ease-out) 1.2s both;
 }
 
@@ -2183,9 +2183,45 @@ select {
     padding: var(--space-2) var(--space-3);
   }
 
+  .rsvp__confirm {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background-color: var(--canvas);
+    padding: var(--space-6) var(--space-8);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .rsvp__confirm.active {
+    display: flex;
+  }
+
+  .rsvp__confirm-emoji {
+    font-size: var(--text-display);
+    margin-bottom: var(--space-4);
+  }
+
+  .rsvp__confirm-title {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-3);
+  }
+
+  .rsvp__confirm-body {
+    font-size: var(--text-base);
+    margin-bottom: var(--space-6);
+  }
+
+  .rsvp__confirm-actions {
+    width: 100%;
+    max-width: 280px;
+  }
+
   .rsvp__celebration {
     display: none;
-    padding: var(--space-6) var(--space-4);
+    padding: var(--space-6) var(--space-8);
     position: fixed;
     inset: 0;
     z-index: 200;
@@ -2200,7 +2236,7 @@ select {
   }
 
   .rsvp__celebration-hearts {
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
   }
 
   .rsvp__celebration-heart {
@@ -2217,22 +2253,23 @@ select {
   }
 
   .rsvp__celebration-subtitle {
-    font-size: var(--text-xl);
-    margin-bottom: var(--space-4);
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-3);
   }
 
   .rsvp__celebration-divider {
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
   }
 
   .rsvp__celebration-registry {
-    font-size: var(--text-base);
-    margin-bottom: var(--space-6);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-4);
   }
 
   .rsvp__celebration-btn {
     width: auto;
     min-width: 70%;
+    margin-bottom: var(--space-2);
   }
 
   .rsvp__celebration-close {

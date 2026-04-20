@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const target = document.querySelector(targetId);
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(target, { offset: 0 });
+      lenis.scrollTo(target, { offset: -115 });
     });
   });
 
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (target) {
             e.preventDefault();
             setTimeout(() => {
-              lenis.scrollTo(target, { offset: -64 });
+              lenis.scrollTo(target, { offset: -115 });
             }, 350);
           }
         }
@@ -488,7 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function sendToSheets(payload) {
-      await fetch('https://script.google.com/macros/s/AKfycbxSSKOXgsF7m8FQsyi_3IZYzZDOqV3d2ygeIgjAohm70O8SxcuJzyQAe6ju6ptdoqdWXg/exec', {
+      await fetch('https://script.google.com/macros/s/AKfycbzhk4phI-qdAqEZuwDZTLU68Bya4YeNUiQmAXEZ8N3_3o8Etedb19kzHWmw_l3VlYS9MA/exec', {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
