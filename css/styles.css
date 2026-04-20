@@ -357,7 +357,7 @@ select {
   inset: 0;
   background-image: url('../photos/hero/hero-image.jpg');
   background-size: cover;
-  background-position: center top;
+  background-position: 35% top;
   background-repeat: no-repeat;
   z-index: 0;
 }
