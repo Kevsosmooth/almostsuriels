@@ -344,13 +344,13 @@
                 </div>
               </div>
             </div>
-            <button class="details__arrow details__arrow--left" aria-label="Previous hotel">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <button class="details__arrow details__arrow--right" aria-label="Next hotel">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
-            </button>
           </div>
+          <button class="details__arrow details__arrow--left" aria-label="Previous hotel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="details__arrow details__arrow--right" aria-label="Next hotel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -764,7 +764,14 @@
   <section class="rsvp" id="rsvp">
     <div class="rsvp__bg" role="img" aria-label="Kevin and Arielle together, smiling"></div>
 
-    <div class="rsvp__card reveal">
+    <button class="btn btn--primary rsvp__trigger" type="button" id="rsvp-trigger">RSVP Now</button>
+
+    <div class="rsvp__card">
+      <button class="rsvp__close" type="button" id="rsvp-close" aria-label="Close RSVP form">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
       <h2 class="rsvp__heading">RSVP</h2>
 
       <div class="flourish" aria-hidden="true">

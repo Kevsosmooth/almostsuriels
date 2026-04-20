@@ -356,6 +356,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ---------------------------------------------------------------------------
+  // RSVP Mobile Toggle
+  // ---------------------------------------------------------------------------
+
+  const rsvpTrigger = document.getElementById('rsvp-trigger');
+  const rsvpCard = document.querySelector('.rsvp__card');
+  const rsvpClose = document.getElementById('rsvp-close');
+
+  if (rsvpTrigger && rsvpCard && rsvpClose) {
+    rsvpTrigger.addEventListener('click', () => {
+      rsvpCard.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+
+    rsvpClose.addEventListener('click', (e) => {
+      e.stopPropagation();
+      rsvpCard.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  }
+
+  // ---------------------------------------------------------------------------
   // RSVP Form Validation
   // ---------------------------------------------------------------------------
 
