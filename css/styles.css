@@ -348,7 +348,7 @@ select {
   z-index: 1;
   background-color: rgba(var(--canvas-rgb), 0.95);
   padding: var(--space-6);
-  max-width: calc(100% - var(--space-6));
+  max-width: calc(100% - var(--space-16));
   width: 100%;
   text-align: center;
   box-shadow: var(--shadow-lg);
