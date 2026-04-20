@@ -15,6 +15,7 @@
 
   <link rel="stylesheet" href="css/styles.css">
 
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
 </head>
 <body>
 
@@ -217,9 +218,22 @@
                  rel="noopener noreferrer">
                 Map
               </a>
-              <a class="btn btn--outline" href="#" aria-label="Add ceremony to your calendar">
-                Add to Calendar
-              </a>
+              <div class="calendar-dropdown">
+                <button class="btn btn--outline calendar-dropdown__toggle" type="button" aria-expanded="false" aria-haspopup="true">
+                  Add to Calendar
+                  <svg class="calendar-dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="calendar-dropdown__menu" role="menu">
+                  <a class="calendar-dropdown__item" role="menuitem" href="arielle-kevin-wedding.ics" download>
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    Apple / Outlook
+                  </a>
+                  <a class="calendar-dropdown__item" role="menuitem" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Arielle+%26+Kevin%27s+Wedding&dates=20261004T200000Z/20261005T030000Z&details=Ceremony+%26+Reception+at+Secret+Gardens+Miami.+Ceremony+begins+at+4%3A00+PM+ET.&location=Secret+Gardens+Miami%2C+19451+SW+248th+St%2C+Homestead%2C+FL+33031" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                    Google Calendar
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div class="details__venue-carousel">
@@ -848,6 +862,36 @@
 
         <button class="btn btn--primary rsvp__submit" type="submit">Submit RSVP</button>
       </form>
+
+      <div class="rsvp__confirm" id="rsvp-confirm">
+        <p class="rsvp__confirm-emoji">&#x1F483;</p>
+        <h3 class="rsvp__confirm-title">Flying solo?</h3>
+        <p class="rsvp__confirm-body">No plus one selected -- just making sure! You can always bring someone to share the dance floor with.</p>
+        <div class="rsvp__confirm-actions">
+          <button class="btn btn--primary rsvp__confirm-solo" id="rsvp-confirm-solo" type="button">Just me!</button>
+          <button class="btn btn--outline rsvp__confirm-back" id="rsvp-confirm-back" type="button">Wait, adding my +1</button>
+        </div>
+      </div>
+
+      <div class="rsvp__celebration" id="rsvp-celebration">
+        <div class="rsvp__celebration-hearts" aria-hidden="true">
+          <span class="rsvp__celebration-heart rsvp__celebration-heart--1">&#x2764;</span>
+          <span class="rsvp__celebration-heart rsvp__celebration-heart--2">&#x2764;</span>
+          <span class="rsvp__celebration-heart rsvp__celebration-heart--3">&#x2764;</span>
+        </div>
+        <h3 class="rsvp__celebration-title">You're on the list!</h3>
+        <p class="rsvp__celebration-subtitle">We can't wait to celebrate with you</p>
+        <div class="rsvp__celebration-divider" aria-hidden="true">
+          <svg viewBox="0 0 120 20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M0 10 Q30 0 60 10 Q90 20 120 10"/>
+            <circle cx="56" cy="10" r="2" fill="currentColor" stroke="none"/>
+            <circle cx="64" cy="10" r="2" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <p class="rsvp__celebration-registry">If you'd like to send a gift, we've put together a little wish list just for you.</p>
+        <a class="btn btn--primary rsvp__celebration-btn" href="https://www.zola.com/registry/almostsuriel/" target="_blank" rel="noopener noreferrer">View Our Registry</a>
+        <button class="btn btn--outline rsvp__celebration-close" id="rsvp-celebration-close" type="button">Close</button>
+      </div>
     </div>
   </section>
 

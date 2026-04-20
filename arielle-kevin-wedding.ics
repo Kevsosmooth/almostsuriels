@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Arielle & Kevin Wedding//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+DTSTART:20261004T200000Z
+DTEND:20261005T030000Z
+SUMMARY:Arielle & Kevin's Wedding
+DESCRIPTION:Ceremony & Reception at Secret Gardens Miami. Ceremony begins at 4:00 PM ET. Dinner\, dancing\, and celebration to follow!
+LOCATION:Secret Gardens Miami\, 19451 SW 248th St\, Homestead\, FL 33031
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR

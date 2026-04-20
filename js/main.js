@@ -462,8 +462,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const submitBtn = rsvpForm.querySelector('.rsvp__submit');
+    const plusOneCheckbox = document.getElementById('rsvp-plus-one');
+    const confirmPanel = document.getElementById('rsvp-confirm');
+    const confirmSoloBtn = document.getElementById('rsvp-confirm-solo');
+    const confirmBackBtn = document.getElementById('rsvp-confirm-back');
+    let confirmedSolo = false;
 
-    rsvpForm.addEventListener('submit', async (e) => {
+    function collectPayload() {
+      return {
+        firstName: fields.firstName.el.value.trim(),
+        lastName: fields.lastName.el.value.trim(),
+        phone: fields.phone.el.value.trim(),
+        email: fields.email.el.value.trim(),
+        plusOne: plusOneCheckbox.checked
+      };
+    }
+
+    function sendToSheets(payload) {
+      fetch('https://script.google.com/macros/s/AKfycbxSSKOXgsF7m8FQsyi_3IZYzZDOqV3d2ygeIgjAohm70O8SxcuJzyQAe6ju6ptdoqdWXg/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    }
+
+    function submitAndCelebrate() {
+      const payload = collectPayload();
+      showCelebration();
+      rsvpForm.reset();
+      confirmedSolo = false;
+      Object.values(fields).forEach((field) => {
+        field.el.setAttribute('aria-invalid', 'false');
+        field.error.textContent = '';
+      });
+      sendToSheets(payload);
+    }
+
+    rsvpForm.addEventListener('submit', (e) => {
       e.preventDefault();
 
       let isValid = true;
@@ -477,43 +513,112 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const originalText = submitBtn.textContent;
-      submitBtn.textContent = 'Sending...';
-      submitBtn.disabled = true;
+      if (!plusOneCheckbox.checked && !confirmedSolo) {
+        rsvpForm.style.display = 'none';
+        confirmPanel.classList.add('active');
+        return;
+      }
+
+      submitAndCelebrate();
+    });
+
+    if (confirmSoloBtn) {
+      confirmSoloBtn.addEventListener('click', () => {
+        confirmedSolo = true;
+        submitAndCelebrate();
+      });
+    }
+
+    if (confirmBackBtn) {
+      confirmBackBtn.addEventListener('click', () => {
+        confirmPanel.classList.remove('active');
+        rsvpForm.style.display = '';
+        plusOneCheckbox.checked = true;
+        plusOneCheckbox.focus();
+      });
+    }
+
+    const celebrationPanel = document.getElementById('rsvp-celebration');
+    const celebrationCloseBtn = document.getElementById('rsvp-celebration-close');
+
+    function fireCelebration() {
+      if (typeof confetti !== 'function') return;
+      const duration = 3000;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 3,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.7 },
+          colors: ['#9B1B30', '#B52540', '#E8D5D0', '#FFF8F0', '#FFD700']
+        });
+        confetti({
+          particleCount: 3,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.7 },
+          colors: ['#9B1B30', '#B52540', '#E8D5D0', '#FFF8F0', '#FFD700']
+        });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      })();
+
+      setTimeout(() => {
+        confetti({
+          particleCount: 80,
+          spread: 100,
+          origin: { x: 0.5, y: 0.4 },
+          colors: ['#9B1B30', '#B52540', '#E8D5D0', '#FFF8F0', '#FFD700']
+        });
+      }, 600);
+    }
+
+    function showCelebration() {
+      rsvpForm.style.display = 'none';
+      confirmPanel.classList.remove('active');
       statusEl.textContent = '';
       statusEl.className = 'rsvp__status';
+      celebrationPanel.classList.add('active');
+      fireCelebration();
+    }
 
-      const payload = {
-        firstName: fields.firstName.el.value.trim(),
-        lastName: fields.lastName.el.value.trim(),
-        phone: fields.phone.el.value.trim(),
-        email: fields.email.el.value.trim(),
-        plusOne: document.getElementById('rsvp-plus-one').checked
-      };
+    function closeCelebration() {
+      celebrationPanel.classList.remove('active');
+      rsvpForm.style.display = '';
+      if (rsvpCard.classList.contains('open')) {
+        rsvpCard.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }
 
-      try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbxSSKOXgsF7m8FQsyi_3IZYzZDOqV3d2ygeIgjAohm70O8SxcuJzyQAe6ju6ptdoqdWXg/exec', {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify(payload)
-        });
+    if (celebrationCloseBtn) {
+      celebrationCloseBtn.addEventListener('click', closeCelebration);
+    }
+  }
 
-        statusEl.textContent = 'Thank you! Your RSVP has been received.';
-        statusEl.className = 'rsvp__status rsvp__status--success';
-        rsvpForm.reset();
-        Object.values(fields).forEach((field) => {
-          field.el.setAttribute('aria-invalid', 'false');
-          field.error.textContent = '';
-        });
-      } catch (err) {
-        statusEl.textContent = 'Network error. Please check your connection and try again.';
-        statusEl.className = 'rsvp__status rsvp__status--error';
-      } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
+  // Calendar dropdown toggle
+  document.querySelectorAll('.calendar-dropdown__toggle').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const dropdown = btn.closest('.calendar-dropdown');
+      const isOpen = dropdown.hasAttribute('data-open');
+      document.querySelectorAll('.calendar-dropdown[data-open]').forEach((d) => {
+        d.removeAttribute('data-open');
+        d.querySelector('.calendar-dropdown__toggle').setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        dropdown.setAttribute('data-open', '');
+        btn.setAttribute('aria-expanded', 'true');
       }
     });
-  }
+  });
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.calendar-dropdown[data-open]').forEach((d) => {
+      d.removeAttribute('data-open');
+      d.querySelector('.calendar-dropdown__toggle').setAttribute('aria-expanded', 'false');
+    });
+  });
 
 });
