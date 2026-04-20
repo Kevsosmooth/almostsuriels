@@ -156,6 +156,13 @@ document.addEventListener('DOMContentLoaded', () => {
       el.style.visibility = 'visible';
     });
   } else {
+    var viewportH = window.innerHeight;
+
+    function isInViewport(el) {
+      var rect = el.getBoundingClientRect();
+      return rect.top < viewportH && rect.bottom > 0;
+    }
+
     const groups = {};
 
     revealElements.forEach((el) => {
@@ -165,13 +172,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!groups[group]) groups[group] = [];
         groups[group].push(el);
       } else {
+        var inView = isInViewport(el);
         gsap.fromTo(el,
-          { y: 40, opacity: 0, visibility: 'hidden' },
+          { y: inView ? 0 : 40, opacity: 0, visibility: 'hidden' },
           {
             y: 0,
             opacity: 1,
             visibility: 'visible',
-            duration: 0.8,
+            duration: inView ? 0.3 : 0.8,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: el,
@@ -184,15 +192,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     Object.values(groups).forEach((elements) => {
+      var inView = isInViewport(elements[0]);
       gsap.fromTo(elements,
-        { y: 40, opacity: 0, visibility: 'hidden' },
+        { y: inView ? 0 : 40, opacity: 0, visibility: 'hidden' },
         {
           y: 0,
           opacity: 1,
           visibility: 'visible',
-          duration: 0.8,
+          duration: inView ? 0.3 : 0.8,
           ease: 'power3.out',
-          stagger: 0.1,
+          stagger: inView ? 0.03 : 0.1,
           scrollTrigger: {
             trigger: elements[0],
             start: 'top 95%',
@@ -478,32 +487,48 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     }
 
-    function sendToSheets(payload) {
-      fetch('https://script.google.com/macros/s/AKfycbxSSKOXgsF7m8FQsyi_3IZYzZDOqV3d2ygeIgjAohm70O8SxcuJzyQAe6ju6ptdoqdWXg/exec', {
+    async function sendToSheets(payload) {
+      await fetch('https://script.google.com/macros/s/AKfycbxSSKOXgsF7m8FQsyi_3IZYzZDOqV3d2ygeIgjAohm70O8SxcuJzyQAe6ju6ptdoqdWXg/exec', {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(payload)
-      }).catch(() => {});
-    }
-
-    function submitAndCelebrate() {
-      const payload = collectPayload();
-      showCelebration();
-      rsvpForm.reset();
-      confirmedSolo = false;
-      Object.values(fields).forEach((field) => {
-        field.el.setAttribute('aria-invalid', 'false');
-        field.error.textContent = '';
       });
-      sendToSheets(payload);
     }
 
-    rsvpForm.addEventListener('submit', (e) => {
+    async function submitAndCelebrate() {
+      var payload = collectPayload();
+      var originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
+      statusEl.textContent = '';
+      statusEl.className = 'rsvp__status';
+
+      try {
+        await sendToSheets(payload);
+        rsvpForm.reset();
+        confirmedSolo = false;
+        Object.values(fields).forEach(function(field) {
+          field.el.setAttribute('aria-invalid', 'false');
+          field.error.textContent = '';
+        });
+        showCelebration();
+      } catch (err) {
+        statusEl.textContent = 'Network error. Please check your connection and try again.';
+        statusEl.className = 'rsvp__status rsvp__status--error';
+        confirmPanel.classList.remove('active');
+        rsvpForm.style.display = '';
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    }
+
+    rsvpForm.addEventListener('submit', function(e) {
       e.preventDefault();
 
-      let isValid = true;
-      Object.values(fields).forEach((field) => {
+      var isValid = true;
+      Object.values(fields).forEach(function(field) {
         if (!validateField(field)) isValid = false;
       });
 
@@ -523,9 +548,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (confirmSoloBtn) {
-      confirmSoloBtn.addEventListener('click', () => {
+      confirmSoloBtn.addEventListener('click', function() {
         confirmedSolo = true;
-        submitAndCelebrate();
+        var soloOriginal = confirmSoloBtn.textContent;
+        confirmSoloBtn.textContent = 'Sending...';
+        confirmSoloBtn.disabled = true;
+        confirmBackBtn.disabled = true;
+        submitAndCelebrate().finally(function() {
+          confirmSoloBtn.textContent = soloOriginal;
+          confirmSoloBtn.disabled = false;
+          confirmBackBtn.disabled = false;
+        });
       });
     }
 
@@ -543,34 +576,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function fireCelebration() {
       if (typeof confetti !== 'function') return;
-      const duration = 3000;
-      const end = Date.now() + duration;
+      var confettiOpts = { zIndex: 300 };
+      var duration = 3000;
+      var end = Date.now() + duration;
 
       (function frame() {
-        confetti({
+        confetti(Object.assign({}, confettiOpts, {
           particleCount: 3,
           angle: 60,
           spread: 55,
           origin: { x: 0, y: 0.7 },
           colors: ['#9B1B30', '#B52540', '#E8D5D0', '#FFF8F0', '#FFD700']
-        });
-        confetti({
+        }));
+        confetti(Object.assign({}, confettiOpts, {
           particleCount: 3,
           angle: 120,
           spread: 55,
           origin: { x: 1, y: 0.7 },
           colors: ['#9B1B30', '#B52540', '#E8D5D0', '#FFF8F0', '#FFD700']
-        });
+        }));
         if (Date.now() < end) requestAnimationFrame(frame);
       })();
 
-      setTimeout(() => {
-        confetti({
+      setTimeout(function() {
+        confetti(Object.assign({}, confettiOpts, {
           particleCount: 80,
           spread: 100,
           origin: { x: 0.5, y: 0.4 },
           colors: ['#9B1B30', '#B52540', '#E8D5D0', '#FFF8F0', '#FFD700']
-        });
+        }));
       }, 600);
     }
 
