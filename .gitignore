@@ -1,0 +1,11 @@
+.vercel
+.env
+.env.*
+.DS_Store
+Thumbs.db
+template/
+sample-*.html
+image*.png
+image*.pdf
+downloads/
+.claude/

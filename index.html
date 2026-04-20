@@ -57,6 +57,7 @@
         <li><a href="#party">Wedding Party</a></li>
         <li><a href="#gallery">Gallery</a></li>
         <li><a href="#things-to-do">Things To Do</a></li>
+        <li><a href="#rsvp">RSVP</a></li>
         <li><a href="#faq">FAQs</a></li>
       </ul>
     </div>
@@ -69,6 +70,7 @@
       <a class="mobile-overlay__link" href="#party">Wedding Party</a>
       <a class="mobile-overlay__link" href="#gallery">Gallery</a>
       <a class="mobile-overlay__link" href="#things-to-do">Things To Do</a>
+      <a class="mobile-overlay__link" href="#rsvp">RSVP</a>
       <a class="mobile-overlay__link" href="#faq">FAQs</a>
     </div>
   </nav>
@@ -437,7 +439,7 @@
         <div class="party__column">
           <div class="party__member reveal" data-reveal-group="party-bride">
             <img class="party__photo"
-                 src="https://images.unsplash.com/photo-1650381473833-3e2c74a40fbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 src="photos/party/anyssa.jpeg"
                  alt="Anyssa, Maid of Honor"
                  loading="lazy"
                  width="200"
@@ -448,7 +450,7 @@
 
           <div class="party__member reveal" data-reveal-group="party-bride">
             <img class="party__photo"
-                 src="https://images.unsplash.com/photo-1768247695726-022586dea3a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 src="photos/party/Tiana.jpeg"
                  alt="Tiana, Matron of Honor"
                  loading="lazy"
                  width="200"
@@ -459,22 +461,24 @@
 
           <div class="party__member reveal" data-reveal-group="party-bride">
             <img class="party__photo"
-                 src="https://images.unsplash.com/photo-1650213235809-37ceda7b8b60?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
-                 alt="Janice, Bridesmaid"
+                 src="photos/party/jasmine.jpeg"
+                 alt="Jasmine, Bridesmaid"
                  loading="lazy"
                  width="200"
-                 height="200">
-            <h3 class="party__name">Janice</h3>
+                 height="200"
+                 style="object-position: center 15%">
+            <h3 class="party__name">Jasmine</h3>
             <p class="party__role">Bridesmaid</p>
           </div>
 
           <div class="party__member reveal" data-reveal-group="party-bride">
             <img class="party__photo"
-                 src="https://images.unsplash.com/photo-1564164841584-391b5c7b590c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 src="photos/party/Trinity.jpeg"
                  alt="Trinityrose, Bridesmaid"
                  loading="lazy"
                  width="200"
-                 height="200">
+                 height="200"
+>
             <h3 class="party__name">Trinityrose</h3>
             <p class="party__role">Bridesmaid</p>
           </div>
@@ -754,37 +758,11 @@
         But if you want to give us a surprise, who are we to stop you? Your happiness is happiness to us... A digital contact or a physical contact, you're free to send.
       </p>
 
-      <div class="registry__cards reveal" data-reveal-group="registry-cards">
-        <a class="registry__card" href="https://www.zola.com/registry/almostsuriel/" target="_blank" rel="noopener noreferrer">
-          <div class="registry__card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </div>
-          <h3 class="registry__card-title">Honeymoon Fund</h3>
-          <p class="registry__card-desc">Help us create unforgettable memories on our honeymoon adventure together.</p>
-        </a>
-
-        <a class="registry__card" href="https://www.zola.com/registry/almostsuriel/" target="_blank" rel="noopener noreferrer">
-          <div class="registry__card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-          </div>
-          <h3 class="registry__card-title">Home Essentials</h3>
-          <p class="registry__card-desc">Contribute to building our first home together with items we will cherish.</p>
-        </a>
-
-        <a class="registry__card" href="https://www.zola.com/registry/almostsuriel/" target="_blank" rel="noopener noreferrer">
-          <div class="registry__card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
-              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
-            </svg>
-          </div>
-          <h3 class="registry__card-title">Experience Fund</h3>
-          <p class="registry__card-desc">Gift us an experience -- from cooking classes to weekend getaways we will love.</p>
+      <div class="registry__widget reveal">
+        <a class="zola-registry-embed"
+           href="https://www.zola.com/registry/almostsuriel"
+           data-registry-key="almostsuriel">
+          Our Zola Wedding Registry
         </a>
       </div>
 
@@ -991,5 +969,8 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
   <script src="js/main.js"></script>
+  <script>
+  !function(e,t,n){var s,a=e.getElementsByTagName(t)[0];e.getElementById(n)||(s=e.createElement(t),s.id=n,s.async=!0,s.src="https://widget.zola.com/js/widget.js",a.parentNode.insertBefore(s,a))}(document,"script","zola-wjs");
+  </script>
 </body>
 </html>
