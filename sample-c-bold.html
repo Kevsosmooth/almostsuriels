@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arielle & Kevin | October 4, 2026 - Bold & Celebratory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #991B1B;
+    --cream: #FFF5E6;
+    --charcoal: #1A1A1A;
+    --gold: #D4A0A0;
+    --white: #FFFFFF;
+    --red-rgb: 153, 27, 27;
+    --gold-rgb: 212, 160, 160;
+    --charcoal-rgb: 26, 26, 26;
+    --cream-rgb: 255, 245, 230;
+    --card-bg: #2A2A2A;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-script: 'Cormorant Garamond', serif;
+    --font-body: 'Inter', sans-serif;
+    --radius: 4px;
+  }
+
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--charcoal);
+    background: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  /* ========== FOCUS VISIBLE ========== */
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  /* ========== NAVBAR ========== */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(var(--red-rgb), 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .navbar__brand {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--cream);
+    letter-spacing: 0.15em;
+    white-space: nowrap;
+  }
+
+  .navbar__links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .navbar__link {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: var(--cream);
+    position: relative;
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .navbar__link::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+
+  .navbar__link:hover::after,
+  .navbar__link:focus-visible::after {
+    width: 100%;
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px;
+  }
+
+  .hamburger__line {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--cream);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .hamburger[aria-expanded="true"] .hamburger__line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .hamburger[aria-expanded="true"] .hamburger__line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger[aria-expanded="true"] .hamburger__line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: var(--red);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .mobile-overlay.active {
+    display: flex;
+  }
+
+  .mobile-overlay__link {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    min-height: 100vh;
+    min-height: 100svh;
+    background: var(--red);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 24px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero__photo {
+    width: 550px;
+    max-width: 100%;
+    height: 380px;
+    background: var(--charcoal);
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .hero__photo-text {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--cream);
+    opacity: 0.6;
+  }
+
+  .hero__names {
+    font-family: var(--font-script);
+    font-style: italic;
+    font-size: 3.5rem;
+    color: var(--cream);
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .hero__date {
+    font-family: var(--font-display);
+    font-size: 6rem;
+    color: var(--cream);
+    letter-spacing: 0.2em;
+    text-align: center;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .hero__date-sep {
+    color: var(--gold);
+    margin: 0 8px;
+  }
+
+  .hero__location {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    margin-bottom: 60px;
+  }
+
+  .hero__scroll {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s ease-in-out infinite;
+    color: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+  }
+
+  .hero__scroll svg {
+    width: 28px;
+    height: 28px;
+    stroke: var(--cream);
+    fill: none;
+    stroke-width: 2;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(12px); }
+  }
+
+  /* Hero entrance animations */
+  @keyframes heroFadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .js-enabled .hero__photo {
+    opacity: 0;
+    animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  }
+
+  .js-enabled .hero__names {
+    opacity: 0;
+    animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  }
+
+  .js-enabled .hero__date {
+    opacity: 0;
+    animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+  }
+
+  .js-enabled .hero__location {
+    opacity: 0;
+    animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+  }
+
+  /* ========== COUNTDOWN ========== */
+  .countdown {
+    background: var(--charcoal);
+    padding: 80px 24px;
+    text-align: center;
+  }
+
+  .countdown__overline {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    margin-bottom: 48px;
+  }
+
+  .countdown__blocks {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .countdown__block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100px;
+  }
+
+  .countdown__number {
+    font-family: var(--font-display);
+    font-size: 5rem;
+    color: var(--cream);
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+
+  .countdown__number.tick {
+    transform: scale(1.1);
+  }
+
+  .countdown__label {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-top: 8px;
+  }
+
+  .countdown__sep {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    color: var(--red);
+    animation: pulse 1.5s ease-in-out infinite;
+    align-self: flex-start;
+    margin-top: 10px;
+    padding: 0 12px;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* ========== OUR STORY ========== */
+  .story {
+    background: var(--cream);
+    padding: 120px 24px;
+    text-align: center;
+  }
+
+  .story__inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .story__overline {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    color: var(--red);
+    letter-spacing: 0.3em;
+    margin-bottom: 16px;
+  }
+
+  .story__heading {
+    margin-bottom: 24px;
+  }
+
+  .story__heading-bold {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    color: var(--charcoal);
+    display: block;
+    line-height: 1.1;
+  }
+
+  .story__heading-script {
+    font-family: var(--font-script);
+    font-style: italic;
+    font-size: 2.5rem;
+    color: var(--red);
+    display: block;
+    line-height: 1.2;
+  }
+
+  .story__bar {
+    width: 60px;
+    height: 3px;
+    background: var(--gold);
+    margin: 24px auto 32px;
+  }
+
+  .story__body {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    color: var(--charcoal);
+    opacity: 0.7;
+    line-height: 1.8;
+  }
+
+  /* ========== JOIN US ========== */
+  .join {
+    background: var(--red);
+    padding: 120px 24px;
+  }
+
+  .join__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .join__overline {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    margin-bottom: 12px;
+  }
+
+  .join__heading {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    color: var(--cream);
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+
+  .join__body {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--cream);
+    opacity: 0.8;
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  .btn--gold {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gold);
+    color: var(--charcoal);
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    padding: 16px 48px;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    min-height: 44px;
+    min-width: 44px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .btn--gold:hover {
+    background: var(--cream);
+    color: var(--charcoal);
+  }
+
+  .join__photo {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    background: var(--charcoal);
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .join__photo-text {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--cream);
+    opacity: 0.6;
+  }
+
+  /* ========== DETAILS ========== */
+  .details {
+    background: var(--charcoal);
+    padding: 120px 24px;
+  }
+
+  .details__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .details__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  .details__card {
+    background: var(--card-bg);
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 40px;
+    text-align: center;
+    transition: transform 0.4s ease, border-color 0.4s ease;
+  }
+
+  .details__card:hover {
+    transform: translateY(-6px);
+    border-color: #E8B8B8;
+  }
+
+  .details__numeral {
+    font-family: var(--font-script);
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .details__title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .details__subtitle {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .details__desc {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--cream);
+    opacity: 0.7;
+    line-height: 1.6;
+  }
+
+  /* ========== REGISTRY ========== */
+  .registry {
+    background: var(--cream);
+    padding: 120px 24px;
+    text-align: center;
+  }
+
+  .registry__inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .registry__overline {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    color: var(--red);
+    letter-spacing: 0.3em;
+    margin-bottom: 16px;
+  }
+
+  .registry__heading {
+    font-family: var(--font-script);
+    font-style: italic;
+    font-size: 2.5rem;
+    color: var(--charcoal);
+    margin-bottom: 24px;
+  }
+
+  .registry__body {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: var(--charcoal);
+    opacity: 0.7;
+    line-height: 1.8;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .registry__bar {
+    width: 60px;
+    height: 3px;
+    background: var(--gold);
+    margin: 32px auto;
+  }
+
+  .registry__embed {
+    margin-top: 16px;
+  }
+
+  /* ========== CTA ========== */
+  .cta {
+    background: var(--cream);
+    padding: 120px 24px;
+    text-align: center;
+  }
+
+  .cta__heading {
+    font-family: var(--font-display);
+    font-size: 8rem;
+    color: var(--red);
+    letter-spacing: 0.1em;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .cta__sub {
+    font-family: var(--font-script);
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--charcoal);
+    margin-bottom: 48px;
+  }
+
+  .btn--red {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--red);
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    letter-spacing: 0.1em;
+    padding: 18px 60px;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    min-height: 44px;
+    min-width: 44px;
+    transition: background 0.3s ease;
+  }
+
+  .btn--red:hover {
+    background: #7F1515;
+  }
+
+  /* ========== FOOTER ========== */
+  .footer {
+    background: var(--red);
+    border-top: 2px solid var(--gold);
+    padding: 60px 24px;
+    text-align: center;
+  }
+
+  .footer__names {
+    font-family: var(--font-script);
+    font-style: italic;
+    font-size: 1.8rem;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+
+  .footer__date {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    margin-bottom: 32px;
+  }
+
+  .footer__links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    list-style: none;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .footer__link {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--cream);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .footer__link::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+
+  .footer__link:hover::after,
+  .footer__link:focus-visible::after {
+    width: 100%;
+  }
+
+  .footer__label {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: var(--cream);
+    opacity: 0.5;
+  }
+
+  /* ========== SCROLL REVEAL ========== */
+  .js-enabled .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  .js-enabled .reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+
+  .js-enabled .reveal-right {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  .js-enabled .reveal-scale {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  .revealed {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* ========== REDUCED MOTION ========== */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+
+    .js-enabled .reveal,
+    .js-enabled .reveal-left,
+    .js-enabled .reveal-right,
+    .js-enabled .reveal-scale {
+      opacity: 1;
+      transform: none;
+    }
+
+    .js-enabled .hero__photo,
+    .js-enabled .hero__names,
+    .js-enabled .hero__date,
+    .js-enabled .hero__location {
+      opacity: 1;
+      animation: none;
+    }
+  }
+
+  /* ========== RESPONSIVE 768px ========== */
+  @media (max-width: 768px) {
+    .navbar__links {
+      display: none;
+    }
+
+    .hamburger {
+      display: flex;
+    }
+
+    .hero__names {
+      font-size: 2.5rem;
+    }
+
+    .hero__date {
+      font-size: 3.5rem;
+    }
+
+    .hero__location {
+      letter-spacing: 0.3em;
+    }
+
+    .countdown__number {
+      font-size: 3rem;
+    }
+
+    .countdown__sep {
+      font-size: 2rem;
+    }
+
+    .countdown__block {
+      min-width: 70px;
+    }
+
+    .join__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .details__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta__heading {
+      font-size: 4rem;
+    }
+  }
+
+  /* ========== RESPONSIVE 480px ========== */
+  @media (max-width: 480px) {
+    .hero__date {
+      font-size: 2.5rem;
+      letter-spacing: 0.1em;
+    }
+
+    .hero__date-sep {
+      margin: 0 4px;
+    }
+
+    .countdown__number {
+      font-size: 2.5rem;
+    }
+
+    .countdown__block {
+      min-width: 56px;
+    }
+
+    .countdown__sep {
+      font-size: 1.5rem;
+      padding: 0 6px;
+    }
+
+    .cta__heading {
+      font-size: 3rem;
+    }
+
+    .join__heading {
+      font-size: 2.5rem;
+    }
+
+    .story__heading-bold {
+      font-size: 2.2rem;
+    }
+
+    .story__heading-script {
+      font-size: 1.8rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== NAVBAR ====== -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <a href="#home" class="navbar__brand">ARIELLE & KEVIN</a>
+  <ul class="navbar__links">
+    <li><a href="#story" class="navbar__link">Our Story</a></li>
+    <li><a href="#details" class="navbar__link">Details</a></li>
+    <li><a href="#rsvp" class="navbar__link">RSVP</a></li>
+  </ul>
+  <button class="hamburger" aria-expanded="false" aria-controls="mobile-nav" aria-label="Toggle navigation menu">
+    <span class="hamburger__line"></span>
+    <span class="hamburger__line"></span>
+    <span class="hamburger__line"></span>
+  </button>
+</nav>
+
+<!-- ====== MOBILE OVERLAY ====== -->
+<div class="mobile-overlay" id="mobile-nav" role="dialog" aria-label="Mobile navigation">
+  <a href="#story" class="mobile-overlay__link">Our Story</a>
+  <a href="#details" class="mobile-overlay__link">Details</a>
+  <a href="#rsvp" class="mobile-overlay__link">RSVP</a>
+</div>
+
+<!-- ====== HERO ====== -->
+<section class="hero" id="home">
+  <div class="hero__photo">
+    <span class="hero__photo-text">Your Photo Here</span>
+  </div>
+  <h1 class="hero__names">Arielle & Kevin</h1>
+  <div class="hero__date">OCT <span class="hero__date-sep">|</span> 04 <span class="hero__date-sep">|</span> 2026</div>
+  <div class="hero__location">MIAMI, FLORIDA</div>
+  <div class="hero__scroll" aria-hidden="true">
+    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+  </div>
+</section>
+
+<!-- ====== COUNTDOWN ====== -->
+<section class="countdown" aria-label="Countdown to wedding">
+  <div class="countdown__overline">THE CELEBRATION BEGINS IN</div>
+  <div class="countdown__blocks" aria-live="polite" id="countdown">
+    <div class="countdown__block">
+      <span class="countdown__number" id="cd-days">---</span>
+      <span class="countdown__label">Days</span>
+    </div>
+    <span class="countdown__sep">:</span>
+    <div class="countdown__block">
+      <span class="countdown__number" id="cd-hours">--</span>
+      <span class="countdown__label">Hours</span>
+    </div>
+    <span class="countdown__sep">:</span>
+    <div class="countdown__block">
+      <span class="countdown__number" id="cd-mins">--</span>
+      <span class="countdown__label">Minutes</span>
+    </div>
+    <span class="countdown__sep">:</span>
+    <div class="countdown__block">
+      <span class="countdown__number" id="cd-secs">--</span>
+      <span class="countdown__label">Seconds</span>
+    </div>
+  </div>
+</section>
+
+<!-- ====== OUR STORY ====== -->
+<section class="story" id="story">
+  <div class="story__inner">
+    <div class="story__overline reveal">OUR STORY</div>
+    <div class="story__heading reveal">
+      <span class="story__heading-bold">Two Hearts</span>
+      <span class="story__heading-script">one celebration</span>
+    </div>
+    <div class="story__bar reveal"></div>
+    <p class="story__body reveal">
+      From a chance encounter to a lifetime promise, our journey has been nothing short of extraordinary.
+      Every shared laugh, every quiet moment, every adventure has led us to this day -- the day we say
+      "forever" surrounded by the people who matter most. We cannot wait to celebrate with you.
+    </p>
+  </div>
+</section>
+
+<!-- ====== JOIN US ====== -->
+<section class="join">
+  <div class="join__inner">
+    <div class="join__content">
+      <div class="join__overline reveal-left">BE PART OF</div>
+      <h2 class="join__heading reveal-left">SOMETHING LEGENDARY</h2>
+      <p class="join__body reveal-left">
+        This is more than a wedding -- it is a gathering of everyone who has shaped our story.
+        We want you there when we make it official in the heart of Miami.
+      </p>
+      <a href="#rsvp" class="btn--gold reveal-left">RESERVE YOUR SPOT</a>
+    </div>
+    <div class="join__photo reveal-right">
+      <span class="join__photo-text">Your Photo Here</span>
+    </div>
+  </div>
+</section>
+
+<!-- ====== DETAILS ====== -->
+<section class="details" id="details">
+  <div class="details__inner">
+    <div class="details__grid">
+      <div class="details__card reveal-scale">
+        <div class="details__numeral">I</div>
+        <div class="details__title">THE CEREMONY</div>
+        <div class="details__subtitle">4:00 PM</div>
+        <p class="details__desc">Watch as two become one in an unforgettable ceremony filled with love, laughter, and maybe a few tears of joy.</p>
+      </div>
+      <div class="details__card reveal-scale">
+        <div class="details__numeral">II</div>
+        <div class="details__title">THE RECEPTION</div>
+        <div class="details__subtitle">6:00 PM</div>
+        <p class="details__desc">Dinner, toasts, and dancing under the stars. Bring your appetite and your best moves -- the celebration is just getting started.</p>
+      </div>
+      <div class="details__card reveal-scale">
+        <div class="details__numeral">III</div>
+        <div class="details__title">THE AFTER PARTY</div>
+        <div class="details__subtitle">10:00 PM</div>
+        <p class="details__desc">The night is far from over. Join us for the after party where we keep the energy going until the early hours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== REGISTRY ====== -->
+<section class="registry" id="registry">
+  <div class="registry__inner">
+    <div class="registry__overline reveal">OUR REGISTRY</div>
+    <h2 class="registry__heading reveal">Bless Our Next Adventure</h2>
+    <p class="registry__body reveal">
+      We already have everything we need &mdash; except your presence on our special day.
+      If you would like to bless us with a gift, contributions toward our honeymoon or
+      travel would mean the world.
+    </p>
+    <div class="registry__bar reveal"></div>
+    <div class="registry__embed reveal">
+      <a class="zola-registry-embed" href="https://www.zola.com/registry/almostsuriel/" data-registry-key="almostsuriel">Our Zola Wedding Registry</a>
+      <script>!function(e,t,n){var s,a=e.getElementsByTagName(t)[0];e.getElementById(n)||(s=e.createElement(t),s.id=n,s.async=!0,s.src="https://widget.zola.com/js/widget.js",a.parentNode.insertBefore(s,a))}(document,"script","zola-wjs");</script>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CTA ====== -->
+<section class="cta" id="rsvp">
+  <div class="cta__heading reveal-scale">SAY YES</div>
+  <div class="cta__sub reveal">to the celebration of a lifetime</div>
+  <a href="#" class="btn--red reveal">RSVP NOW</a>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer class="footer">
+  <div class="footer__names">Arielle & Kevin</div>
+  <div class="footer__date">OCTOBER 4, 2026</div>
+  <ul class="footer__links">
+    <li><a href="#home" class="footer__link">Home</a></li>
+    <li><a href="#story" class="footer__link">Our Story</a></li>
+    <li><a href="#details" class="footer__link">Details</a></li>
+    <li><a href="#rsvp" class="footer__link">RSVP</a></li>
+  </ul>
+  <div class="footer__label">Option C: Bold, Celebratory & Feminine</div>
+</footer>
+
+<script>
+(function () {
+  // JS-enabled flag
+  document.documentElement.classList.add('js-enabled');
+
+  // ====== HAMBURGER ======
+  var hamburger = document.querySelector('.hamburger');
+  var overlay = document.getElementById('mobile-nav');
+  var mobileLinks = overlay.querySelectorAll('.mobile-overlay__link');
+
+  hamburger.addEventListener('click', function () {
+    var expanded = hamburger.getAttribute('aria-expanded') === 'true';
+    hamburger.setAttribute('aria-expanded', String(!expanded));
+    overlay.classList.toggle('active');
+    document.body.style.overflow = expanded ? '' : 'hidden';
+  });
+
+  mobileLinks.forEach(function (link) {
+    link.addEventListener('click', function () {
+      hamburger.setAttribute('aria-expanded', 'false');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // ====== COUNTDOWN ======
+  var targetDate = new Date('2026-10-04T16:00:00-04:00').getTime();
+  var daysEl = document.getElementById('cd-days');
+  var hoursEl = document.getElementById('cd-hours');
+  var minsEl = document.getElementById('cd-mins');
+  var secsEl = document.getElementById('cd-secs');
+  var prevSecs = -1;
+
+  function pad(n) {
+    return n < 10 ? '0' + n : String(n);
+  }
+
+  function updateCountdown() {
+    var now = Date.now();
+    var diff = targetDate - now;
+
+    if (diff <= 0) {
+      daysEl.textContent = '0';
+      hoursEl.textContent = '00';
+      minsEl.textContent = '00';
+      secsEl.textContent = '00';
+      return;
+    }
+
+    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    var secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+    daysEl.textContent = String(days);
+    hoursEl.textContent = pad(hours);
+    minsEl.textContent = pad(mins);
+    secsEl.textContent = pad(secs);
+
+    if (secs !== prevSecs) {
+      secsEl.classList.add('tick');
+      setTimeout(function () {
+        secsEl.classList.remove('tick');
+      }, 200);
+      prevSecs = secs;
+    }
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // ====== SCROLL REVEAL (IntersectionObserver) ======
+  var revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealEls.forEach(function (el) {
+      observer.observe(el);
+    });
+  } else {
+    revealEls.forEach(function (el) {
+      el.classList.add('revealed');
+    });
+  }
+})();
+</script>
+</body>
+</html>

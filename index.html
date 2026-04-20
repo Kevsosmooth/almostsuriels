@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arielle &amp; Kevin | October 4, 2026</title>
+
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- DEBUG: Things To Do section only -->
+  <style>
+    .debug-section-label {
+      display: block;
+      background: rgba(139, 26, 26, 0.9);
+      color: #FFF8F0;
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================================
+       NAVBAR
+       ====================================================================== -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar__inner container">
+      <a class="navbar__brand" href="#home">Arielle <span class="navbar__amp">&amp;</span> Kevin</a>
+
+      <button class="navbar__hamburger hamburger"
+              type="button"
+              aria-label="Open navigation menu"
+              aria-expanded="false"
+              aria-controls="mobile-nav">
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+      </button>
+
+      <ul class="navbar__links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#details">Schedule</a></li>
+        <li><a href="#details">Hotels</a></li>
+        <li><a href="#registry">Registry</a></li>
+        <li><a href="#party">Wedding Party</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#things-to-do">Things To Do</a></li>
+        <li><a href="#faq">FAQs</a></li>
+      </ul>
+    </div>
+
+    <div class="mobile-overlay mobile-nav" id="mobile-nav" role="dialog" aria-label="Navigation">
+      <a class="mobile-overlay__link" href="#home">Home</a>
+      <a class="mobile-overlay__link" href="#details">Schedule</a>
+      <a class="mobile-overlay__link" href="#details">Hotels</a>
+      <a class="mobile-overlay__link" href="#registry">Registry</a>
+      <a class="mobile-overlay__link" href="#party">Wedding Party</a>
+      <a class="mobile-overlay__link" href="#gallery">Gallery</a>
+      <a class="mobile-overlay__link" href="#things-to-do">Things To Do</a>
+      <a class="mobile-overlay__link" href="#faq">FAQs</a>
+    </div>
+  </nav>
+
+  <!-- ======================================================================
+       HERO
+       ====================================================================== -->
+  <section class="hero" id="home">
+    <div class="hero__overlay"></div>
+
+    <div class="hero__card">
+      <p class="hero__script">We're getting married!</p>
+
+      <div class="hero__flourish" aria-hidden="true">
+        <svg viewBox="0 0 120 20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M0 10 Q30 0 60 10 Q90 20 120 10"/>
+          <circle cx="56" cy="10" r="2" fill="currentColor" stroke="none"/>
+          <circle cx="64" cy="10" r="2" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+
+      <h1 class="hero__names">ARIELLE &amp; KEVIN</h1>
+
+      <div class="hero__date-container">
+        <span class="hero__date-segment">OCT</span>
+        <span class="hero__date-sep" aria-hidden="true"></span>
+        <span class="hero__date-segment">04</span>
+        <span class="hero__date-sep" aria-hidden="true"></span>
+        <span class="hero__date-segment">2026</span>
+      </div>
+
+      <p class="hero__location">Secret Gardens Miami</p>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       COUNTDOWN
+       ====================================================================== -->
+  <section class="countdown-section">
+    <div class="countdown-section__inner container">
+      <h2 class="countdown-section__heading reveal">Our Wedding Ceremony Begins in</h2>
+
+      <div class="flourish" aria-hidden="true">
+        <svg viewBox="0 0 120 20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M0 10 Q30 0 60 10 Q90 20 120 10"/>
+          <circle cx="56" cy="10" r="2" fill="currentColor" stroke="none"/>
+          <circle cx="64" cy="10" r="2" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+
+      <div class="countdown" aria-live="polite" aria-label="Wedding countdown timer">
+        <div class="countdown__block">
+          <span class="countdown__number" id="cd-days">0</span>
+          <span class="countdown__label">Days</span>
+        </div>
+        <span class="countdown__sep" aria-hidden="true"></span>
+        <div class="countdown__block">
+          <span class="countdown__number" id="cd-hours">00</span>
+          <span class="countdown__label">Hours</span>
+        </div>
+        <span class="countdown__sep" aria-hidden="true"></span>
+        <div class="countdown__block">
+          <span class="countdown__number" id="cd-minutes">00</span>
+          <span class="countdown__label">Minutes</span>
+        </div>
+        <span class="countdown__sep" aria-hidden="true"></span>
+        <div class="countdown__block">
+          <span class="countdown__number" id="cd-seconds">00</span>
+          <span class="countdown__label">Seconds</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       OUR STORY
+       ====================================================================== -->
+  <section class="story" id="story">
+    <div class="story__inner container">
+      <div class="story__content reveal">
+        <h2 class="story__heading">Our Story</h2>
+
+        <div class="flourish" aria-hidden="true">
+          <svg viewBox="0 0 120 20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M0 10 Q30 0 60 10 Q90 20 120 10"/>
+            <circle cx="56" cy="10" r="2" fill="currentColor" stroke="none"/>
+            <circle cx="64" cy="10" r="2" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+
+        <p class="story__body">
+          Some people search their whole lives for the kind of love that feels like home. For Kevin and Arielle, it was never about searching -- it was about finding each other at just the right moment and knowing, deep down, that this was it. From their very first conversation, there was a spark that neither could deny -- a warmth, a laughter, a feeling of belonging that only grew stronger with time.
+        </p>
+        <p class="story__body">
+          Through adventures big and small, late-night conversations, and all the beautiful, ordinary moments in between, they built something extraordinary. Now, surrounded by the people they love most, Kevin and Arielle are ready to say "I do" and begin the next chapter of their story -- together, forever.
+        </p>
+      </div>
+
+      <div class="story__photo-wrapper reveal">
+        <div class="story__photo-frame story__photo-frame--top">
+          <img src="photos/story/story-1.jpeg"
+               alt="Kevin and Arielle together, smiling and embracing"
+               loading="lazy"
+               width="600"
+               height="800">
+        </div>
+        <div class="story__photo-frame story__photo-frame--bottom">
+          <img src="photos/story/story-2.jpeg"
+               alt="Kevin and Arielle sharing a moment together"
+               loading="lazy"
+               width="600"
+               height="800">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       WEDDING DETAILS
+       ====================================================================== -->
+  <section class="details" id="details">
+    <div class="details__inner container">
+      <h2 class="details__heading reveal">Wedding Details.</h2>
+
+      <div class="flourish reveal" aria-hidden="true">
+        <svg viewBox="0 0 120 20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M0 10 Q30 0 60 10 Q90 20 120 10"/>
+          <circle cx="56" cy="10" r="2" fill="currentColor" stroke="none"/>
+          <circle cx="64" cy="10" r="2" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+
+      <div class="details__cards">
+        <!-- Ceremony & Reception -->
+        <div class="details__card details__card--reverse reveal" data-reveal-group="detail-cards">
+          <div class="details__card-content">
+            <p class="details__card-date">4:00 PM | October 4, 2026</p>
+            <h3>Ceremony &amp; Reception</h3>
+            <p>
+              Our ceremony will be at the start of The VIT Estate Space.
+              There is a tiny outdoor, al fresco-style breathtaking
+              ceremony. Dinner in the main gallery space where there will
+              be food, flowers, drinks, and free-flowing joy. Do not
+              forget to bring your dancing shoes!
+            </p>
+            <address>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              Secret Gardens Miami, 19451 SW 248th St, Homestead, FL 33031
+            </address>
+            <div class="details__card-actions">
+              <a class="btn btn--outline"
+                 href="https://maps.google.com/?q=Secret+Gardens+Miami+19451+SW+248th+St+Homestead+FL+33031"
+                 target="_blank"
+                 rel="noopener noreferrer">
+                Map
+              </a>
+              <a class="btn btn--outline" href="#" aria-label="Add ceremony to your calendar">
+                Add to Calendar
+              </a>
+            </div>
+          </div>
+          <div class="details__venue-carousel">
+            <div class="details__venue-slides">
+              <div class="details__venue-slide active" data-vslide="0">
+                <img src="photos/venue/venue-1st.webp"
+                     alt="Secret Gardens Miami ceremony venue"
+                     loading="lazy" width="600" height="400">
+              </div>
+              <div class="details__venue-slide" data-vslide="1">
+                <img src="photos/venue/venue-2nd.webp"
+                     alt="Secret Gardens Miami reception hall"
+                     loading="lazy" width="600" height="400">
+              </div>
+              <div class="details__venue-slide" data-vslide="2">
+                <img src="photos/venue/venue-3rd.webp"
+                     alt="Secret Gardens Miami outdoor area"
+                     loading="lazy" width="600" height="400">
+              </div>
+              <div class="details__venue-slide" data-vslide="3">
+                <img src="photos/venue/venue-4th.webp"
+                     alt="Secret Gardens Miami garden setting"
+                     loading="lazy" width="600" height="400">
+              </div>
+            </div>
+            <button class="details__arrow details__arrow--left" aria-label="Previous venue photo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="details__arrow details__arrow--right" aria-label="Next venue photo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hotel Accommodations (paginated card with dots) -->
+        <div class="details__hotel-carousel reveal" data-reveal-group="detail-cards">
+          <div class="details__hotel-slides">
+            <div class="details__hotel-slide active" data-slide="0">
+              <div class="details__card-photo">
+                <img src="photos/hotel/Miami Marriott Dadeland.avif"
+                     alt="Miami Marriott Dadeland hotel exterior"
+                     loading="lazy" width="600" height="400">
+              </div>
+              <div class="details__card-content">
+                <h3>Miami Marriott Dadeland</h3>
+                <p>Details coming soon. We are finalizing our room block at this location and will update with rates and booking information shortly.</p>
+                <address>
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  9100 S Dadeland Blvd, Miami, FL 33156
+                </address>
+                <div class="details__card-actions">
+                  <a class="btn btn--outline" href="https://maps.google.com/?q=Miami+Marriott+Dadeland+9100+S+Dadeland+Blvd+Miami+FL+33156" target="_blank" rel="noopener noreferrer" aria-label="View Miami Marriott Dadeland on map">Map</a>
+                  <a class="btn btn--outline" href="#" aria-label="Book room at Miami Marriott Dadeland">Book Room</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="details__hotel-slide" data-slide="1">
+              <div class="details__card-photo">
+                <img src="photos/hotel/Hilton Miami Dadeland.webp"
+                     alt="Hilton Miami Dadeland hotel exterior"
+                     loading="lazy" width="600" height="400">
+              </div>
+              <div class="details__card-content">
+                <h3>Hilton Miami Dadeland</h3>
+                <p>Details coming soon. We are finalizing our room block at this location and will update with rates and booking information shortly.</p>
+                <address>
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  7250 N Kendall Dr, Miami, FL 33156
+                </address>
+                <div class="details__card-actions">
+                  <a class="btn btn--outline" href="https://maps.google.com/?q=Hilton+Miami+Dadeland+7250+N+Kendall+Dr+Miami+FL+33156" target="_blank" rel="noopener noreferrer" aria-label="View Hilton Miami Dadeland on map">Map</a>
+                  <a class="btn btn--outline" href="#" aria-label="Book room at Hilton Miami Dadeland">Book Room</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="details__hotel-slide" data-slide="2">
+              <div class="details__card-photo">
+                <img src="photos/hotel/Candlewood Suites Miami Exec Airport - Kendall by IHG.webp"
+                     alt="Candlewood Suites Miami Exec Airport Kendall exterior"
+                     loading="lazy" width="600" height="400">
+              </div>
+              <div class="details__card-content">
+                <h3>Candlewood Suites Miami Exec Airport</h3>
+                <p>Details coming soon. We are finalizing our room block at this location and will update with rates and booking information shortly.</p>
+                <address>
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  13600 SW 139th Ct, Miami, FL 33186
+                </address>
+                <div class="details__card-actions">
+                  <a class="btn btn--outline" href="https://maps.google.com/?q=Candlewood+Suites+Miami+Exec+Airport+Kendall+13600+SW+139th+Ct+Miami+FL+33186" target="_blank" rel="noopener noreferrer" aria-label="View Candlewood Suites on map">Map</a>
+                  <a class="btn btn--outline" href="#" aria-label="Book room at Candlewood Suites">Book Room</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="details__hotel-slide" data-slide="3">
+              <div class="details__card-photo">
+                <img src="photos/hotel/thepalmsinn.com"
+                     alt="The Palms Inn exterior"
+                     loading="lazy" width="600" height="400">
+              </div>
+              <div class="details__card-content">
+                <h3>The Palms Inn</h3>
+                <p>Details coming soon. We are finalizing our room block at this location and will update with rates and booking information shortly.</p>
+                <address>
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  Homestead, FL
+                </address>
+                <div class="details__card-actions">
+                  <a class="btn btn--outline" href="https://maps.google.com/?q=The+Palms+Inn+Homestead+FL" target="_blank" rel="noopener noreferrer" aria-label="View The Palms Inn on map">Map</a>
+                  <a class="btn btn--outline" href="#" aria-label="Book room at The Palms Inn">Book Room</a>
+                </div>
+              </div>
+            </div>
+            <button class="details__arrow details__arrow--left" aria-label="Previous hotel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="details__arrow details__arrow--right" aria-label="Next hotel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       DRESS CODE
+       ====================================================================== -->
+  <section class="dresscode" id="dresscode">
+    <div class="dresscode__inner container">
+      <h2 class="dresscode__heading reveal">Dress Code</h2>
+
+      <div class="flourish reveal" aria-hidden="true">
+        <svg viewBox="0 0 120 20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M0 10 Q30 0 60 10 Q90 20 120 10"/>
+          <circle cx="56" cy="10" r="2" fill="currentColor" stroke="none"/>
+          <circle cx="64" cy="10" r="2" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+
+      <p class="dresscode__intro reveal">
+        Honestly, we couldn't decide with a dress code for a long time, because all our friends are creative gurus, and we did not want to tell you what to wear on our terms. Nevertheless, the wedding will be in a rustic style, so please pay attention to our recommendations below.
+      </p>
+
+      <div class="dresscode__cards">
+        <div class="dresscode__card reveal" data-reveal-group="dresscode-cards">
+          <div class="dresscode__icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="14" r="6"/>
+              <path d="M12 40c0-6.627 5.373-12 12-12s12 5.373 12 12"/>
+            </svg>
+          </div>
+          <h3>Ladies</h3>
+          <p>
+            We ask our lovely ladies to wear cocktail or evening dresses. The color palette for formal or semi-formal attire is recommended. Please try to avoid wearing white, ivory, or cream -- those shades are reserved for the bride. Most importantly, wear something that makes you feel beautiful and lets you dance the night away in comfort.
+          </p>
+        </div>
+
+        <div class="dresscode__card reveal" data-reveal-group="dresscode-cards">
+          <div class="dresscode__icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="14" r="6"/>
+              <path d="M12 40c0-6.627 5.373-12 12-12s12 5.373 12 12"/>
+            </svg>
+          </div>
+          <h3>Gentlemen</h3>
+          <p>
+            Guys, please wear suits, blazers, or dress pants. A tie is optional but always a nice touch. We recommend neutral or dark tones -- navy, charcoal, black, or earth tones are all great options. Feel free to add a pop of color with your pocket square or tie. The key is to look sharp and feel comfortable enough to hit the dance floor.
+          </p>
+        </div>
+      </div>
+
+      <div class="dresscode__photo reveal">
+        <img src="photos/vladislav-iakunichev-psFtCdLC78c-unsplash.jpg"
+             alt="Elegant wedding attire inspiration"
+             loading="lazy"
+             width="1200"
+             height="500">
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       WEDDING PARTY
+       ====================================================================== -->
+  <section class="party" id="party">
+    <div class="party__inner container">
+      <h2 class="party__heading reveal">Our People</h2>
+      <p class="party__intro reveal">Thank you for being a part of our special day. We are so blessed to have each and every one of you stand beside us as we begin this incredible journey together.</p>
+
+      <div class="party__grid">
+        <!-- Bride's Side -->
+        <div class="party__column">
+          <div class="party__member reveal" data-reveal-group="party-bride">
+            <img class="party__photo"
+                 src="https://images.unsplash.com/photo-1650381473833-3e2c74a40fbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="Anyssa, Maid of Honor"
+                 loading="lazy"
+                 width="200"
+                 height="200">
+            <h3 class="party__name">Anyssa</h3>
+            <p class="party__role">Maid of Honor</p>
+          </div>
+
+          <div class="party__member reveal" data-reveal-group="party-bride">
+            <img class="party__photo"
+                 src="https://images.unsplash.com/photo-1768247695726-022586dea3a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="Tiana, Matron of Honor"
+                 loading="lazy"
+                 width="200"
+                 height="200">
+            <h3 class="party__name">Tiana</h3>
+            <p class="party__role">Matron of Honor</p>
+          </div>
+
+          <div class="party__member reveal" data-reveal-group="party-bride">
+            <img class="party__photo"
+                 src="https://images.unsplash.com/photo-1650213235809-37ceda7b8b60?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="Janice, Bridesmaid"
+                 loading="lazy"
+                 width="200"
+                 height="200">
+            <h3 class="party__name">Janice</h3>
+            <p class="party__role">Bridesmaid</p>
+          </div>
+
+          <div class="party__member reveal" data-reveal-group="party-bride">
+            <img class="party__photo"
+                 src="https://images.unsplash.com/photo-1564164841584-391b5c7b590c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="Trinityrose, Bridesmaid"
+                 loading="lazy"
+                 width="200"
+                 height="200">
+            <h3 class="party__name">Trinityrose</h3>
+            <p class="party__role">Bridesmaid</p>
+          </div>
+        </div>
+
+        <!-- Groom's Side -->
+        <div class="party__column">
+          <div class="party__member reveal" data-reveal-group="party-groom">
+            <img class="party__photo"
+                 src="https://images.unsplash.com/photo-1701878133751-8279cb13aabd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="Luis Felipe, Best Man"
+                 loading="lazy"
+                 width="200"
+                 height="200">
+            <h3 class="party__name">Luis Felipe</h3>
+            <p class="party__role">Best Man</p>
+          </div>
+
+          <div class="party__member reveal" data-reveal-group="party-groom">
+            <img class="party__photo"
+                 src="https://images.unsplash.com/photo-1734830268394-6c4a1f165af1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="Frantz, Groomsman"
+                 loading="lazy"
+                 width="200"
+                 height="200">
+            <h3 class="party__name">Frantz</h3>
+            <p class="party__role">Groomsman</p>
+          </div>
+
+          <div class="party__member reveal" data-reveal-group="party-groom">
+            <img class="party__photo"
+                 src="https://images.unsplash.com/photo-1608549950158-6d1dc2022ccd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="Nyrell, Groomsman"
+                 loading="lazy"
+                 width="200"
+                 height="200">
+            <h3 class="party__name">Nyrell</h3>
+            <p class="party__role">Groomsman</p>
+          </div>
+
+          <div class="party__member reveal" data-reveal-group="party-groom">
+            <img class="party__photo"
+                 src="https://images.unsplash.com/photo-1741455620227-3b1c51e01419?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="Jorge JJ, Groomsman"
+                 loading="lazy"
+                 width="200"
+                 height="200">
+            <h3 class="party__name">Jorge "JJ"</h3>
+            <p class="party__role">Groomsman</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="party__bottom-row">
+        <div class="party__member reveal" data-reveal-group="party-kids">
+          <img class="party__photo"
+               src="photos/party/noah-suriel.jpeg"
+               alt="Noah Nugget, Ring Bearer"
+               loading="lazy"
+               width="200"
+               height="200">
+          <h3 class="party__name">Noah Nugget</h3>
+          <p class="party__role">Ring Bearer</p>
+        </div>
+
+        <div class="party__member reveal" data-reveal-group="party-kids">
+          <img class="party__photo"
+               src="https://images.unsplash.com/photo-1673602557002-ba863312909b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+               alt="Ariyah, Flower Girl"
+               loading="lazy"
+               width="200"
+               height="200">
+          <h3 class="party__name">Ariyah</h3>
+          <p class="party__role">Flower Girl</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       GALLERY
+       ====================================================================== -->
+  <section class="gallery" id="gallery">
+    <div class="gallery__inner container">
+      <h2 class="gallery__heading reveal">#almostsuriel</h2>
+
+      <div class="flourish reveal" aria-hidden="true">
+        <svg viewBox="0 0 120 20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M0 10 Q30 0 60 10 Q90 20 120 10"/>
+          <circle cx="56" cy="10" r="2" fill="currentColor" stroke="none"/>
+          <circle cx="64" cy="10" r="2" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+
+      <p class="gallery__sub reveal">On our Instagram, we share inspiring photos and stories from our wedding. Click on the hashtags to see more.</p>
+    </div>
+
+    <div class="gallery__carousel">
+      <button class="gallery__arrow gallery__arrow--left" type="button" aria-label="Previous photos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+
+      <div class="gallery__track">
+        <div class="gallery__item">
+          <img src="photos/gallery/1.jpg" alt="Arielle and Kevin" loading="lazy">
+        </div>
+        <div class="gallery__item">
+          <img src="photos/gallery/2.jpg" alt="Arielle and Kevin" loading="lazy">
+        </div>
+        <div class="gallery__item">
+          <img src="photos/gallery/3.jpg" alt="Arielle and Kevin" loading="lazy">
+        </div>
+        <div class="gallery__item">
+          <img src="photos/gallery/4.jpg" alt="Arielle and Kevin" loading="lazy">
+        </div>
+        <div class="gallery__item">
+          <img src="photos/gallery/5.jpg" alt="Arielle and Kevin" loading="lazy">
+        </div>
+        <div class="gallery__item">
+          <img src="photos/gallery/6.jpg" alt="Arielle and Kevin" loading="lazy">
+        </div>
+        <div class="gallery__item">
+          <img src="photos/gallery/7.jpg" alt="Arielle and Kevin" loading="lazy">
+        </div>
+        <div class="gallery__item">
+          <img src="photos/gallery/8.jpg" alt="Arielle and Kevin" loading="lazy">
+        </div>
+      </div>
+
+      <button class="gallery__arrow gallery__arrow--right" type="button" aria-label="Next photos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       THINGS TO DO
+       ====================================================================== -->
+  <section class="things-to-do" id="things-to-do">
+    <div class="things-to-do__inner container">
+      <h2 class="things-to-do__heading reveal">Things To Do</h2>
+
+      <!-- DEBUG --> <span class="debug-section-label">THINGS TO DO -- photos/things-to-do/ folder: zwf-miami.jpg, monkey-jungle.jpg, homestead-bayfront.jpg, magic-city-casino.jpg, everglades.jpg, the-falls.jpg, florida-keys-outlet.jpg</span>
+      <div class="things-to-do__grid">
+        <div class="activity-card reveal" data-reveal-group="activity-cards">
+          <div class="activity-card__photo">
+            <img src="https://images.unsplash.com/photo-1683296675467-04ed3e717c9d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="ZWF Miami wildlife encounter with exotic animals"
+                 loading="lazy"
+                 width="400"
+                 height="300">
+          </div>
+          <div class="activity-card__content">
+            <h3>ZWF Miami</h3>
+            <p class="activity-card__address">16225 SW 172nd Ave, Miami, FL 33187</p>
+            <p class="activity-card__description">If you're looking to get up close and personal with some wild animals, we HIGHLY recommend you check this place out! We held a monkey, lemur and an owl!</p>
+          </div>
+        </div>
+
+        <div class="activity-card reveal" data-reveal-group="activity-cards">
+          <div class="activity-card__photo">
+            <img src="https://images.unsplash.com/photo-1726164958584-7e1225b2019f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="Monkey Jungle park with monkeys in their natural habitat"
+                 loading="lazy"
+                 width="400"
+                 height="300">
+          </div>
+          <div class="activity-card__content">
+            <h3>Monkey Jungle</h3>
+            <p class="activity-card__address">14805 SW 216th St, Miami, FL 33170</p>
+            <p class="activity-card__description">A unique wildlife park where the monkeys roam free and you walk through their habitat. A fun and unforgettable experience for animal lovers.</p>
+          </div>
+        </div>
+
+        <div class="activity-card reveal" data-reveal-group="activity-cards">
+          <div class="activity-card__photo">
+            <img src="https://images.unsplash.com/photo-1697819924957-5a9684e369a6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="Homestead Bayfront Park with waterfront views and palm trees"
+                 loading="lazy"
+                 width="400"
+                 height="300">
+          </div>
+          <div class="activity-card__content">
+            <h3>Homestead Bayfront Park</h3>
+            <p class="activity-card__address">9698 SW 328th St, Homestead, FL 33033</p>
+            <p class="activity-card__description">A beautiful waterfront park perfect for relaxing, kayaking, or enjoying a stunning sunrise. Great spot to unwind before or after the wedding festivities.</p>
+          </div>
+        </div>
+
+        <div class="activity-card reveal" data-reveal-group="activity-cards">
+          <div class="activity-card__photo">
+            <img src="https://images.unsplash.com/photo-1748615093163-eb11f94875fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="Magic City Casino entertainment and gaming venue"
+                 loading="lazy"
+                 width="400"
+                 height="300">
+          </div>
+          <div class="activity-card__content">
+            <h3>Magic City Casino</h3>
+            <p class="activity-card__address">450 NW 37th Ave, Miami, FL 33125</p>
+            <p class="activity-card__description">Feeling lucky? Head over to Magic City Casino for some gaming, live entertainment, and great food. A fun night out while you're in town.</p>
+          </div>
+        </div>
+
+        <div class="activity-card reveal" data-reveal-group="activity-cards">
+          <div class="activity-card__photo">
+            <img src="https://images.unsplash.com/photo-1775159024916-d57a8ec6ab76?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="Everglades National Park wetlands and wildlife"
+                 loading="lazy"
+                 width="400"
+                 height="300">
+          </div>
+          <div class="activity-card__content">
+            <h3>Everglades National Park</h3>
+            <p class="activity-card__address">305 Lincoln Rd, Miami Beach, FL 33139</p>
+            <p class="activity-card__description">Explore the breathtaking Everglades with an airboat ride or nature walk. See alligators, birds, and the vast beauty of Florida's iconic wetlands.</p>
+          </div>
+        </div>
+
+        <div class="activity-card reveal" data-reveal-group="activity-cards">
+          <div class="activity-card__photo">
+            <img src="https://images.unsplash.com/photo-1589404657442-11c90fca178b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="The Falls shopping center with open-air walkways and fountains"
+                 loading="lazy"
+                 width="400"
+                 height="300">
+          </div>
+          <div class="activity-card__content">
+            <h3>The Falls</h3>
+            <p class="activity-card__address">8888 SW 136th St, Miami, FL 33176</p>
+            <p class="activity-card__description">An open-air shopping mall with beautiful landscaping, waterfalls, and a great selection of stores and restaurants. Perfect for a relaxing afternoon outing.</p>
+          </div>
+        </div>
+
+        <div class="activity-card reveal" data-reveal-group="activity-cards">
+          <div class="activity-card__photo">
+            <img src="https://images.unsplash.com/photo-1757025663044-0c5df136f030?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                 alt="Florida Keys Outlet Marketplace storefront"
+                 loading="lazy"
+                 width="400"
+                 height="300">
+          </div>
+          <div class="activity-card__content">
+            <h3>Florida Keys Outlet Marketplace</h3>
+            <p class="activity-card__address">250 E Palm Dr, Florida City, FL 33034</p>
+            <p class="activity-card__description">Grab some deals at this outlet mall on your way to or from the Keys. Great brands at discount prices -- a perfect pit stop for bargain hunters.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       GIFT REGISTRY
+       ====================================================================== -->
+  <section class="registry" id="registry">
+    <div class="registry__inner container">
+      <h2 class="registry__heading reveal">Gifts Registry</h2>
+
+      <div class="flourish reveal" aria-hidden="true">
+        <svg viewBox="0 0 120 20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M0 10 Q30 0 60 10 Q90 20 120 10"/>
+          <circle cx="56" cy="10" r="2" fill="currentColor" stroke="none"/>
+          <circle cx="64" cy="10" r="2" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+
+      <p class="registry__body reveal">
+        The best gift we could ask of you is your presence at our wedding. We hope that you come and share this day with us. Above all, we're not requesting any specific things -- just lots, and lots of joyful celebrating love!
+      </p>
+      <p class="registry__body reveal">
+        But if you want to give us a surprise, who are we to stop you? Your happiness is happiness to us... A digital contact or a physical contact, you're free to send.
+      </p>
+
+      <div class="registry__cards reveal" data-reveal-group="registry-cards">
+        <a class="registry__card" href="https://www.zola.com/registry/almostsuriel/" target="_blank" rel="noopener noreferrer">
+          <div class="registry__card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <h3 class="registry__card-title">Honeymoon Fund</h3>
+          <p class="registry__card-desc">Help us create unforgettable memories on our honeymoon adventure together.</p>
+        </a>
+
+        <a class="registry__card" href="https://www.zola.com/registry/almostsuriel/" target="_blank" rel="noopener noreferrer">
+          <div class="registry__card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <h3 class="registry__card-title">Home Essentials</h3>
+          <p class="registry__card-desc">Contribute to building our first home together with items we will cherish.</p>
+        </a>
+
+        <a class="registry__card" href="https://www.zola.com/registry/almostsuriel/" target="_blank" rel="noopener noreferrer">
+          <div class="registry__card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+            </svg>
+          </div>
+          <h3 class="registry__card-title">Experience Fund</h3>
+          <p class="registry__card-desc">Gift us an experience -- from cooking classes to weekend getaways we will love.</p>
+        </a>
+      </div>
+
+      <a class="btn btn--outline registry__btn reveal" href="https://www.zola.com/registry/almostsuriel/" target="_blank" rel="noopener noreferrer">
+        View Full Registry on Zola
+      </a>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       RSVP
+       ====================================================================== -->
+  <section class="rsvp" id="rsvp">
+    <div class="rsvp__bg" role="img" aria-label="Kevin and Arielle together, smiling"></div>
+
+    <div class="rsvp__card reveal">
+      <h2 class="rsvp__heading">RSVP</h2>
+
+      <div class="flourish" aria-hidden="true">
+        <svg viewBox="0 0 120 20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M0 10 Q30 0 60 10 Q90 20 120 10"/>
+          <circle cx="56" cy="10" r="2" fill="currentColor" stroke="none"/>
+          <circle cx="64" cy="10" r="2" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+
+      <p class="rsvp__body">We hope you can join us! Please reserve your spot as soon as possible.</p>
+
+      <form class="rsvp__form" id="rsvp-form" novalidate>
+        <div class="rsvp__field">
+          <label class="rsvp__label" for="rsvp-first-name">First Name <span class="rsvp__required" aria-hidden="true">*</span></label>
+          <input class="rsvp__input"
+                 type="text"
+                 id="rsvp-first-name"
+                 name="firstName"
+                 required
+                 autocomplete="given-name"
+                 aria-describedby="rsvp-first-name-error">
+          <span class="rsvp__error" id="rsvp-first-name-error" aria-live="polite"></span>
+        </div>
+
+        <div class="rsvp__field">
+          <label class="rsvp__label" for="rsvp-last-name">Last Name <span class="rsvp__required" aria-hidden="true">*</span></label>
+          <input class="rsvp__input"
+                 type="text"
+                 id="rsvp-last-name"
+                 name="lastName"
+                 required
+                 autocomplete="family-name"
+                 aria-describedby="rsvp-last-name-error">
+          <span class="rsvp__error" id="rsvp-last-name-error" aria-live="polite"></span>
+        </div>
+
+        <div class="rsvp__field">
+          <label class="rsvp__label" for="rsvp-phone">Phone <span class="rsvp__required" aria-hidden="true">*</span></label>
+          <input class="rsvp__input"
+                 type="tel"
+                 id="rsvp-phone"
+                 name="phone"
+                 required
+                 autocomplete="tel"
+                 placeholder="(555) 123-4567"
+                 aria-describedby="rsvp-phone-error">
+          <span class="rsvp__error" id="rsvp-phone-error" aria-live="polite"></span>
+        </div>
+
+        <div class="rsvp__field">
+          <label class="rsvp__label" for="rsvp-email">Email <span class="rsvp__optional">(optional)</span></label>
+          <input class="rsvp__input"
+                 type="email"
+                 id="rsvp-email"
+                 name="email"
+                 autocomplete="email"
+                 aria-describedby="rsvp-email-error">
+          <span class="rsvp__error" id="rsvp-email-error" aria-live="polite"></span>
+        </div>
+
+        <div class="rsvp__field rsvp__field--checkbox">
+          <label class="rsvp__checkbox-label">
+            <input class="rsvp__checkbox"
+                   type="checkbox"
+                   id="rsvp-plus-one"
+                   name="plusOne">
+            <span class="rsvp__checkbox-custom" aria-hidden="true"></span>
+            I will be bringing a plus one
+          </label>
+        </div>
+
+        <div class="rsvp__status" id="rsvp-status" aria-live="polite"></div>
+
+        <button class="btn btn--primary rsvp__submit" type="submit">Submit RSVP</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       FAQ
+       ====================================================================== -->
+  <section class="faq" id="faq">
+    <div class="faq__inner container">
+      <h2 class="faq__heading reveal">FAQs</h2>
+
+      <div class="faq__list">
+        <div class="faq__item reveal" data-reveal-group="faq-items">
+          <button class="faq__question" type="button" aria-expanded="false">
+            <span>Can I bring a plus one?</span>
+            <svg class="faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="faq__answer" role="region">
+            <p>Please refer to your invitation for details on plus ones. If your invitation includes a guest, their name will be listed. If you have any questions, feel free to reach out to us directly.</p>
+          </div>
+        </div>
+
+        <div class="faq__item reveal" data-reveal-group="faq-items">
+          <button class="faq__question" type="button" aria-expanded="false">
+            <span>Is there parking available?</span>
+            <svg class="faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="faq__answer" role="region">
+            <p>Yes, there is complimentary parking at the venue. The parking area is spacious and well-lit, so you won't have any trouble finding a spot.</p>
+          </div>
+        </div>
+
+        <div class="faq__item reveal" data-reveal-group="faq-items">
+          <button class="faq__question" type="button" aria-expanded="false">
+            <span>What time should I arrive?</span>
+            <svg class="faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="faq__answer" role="region">
+            <p>We recommend arriving by 3:30 PM for a 4:00 PM ceremony start. This gives you time to settle in, find your seat, and enjoy the atmosphere before the ceremony begins.</p>
+          </div>
+        </div>
+
+        <div class="faq__item reveal" data-reveal-group="faq-items">
+          <button class="faq__question" type="button" aria-expanded="false">
+            <span>Are children welcome?</span>
+            <svg class="faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="faq__answer" role="region">
+            <p>While we love your little ones, our wedding is an adults-only celebration. We hope you understand and take this as an opportunity to enjoy a fun night out!</p>
+          </div>
+        </div>
+
+        <div class="faq__item reveal" data-reveal-group="faq-items">
+          <button class="faq__question" type="button" aria-expanded="false">
+            <span>What if I have dietary restrictions?</span>
+            <svg class="faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="faq__answer" role="region">
+            <p>Please let us know via the RSVP form and we will accommodate your needs. We want everyone to enjoy the meal, so don't hesitate to share any allergies or preferences.</p>
+          </div>
+        </div>
+
+        <div class="faq__item reveal" data-reveal-group="faq-items">
+          <button class="faq__question" type="button" aria-expanded="false">
+            <span>Can I take photos during the ceremony?</span>
+            <svg class="faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="faq__answer" role="region">
+            <p>We kindly ask that you keep your phones and cameras put away during the ceremony so our photographer can capture the moment without distractions. You are welcome to take as many photos as you'd like during the reception!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       FOOTER
+       ====================================================================== -->
+  <footer class="footer">
+    <div class="footer__inner container">
+      <p class="footer__names">Arielle &amp; Kevin</p>
+      <p class="footer__tagline">For all the days along the way</p>
+
+      <nav class="footer__nav" aria-label="Footer navigation">
+        <a href="#home">Home</a>
+        <a href="#details">Schedule</a>
+        <a href="#details">Hotels</a>
+        <a href="#registry">Registry</a>
+        <a href="#party">Wedding Party</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#things-to-do">Things To Do</a>
+        <a href="#faq">FAQs</a>
+      </nav>
+
+      <p class="footer__copyright"><small>Arielle &amp; Kevin &mdash; October 4, 2026</small></p>
+    </div>
+  </footer>
+
+  <!-- CDN Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
