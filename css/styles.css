@@ -128,11 +128,17 @@ select {
   align-items: center;
   padding-left: var(--section-padding-x);
   padding-right: var(--section-padding-x);
-  background-color: rgba(var(--canvas-rgb), 0.92);
-  backdrop-filter: blur(var(--space-4));
-  -webkit-backdrop-filter: blur(var(--space-4));
+  background-color: var(--canvas);
   border-bottom: 1px solid var(--border);
   transition: box-shadow var(--duration-base) var(--ease-out);
+}
+
+@media (min-width: 768px) {
+  .navbar {
+    background-color: rgba(var(--canvas-rgb), 0.92);
+    backdrop-filter: blur(var(--space-4));
+    -webkit-backdrop-filter: blur(var(--space-4));
+  }
 }
 
 .navbar.scrolled {
@@ -313,10 +319,11 @@ select {
   min-height: 100vh;
   min-height: 100svh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   padding: var(--space-6);
   padding-left: var(--space-3);
+  padding-top: calc(var(--nav-height) + var(--space-6));
   overflow: hidden;
 }
 
@@ -414,8 +421,10 @@ select {
 
 @media (min-width: 768px) {
   .hero {
+    align-items: center;
     justify-content: flex-start;
     padding-left: 0;
+    padding-top: var(--space-6);
   }
 
   .hero__overlay {
@@ -425,6 +434,8 @@ select {
   .hero__card {
     padding: var(--space-8) var(--space-16);
     max-width: 520px;
+    margin-left: var(--space-8);
+    margin-right: 0;
   }
 
   .hero__names {
@@ -498,7 +509,7 @@ select {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-6);
+  gap: var(--space-4);
   max-width: var(--max-width);
   margin-left: auto;
   margin-right: auto;
@@ -508,7 +519,7 @@ select {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: var(--space-16);
+  min-width: var(--space-12);
   position: relative;
 }
 
@@ -520,7 +531,7 @@ select {
 
 .countdown__number {
   font-family: var(--font-display);
-  font-size: var(--text-4xl);
+  font-size: var(--text-3xl);
   font-weight: 700;
   color: var(--canvas);
   line-height: 1;
@@ -538,6 +549,10 @@ select {
 @media (min-width: 768px) {
   .countdown {
     gap: var(--space-16);
+  }
+
+  .countdown__block {
+    min-width: var(--space-16);
   }
 
   .countdown__number {
@@ -602,7 +617,7 @@ select {
 .story__photo-wrapper {
   order: 1;
   position: relative;
-  padding: var(--space-8) var(--space-6);
+  padding: var(--space-6) var(--space-4);
 }
 
 .story__photo-wrapper::before {
@@ -644,7 +659,7 @@ select {
 
 .story__photo-frame--bottom {
   z-index: 0;
-  margin-top: calc(var(--space-8) * -1);
+  margin-top: calc(var(--space-6) * -1);
   margin-left: auto;
   transform: rotate(2deg);
 }
@@ -731,7 +746,21 @@ select {
 }
 
 .details__card {
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
+}
+
+.details__card-content {
+  padding-top: var(--space-6);
+}
+
+.details__card > .details__card-content {
+  order: 2;
+}
+
+.details__card > .details__venue-carousel {
+  order: 1;
 }
 
 .details__card-photo {
@@ -743,10 +772,6 @@ select {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-}
-
-.details__card-content {
-  padding-top: var(--space-6);
 }
 
 .details__card-date {
@@ -797,6 +822,16 @@ select {
   flex-wrap: wrap;
 }
 
+@media (max-width: 767px) {
+  .details__card-actions {
+    flex-direction: column;
+  }
+
+  .details__card-actions .btn {
+    width: 100%;
+  }
+}
+
 @media (min-width: 768px) {
   .details__card {
     display: grid;
@@ -807,6 +842,11 @@ select {
 
   .details__card-content {
     padding-top: 0;
+  }
+
+  .details__card > .details__card-content,
+  .details__card > .details__venue-carousel {
+    order: unset;
   }
 
   .details__card--reverse {
@@ -938,6 +978,28 @@ select {
   padding-top: var(--space-6);
 }
 
+@media (max-width: 767px) {
+  .details__hotel-slides {
+    padding-bottom: calc(44px + var(--space-4));
+  }
+
+  .details__hotel-slides .details__arrow {
+    top: auto;
+    bottom: 0;
+    transform: none;
+  }
+
+  .details__hotel-slides .details__arrow--left {
+    left: auto;
+    right: calc(50% + var(--space-2));
+  }
+
+  .details__hotel-slides .details__arrow--right {
+    right: auto;
+    left: calc(50% + var(--space-2));
+  }
+}
+
 @media (min-width: 768px) {
   .details__hotel-slide {
     display: grid;
@@ -1019,7 +1081,7 @@ select {
   background-color: rgba(var(--canvas-rgb), 0.06);
   border: 1px solid rgba(var(--canvas-rgb), 0.15);
   border-radius: var(--radius-lg);
-  padding: var(--space-10);
+  padding: var(--space-6);
   text-align: center;
 }
 
@@ -1080,6 +1142,7 @@ select {
 
   .dresscode__card {
     flex: 1;
+    padding: var(--space-10);
   }
 
   .dresscode__heading {
@@ -1146,8 +1209,8 @@ select {
 }
 
 .party__photo {
-  width: calc(var(--space-32) * 1.5);
-  height: calc(var(--space-32) * 1.5);
+  width: calc(var(--space-32) * 1);
+  height: calc(var(--space-32) * 1);
   border-radius: var(--radius-round);
   object-fit: cover;
   object-position: center 20%;
@@ -1184,8 +1247,15 @@ select {
 .party__bottom-row {
   display: flex;
   justify-content: center;
-  gap: var(--space-20);
+  gap: var(--space-8);
   margin-top: var(--space-12);
+}
+
+@media (min-width: 640px) {
+  .party__photo {
+    width: calc(var(--space-32) * 1.25);
+    height: calc(var(--space-32) * 1.25);
+  }
 }
 
 @media (min-width: 768px) {
@@ -1196,6 +1266,10 @@ select {
   .party__photo {
     width: calc(var(--space-32) * 2);
     height: calc(var(--space-32) * 2);
+  }
+
+  .party__bottom-row {
+    gap: var(--space-20);
   }
 
   .party__heading {
@@ -1276,7 +1350,7 @@ select {
 
 .gallery__item img {
   width: 100%;
-  height: calc(var(--space-32) * 4);
+  height: calc(var(--space-32) * 2.5);
   object-fit: cover;
   display: block;
   border-radius: var(--radius-md);
@@ -1329,6 +1403,10 @@ select {
 @media (min-width: 640px) {
   .gallery__item {
     flex: 0 0 calc(33.333% - var(--space-3));
+  }
+
+  .gallery__item img {
+    height: calc(var(--space-32) * 3.5);
   }
 
   .gallery__arrow--left {
@@ -1555,7 +1633,6 @@ select {
   background-size: cover;
   background-position: center 70%;
   background-repeat: no-repeat;
-  background-attachment: fixed;
   z-index: 0;
 }
 
@@ -1744,6 +1821,16 @@ select {
   min-height: 48px;
 }
 
+@media (max-width: 767px) {
+  .rsvp {
+    justify-content: center;
+  }
+
+  .rsvp__card {
+    max-width: none;
+  }
+}
+
 @media (min-width: 768px) {
   .rsvp {
     min-height: 60vh;
@@ -1758,6 +1845,12 @@ select {
 
   .rsvp__heading {
     font-size: var(--text-2xl);
+  }
+}
+
+@media (min-width: 768px) and (hover: hover) {
+  .rsvp__bg {
+    background-attachment: fixed;
   }
 }
 
@@ -1851,7 +1944,7 @@ select {
 }
 
 .faq__item.active .faq__answer {
-  max-height: calc(var(--space-32) * 4);
+  max-height: calc(var(--space-32) * 8);
   padding-bottom: var(--space-6);
 }
 
