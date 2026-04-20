@@ -3,8 +3,8 @@ export default async function middleware(request) {
     return;
   }
 
-  const password = process.env.SITE_PASSWORD;
-  if (!password) {
+  const passwords = [process.env.SITE_PASSWORD, process.env.GUEST_PASSWORD].filter(Boolean);
+  if (passwords.length === 0) {
     return;
   }
 
@@ -15,12 +15,12 @@ export default async function middleware(request) {
     const params = new URLSearchParams(body);
     const attempt = params.get('password');
 
-    if (attempt === password) {
+    if (passwords.includes(attempt)) {
       return new Response(null, {
         status: 302,
         headers: {
           'Location': '/',
-          'Set-Cookie': `site_access=${btoa(password)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=604800`,
+          'Set-Cookie': `site_access=${btoa(attempt)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=604800`,
         },
       });
     }
@@ -35,7 +35,7 @@ export default async function middleware(request) {
   const match = cookie.match(/site_access=([^;]+)/);
   if (match) {
     try {
-      if (atob(match[1]) === password) {
+      if (passwords.includes(atob(match[1]))) {
         return;
       }
     } catch {}
