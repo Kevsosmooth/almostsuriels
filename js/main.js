@@ -477,14 +477,69 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmBackBtn = document.getElementById('rsvp-confirm-back');
     let confirmedSolo = false;
 
+    const step1 = document.getElementById('rsvp-step-1');
+    const step2 = document.getElementById('rsvp-step-2');
+    const nextBtn = document.getElementById('rsvp-next');
+    const backBtn = document.getElementById('rsvp-back');
+    const stepDots = rsvpForm.querySelectorAll('.rsvp__step-dot');
+    const stepLine = rsvpForm.querySelector('.rsvp__step-line');
+    const plusOneDietSection = document.getElementById('rsvp-plusone-diet');
+
+    function goToStep(step) {
+      step1.classList.toggle('active', step === 1);
+      step2.classList.toggle('active', step === 2);
+      stepDots[0].classList.toggle('active', step === 1);
+      stepDots[0].classList.toggle('completed', step === 2);
+      stepDots[1].classList.toggle('active', step === 2);
+      stepLine.classList.toggle('completed', step === 2);
+
+      if (step === 2) {
+        plusOneDietSection.style.display = plusOneCheckbox.checked ? '' : 'none';
+      }
+    }
+
+    nextBtn.addEventListener('click', function() {
+      var isValid = true;
+      Object.values(fields).forEach(function(field) {
+        if (!validateField(field)) isValid = false;
+      });
+      if (!isValid) return;
+      goToStep(2);
+    });
+
+    backBtn.addEventListener('click', function() {
+      goToStep(1);
+    });
+
+    rsvpForm.style.minHeight = rsvpForm.offsetHeight + 'px';
+
+    function getCheckedValues(name) {
+      return Array.from(rsvpForm.querySelectorAll('input[name="' + name + '"]:checked'))
+        .map(function(cb) { return cb.value; });
+    }
+
     function collectPayload() {
-      return {
+      var dietSelections = getCheckedValues('diet');
+      var dietOther = document.getElementById('rsvp-diet-other').value.trim();
+      if (dietOther) dietSelections.push(dietOther);
+
+      var payload = {
         firstName: fields.firstName.el.value.trim(),
         lastName: fields.lastName.el.value.trim(),
         phone: fields.phone.el.value.trim(),
         email: fields.email.el.value.trim(),
-        plusOne: plusOneCheckbox.checked
+        plusOne: plusOneCheckbox.checked,
+        dietary: dietSelections.join(', ')
       };
+
+      if (plusOneCheckbox.checked) {
+        var plusOneDiet = getCheckedValues('plusOneDiet');
+        var plusOneDietOther = document.getElementById('rsvp-plusone-diet-other').value.trim();
+        if (plusOneDietOther) plusOneDiet.push(plusOneDietOther);
+        payload.plusOneDietary = plusOneDiet.join(', ');
+      }
+
+      return payload;
     }
 
     async function sendToSheets(payload) {
@@ -508,6 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await sendToSheets(payload);
         rsvpForm.reset();
         confirmedSolo = false;
+        goToStep(1);
         Object.values(fields).forEach(function(field) {
           field.el.setAttribute('aria-invalid', 'false');
           field.error.textContent = '';
@@ -526,17 +582,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     rsvpForm.addEventListener('submit', function(e) {
       e.preventDefault();
-
-      var isValid = true;
-      Object.values(fields).forEach(function(field) {
-        if (!validateField(field)) isValid = false;
-      });
-
-      if (!isValid) {
-        statusEl.textContent = 'Please fix the errors above.';
-        statusEl.className = 'rsvp__status rsvp__status--error';
-        return;
-      }
 
       if (!plusOneCheckbox.checked && !confirmedSolo) {
         rsvpForm.style.display = 'none';
@@ -566,6 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
       confirmBackBtn.addEventListener('click', () => {
         confirmPanel.classList.remove('active');
         rsvpForm.style.display = '';
+        goToStep(1);
         plusOneCheckbox.checked = true;
         plusOneCheckbox.focus();
       });
