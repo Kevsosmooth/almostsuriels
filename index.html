@@ -149,12 +149,74 @@
           </svg>
         </div>
 
-        <p class="story__body">
-          Some people search their whole lives for the kind of love that feels like home. For Kevin and Arielle, it was never about searching -- it was about finding each other at just the right moment and knowing, deep down, that this was it. From their very first conversation, there was a spark that neither could deny -- a warmth, a laughter, a feeling of belonging that only grew stronger with time.
-        </p>
-        <p class="story__body">
-          Through adventures big and small, late-night conversations, and all the beautiful, ordinary moments in between, they built something extraordinary. Now, surrounded by the people they love most, Kevin and Arielle are ready to say "I do" and begin the next chapter of their story -- together, forever.
-        </p>
+        <div class="story__carousel" aria-label="Story variations">
+          <div class="story__slides">
+            <div class="story__slide story__slide--active" data-slide="0">
+              <p class="story__label">Version 1</p>
+              <p class="story__body">
+                He was the class clown. She was the quiet one who'd rather be anywhere else. It was only a matter of time.
+              </p>
+              <p class="story__body">
+                Kevin and Arielle first met in high school -- "just friends," a couple class projects, and timing that was never quite right. Years later, right before Arielle left for the Disney College Program, they started talking again. She came back, summer 2016 happened... and that was pretty much it.
+              </p>
+              <p class="story__body">
+                Their first date was at this little European spot in Brighton Beach. Charcuterie board, good conversation, and then Arielle realized something on her plate was definitely not what she ordered. It was horse meat. She didn't know that going in. But honestly, if that didn't scare either of them off, nothing was going to.
+              </p>
+              <p class="story__body">
+                They made it official on December 23, 2016, and have been making each other laugh ever since -- through trips, adventures, and a decade of somehow always balancing each other out. Kevin planned the proposal the way he does everything: a beachside picnic, a walk by the water, and a quiet moment on the rocks. She said yes before he finished asking.
+              </p>
+              <p class="story__body">
+                From high school classmates to forever -- turns out opposites don't just attract. They commit.
+              </p>
+            </div>
+
+            <div class="story__slide" data-slide="1">
+              <p class="story__label">Version 2</p>
+              <p class="story__body">
+                Kevin was the kid who could make any room laugh. Arielle was the one quietly plotting her exit from it. On paper, it shouldn't have worked. In reality, it was kind of inevitable.
+              </p>
+              <p class="story__body">
+                They met in high school, did the "just friends" thing for a while, and then went their separate ways. A few years later, right before Arielle took off for the Disney College Program, they reconnected. She came back that summer and the "just friends" thing was officially done.
+              </p>
+              <p class="story__body">
+                Their first date in Brighton Beach set the tone for everything that followed: a European restaurant, a charcuterie board, and an accidental order of horse meat that neither of them saw coming. Arielle didn't order it. But she survived it -- and Kevin took that as a sign.
+              </p>
+              <p class="story__body">
+                They've been together since December 23, 2016. From high school classmates to world travelers, they traded the classroom for real life and never looked back. When the time came, Kevin set up a beachside picnic, they walked along the water, and he asked her on the rocks. She said yes immediately.
+              </p>
+            </div>
+
+            <div class="story__slide" data-slide="2">
+              <p class="story__label">Version 3</p>
+              <p class="story__body">
+                They say timing is everything, and Kevin and Arielle spent a few years proving it. They met in high school -- he was loud, she was not -- and they were friends before either of them realized it could be more than that.
+              </p>
+              <p class="story__body">
+                It took some time apart, a Disney College Program, and one very specific summer in 2016 for things to finally click. Their first real date at a European restaurant in Brighton Beach included a charcuterie board and an unplanned introduction to horse meat. Arielle still hasn't fully recovered. Kevin still thinks it was the best first date story anyone's ever had.
+              </p>
+              <p class="story__body">
+                They made it official on December 23, 2016, and the last decade has been exactly what you'd expect from two people who balance each other out perfectly -- a lot of laughing, a lot of traveling, and not a single dull moment.
+              </p>
+              <p class="story__body">
+                Kevin proposed with a beachside picnic and a walk along the water. Arielle's answer was yes. His only regret is that he didn't ask sooner.
+              </p>
+            </div>
+          </div>
+
+          <div class="story__nav">
+            <button class="story__arrow story__arrow--prev" aria-label="Previous version" disabled>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="story__dots" role="tablist" aria-label="Story version">
+              <button class="story__dot story__dot--active" role="tab" aria-selected="true" aria-label="Version 1" data-dot="0"></button>
+              <button class="story__dot" role="tab" aria-selected="false" aria-label="Version 2" data-dot="1"></button>
+              <button class="story__dot" role="tab" aria-selected="false" aria-label="Version 3" data-dot="2"></button>
+            </div>
+            <button class="story__arrow story__arrow--next" aria-label="Next version">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
       </div>
 
       <div class="story__photo-wrapper reveal">

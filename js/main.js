@@ -701,4 +701,66 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ---------------------------------------------------------------------------
+  // Story Carousel (version picker)
+  // ---------------------------------------------------------------------------
+
+  const storyCarousel = document.querySelector('.story__carousel');
+  if (storyCarousel) {
+    const track = storyCarousel.querySelector('.story__slides');
+    const slides = storyCarousel.querySelectorAll('.story__slide');
+    const dots = storyCarousel.querySelectorAll('.story__dot');
+    const prevBtn = storyCarousel.querySelector('.story__arrow--prev');
+    const nextBtn = storyCarousel.querySelector('.story__arrow--next');
+    let current = 0;
+    const total = slides.length;
+
+    function goTo(index) {
+      if (index < 0 || index >= total) return;
+      current = index;
+      track.style.transform = `translateX(-${current * 100}%)`;
+
+      slides.forEach((s, i) => {
+        s.classList.toggle('story__slide--active', i === current);
+      });
+
+      dots.forEach((d, i) => {
+        d.classList.toggle('story__dot--active', i === current);
+        d.setAttribute('aria-selected', i === current ? 'true' : 'false');
+      });
+
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === total - 1;
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        goTo(parseInt(dot.dataset.dot, 10));
+      });
+    });
+
+    let touchStartX = 0;
+    let touchDelta = 0;
+    const SWIPE_THRESHOLD = 50;
+
+    storyCarousel.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchDelta = 0;
+    }, { passive: true });
+
+    storyCarousel.addEventListener('touchmove', (e) => {
+      touchDelta = e.touches[0].clientX - touchStartX;
+    }, { passive: true });
+
+    storyCarousel.addEventListener('touchend', () => {
+      if (Math.abs(touchDelta) > SWIPE_THRESHOLD) {
+        if (touchDelta < 0) goTo(current + 1);
+        else goTo(current - 1);
+      }
+    });
+  }
+
 });

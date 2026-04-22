@@ -644,6 +644,109 @@ select {
   margin-top: var(--space-4);
 }
 
+/* Story carousel (version picker) */
+.story__carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.story__slides {
+  display: flex;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.story__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  opacity: 0.3;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+.story__slide--active {
+  opacity: 1;
+}
+
+.story__label {
+  font-family: var(--font-script);
+  font-style: italic;
+  font-size: var(--text-sm);
+  color: rgba(var(--canvas-rgb), 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-4);
+}
+
+.story__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.story__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-round);
+  border: 1px solid rgba(var(--canvas-rgb), 0.25);
+  background: transparent;
+  color: rgba(var(--canvas-rgb), 0.7);
+  cursor: pointer;
+  transition: border-color var(--duration-base) var(--ease-out),
+              color var(--duration-base) var(--ease-out),
+              opacity var(--duration-base) var(--ease-out);
+}
+
+.story__arrow:hover {
+  border-color: rgba(var(--canvas-rgb), 0.5);
+  color: var(--canvas);
+}
+
+.story__arrow:focus-visible {
+  outline: 2px solid var(--canvas);
+  outline-offset: 2px;
+}
+
+.story__arrow:disabled {
+  opacity: 0.2;
+  cursor: default;
+  pointer-events: none;
+}
+
+.story__dots {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.story__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-round);
+  border: 1px solid rgba(var(--canvas-rgb), 0.4);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color var(--duration-base) var(--ease-out),
+              border-color var(--duration-base) var(--ease-out);
+}
+
+.story__dot:hover {
+  border-color: rgba(var(--canvas-rgb), 0.7);
+}
+
+.story__dot:focus-visible {
+  outline: 2px solid var(--canvas);
+  outline-offset: 2px;
+}
+
+.story__dot--active {
+  background: var(--canvas);
+  border-color: var(--canvas);
+}
+
 .story__photo-wrapper {
   order: 1;
   position: relative;
