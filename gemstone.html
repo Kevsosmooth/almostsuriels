@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemstone Color Palette | Wedding Planning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #1a1a1a;
+      color: #f5f0ea;
+      min-height: 100vh;
+      padding: 3rem 1.5rem 6rem;
+    }
+
+    .header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 3rem;
+    }
+
+    .header h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 3rem;
+      color: #fff;
+      margin-bottom: 0.75rem;
+    }
+
+    .header p {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.6;
+    }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      max-width: 800px;
+      margin: 0 auto 3rem;
+    }
+
+    .filter-btn {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.5rem 1.25rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: transparent;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .filter-btn:hover {
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #fff;
+    }
+
+    .filter-btn:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
+    .filter-btn--active {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #fff;
+    }
+
+    .palette-group {
+      max-width: 1100px;
+      margin: 0 auto 3rem;
+    }
+
+    .palette-group__title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .swatch {
+      cursor: pointer;
+      border: none;
+      background: none;
+      text-align: left;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .swatch:hover {
+      transform: translateY(-4px);
+    }
+
+    .swatch:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 4px;
+      border-radius: 12px;
+    }
+
+    .swatch__color {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 12px;
+      margin-bottom: 0.75rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .swatch__color::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+    }
+
+    .swatch__name {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.85);
+      display: block;
+      margin-bottom: 0.125rem;
+    }
+
+    .swatch__hex {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.35);
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .swatch--selected .swatch__color::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 2px solid #fff;
+      border-radius: 8px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .picked-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(26, 26, 26, 0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 100;
+    }
+
+    .picked-bar--visible {
+      transform: translateY(0);
+    }
+
+    .picked-bar__label {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.5);
+      white-space: nowrap;
+    }
+
+    .picked-bar__colors {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .picked-bar__chip {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem 0.25rem 0.25rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .picked-bar__chip:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .picked-bar__chip:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
+    .picked-bar__chip-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .picked-bar__chip-name {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .picked-bar__chip-x {
+      font-size: 0.625rem;
+      color: rgba(255, 255, 255, 0.3);
+      margin-left: 0.25rem;
+    }
+
+    .picked-bar__copy {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.5rem 1.25rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .picked-bar__copy:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .picked-bar__copy:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
+    .toast {
+      position: fixed;
+      top: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(-120%);
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      color: #fff;
+      font-size: 0.8125rem;
+      padding: 0.625rem 1.25rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      pointer-events: none;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 200;
+    }
+
+    .toast--visible {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .combo-preview {
+      max-width: 1100px;
+      margin: 0 auto 3rem;
+      display: none;
+    }
+
+    .combo-preview--visible {
+      display: block;
+    }
+
+    .combo-preview__title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .combo-preview__strip {
+      display: flex;
+      height: 120px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .combo-preview__band {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 0.75rem;
+    }
+
+    .combo-preview__band-label {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      padding: 0.25rem 0.625rem;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.35);
+      color: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(4px);
+    }
+
+    @media (min-width: 768px) {
+      body { padding: 4rem 3rem 6rem; }
+      .header h1 { font-size: 4rem; }
+      .palette-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+      .combo-preview__strip { height: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Gemstone Palette</h1>
+    <p>Deep, rich colors for tux and dress planning. Tap any color to select it. Build your combo and see how they look together.</p>
+  </div>
+
+  <div class="filter-bar" role="toolbar" aria-label="Filter by color family">
+    <button class="filter-btn filter-btn--active" data-filter="all">All Stones</button>
+    <button class="filter-btn" data-filter="red">Reds</button>
+    <button class="filter-btn" data-filter="blue">Blues</button>
+    <button class="filter-btn" data-filter="green">Greens</button>
+    <button class="filter-btn" data-filter="purple">Purples</button>
+    <button class="filter-btn" data-filter="warm">Warm Tones</button>
+    <button class="filter-btn" data-filter="neutral">Neutrals</button>
+  </div>
+
+  <div class="combo-preview" id="comboPreview">
+    <h2 class="combo-preview__title">Your Combo</h2>
+    <div class="combo-preview__strip" id="comboStrip"></div>
+  </div>
+
+  <div id="paletteContainer"></div>
+
+  <div class="picked-bar" id="pickedBar">
+    <span class="picked-bar__label">Picked:</span>
+    <div class="picked-bar__colors" id="pickedColors"></div>
+    <button class="picked-bar__copy" id="copyBtn">Copy list</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const GEMSTONES = [
+      { category: 'red', group: 'Reds & Crimsons', stones: [
+        { name: 'Ruby', hex: '#9B111E' },
+        { name: 'Garnet', hex: '#733635' },
+        { name: 'Deep Carnelian', hex: '#A9203E' },
+        { name: 'Spinel', hex: '#B03052' },
+        { name: 'Red Beryl', hex: '#C41E3A' },
+        { name: 'Pigeon Blood', hex: '#850606' },
+        { name: 'Rhodolite', hex: '#913456' },
+        { name: 'Pyrope', hex: '#6B1C23' },
+      ]},
+      { category: 'blue', group: 'Blues & Teals', stones: [
+        { name: 'Sapphire', hex: '#0F52BA' },
+        { name: 'Tanzanite', hex: '#4D4DFF' },
+        { name: 'Lapis Lazuli', hex: '#26619C' },
+        { name: 'London Blue Topaz', hex: '#0C4A6E' },
+        { name: 'Indicolite', hex: '#0B4F6C' },
+        { name: 'Kyanite', hex: '#2F5496' },
+        { name: 'Midnight Sapphire', hex: '#191970' },
+        { name: 'Aquamarine Deep', hex: '#1B6B7A' },
+        { name: 'Apatite', hex: '#1A7F8E' },
+        { name: 'Blue Zircon', hex: '#1A5276' },
+      ]},
+      { category: 'green', group: 'Greens & Forest', stones: [
+        { name: 'Emerald', hex: '#046307' },
+        { name: 'Tsavorite', hex: '#1E6B3A' },
+        { name: 'Chrome Diopside', hex: '#1B5E20' },
+        { name: 'Malachite', hex: '#0B6623' },
+        { name: 'Jade', hex: '#00695C' },
+        { name: 'Green Tourmaline', hex: '#2E7D32' },
+        { name: 'Alexandrite', hex: '#3B6B4E' },
+        { name: 'Peridot Deep', hex: '#4A7C2F' },
+      ]},
+      { category: 'purple', group: 'Purples & Plums', stones: [
+        { name: 'Amethyst', hex: '#6C3082' },
+        { name: 'Royal Amethyst', hex: '#4A0E5C' },
+        { name: 'Sugilite', hex: '#593163' },
+        { name: 'Iolite', hex: '#4B3D72' },
+        { name: 'Purple Sapphire', hex: '#4A2A7A' },
+        { name: 'Charoite', hex: '#6B3FA0' },
+        { name: 'Grape Garnet', hex: '#5C2751' },
+        { name: 'Lavender Spinel', hex: '#7851A9' },
+      ]},
+      { category: 'warm', group: 'Warm Tones & Golds', stones: [
+        { name: 'Imperial Topaz', hex: '#C2782E' },
+        { name: 'Citrine', hex: '#B8860B' },
+        { name: 'Hessonite', hex: '#A0522D' },
+        { name: 'Fire Opal', hex: '#C44D2A' },
+        { name: 'Mandarin Garnet', hex: '#D46A1E' },
+        { name: 'Golden Beryl', hex: '#996515' },
+        { name: 'Amber', hex: '#B5651D' },
+        { name: 'Padparadscha', hex: '#C46F5A' },
+        { name: 'Cognac Diamond', hex: '#8B5E3C' },
+      ]},
+      { category: 'neutral', group: 'Neutrals & Darks', stones: [
+        { name: 'Onyx', hex: '#1C1C1C' },
+        { name: 'Obsidian', hex: '#2C2C2C' },
+        { name: 'Black Opal', hex: '#2D2D3D' },
+        { name: 'Smoky Quartz', hex: '#4A4A48' },
+        { name: 'Hematite', hex: '#3C3C3C' },
+        { name: 'Gunmetal', hex: '#4D4D4D' },
+        { name: 'Champagne Diamond', hex: '#C8B89A' },
+        { name: 'Moonstone', hex: '#C4C4BE' },
+        { name: 'Pearl', hex: '#F0EAE0' },
+      ]},
+    ];
+
+    const selected = new Set();
+    const container = document.getElementById('paletteContainer');
+    const pickedBar = document.getElementById('pickedBar');
+    const pickedColors = document.getElementById('pickedColors');
+    const comboPreview = document.getElementById('comboPreview');
+    const comboStrip = document.getElementById('comboStrip');
+    const copyBtn = document.getElementById('copyBtn');
+    const toast = document.getElementById('toast');
+
+    function renderPalette(filter) {
+      container.innerHTML = '';
+      const groups = filter === 'all'
+        ? GEMSTONES
+        : GEMSTONES.filter(g => g.category === filter);
+
+      groups.forEach(group => {
+        const section = document.createElement('div');
+        section.className = 'palette-group';
+        section.innerHTML = `<h2 class="palette-group__title">${group.group}</h2>`;
+
+        const grid = document.createElement('div');
+        grid.className = 'palette-grid';
+
+        group.stones.forEach(stone => {
+          const btn = document.createElement('button');
+          btn.className = 'swatch' + (selected.has(stone.hex) ? ' swatch--selected' : '');
+          btn.innerHTML = `
+            <div class="swatch__color" style="background-color: ${stone.hex}"></div>
+            <span class="swatch__name">${stone.name}</span>
+            <span class="swatch__hex">${stone.hex}</span>
+          `;
+          btn.addEventListener('click', () => toggleColor(stone));
+          grid.appendChild(btn);
+        });
+
+        section.appendChild(grid);
+        container.appendChild(section);
+      });
+    }
+
+    function toggleColor(stone) {
+      if (selected.has(stone.hex)) {
+        selected.delete(stone.hex);
+      } else {
+        selected.add(stone.hex);
+      }
+      renderPalette(activeFilter());
+      updatePickedBar();
+      updateComboPreview();
+    }
+
+    function activeFilter() {
+      const active = document.querySelector('.filter-btn--active');
+      return active ? active.dataset.filter : 'all';
+    }
+
+    function allStones() {
+      const map = {};
+      GEMSTONES.forEach(g => g.stones.forEach(s => { map[s.hex] = s; }));
+      return map;
+    }
+
+    function updatePickedBar() {
+      const stones = allStones();
+      if (selected.size === 0) {
+        pickedBar.classList.remove('picked-bar--visible');
+        return;
+      }
+      pickedBar.classList.add('picked-bar--visible');
+      pickedColors.innerHTML = '';
+      selected.forEach(hex => {
+        const s = stones[hex];
+        if (!s) return;
+        const chip = document.createElement('button');
+        chip.className = 'picked-bar__chip';
+        chip.innerHTML = `
+          <span class="picked-bar__chip-dot" style="background: ${hex}"></span>
+          <span class="picked-bar__chip-name">${s.name}</span>
+          <span class="picked-bar__chip-x">x</span>
+        `;
+        chip.addEventListener('click', () => toggleColor(s));
+        pickedColors.appendChild(chip);
+      });
+    }
+
+    function updateComboPreview() {
+      if (selected.size < 2) {
+        comboPreview.classList.remove('combo-preview--visible');
+        return;
+      }
+      comboPreview.classList.add('combo-preview--visible');
+      const stones = allStones();
+      comboStrip.innerHTML = '';
+      selected.forEach(hex => {
+        const s = stones[hex];
+        if (!s) return;
+        const band = document.createElement('div');
+        band.className = 'combo-preview__band';
+        band.style.backgroundColor = hex;
+        band.innerHTML = `<span class="combo-preview__band-label">${s.name}</span>`;
+        comboStrip.appendChild(band);
+      });
+    }
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('toast--visible');
+      setTimeout(() => toast.classList.remove('toast--visible'), 2000);
+    }
+
+    copyBtn.addEventListener('click', () => {
+      const stones = allStones();
+      const lines = [];
+      selected.forEach(hex => {
+        const s = stones[hex];
+        if (s) lines.push(`${s.name}: ${hex}`);
+      });
+      navigator.clipboard.writeText(lines.join('\n')).then(() => {
+        showToast('Copied to clipboard');
+      });
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelector('.filter-btn--active').classList.remove('filter-btn--active');
+        btn.classList.add('filter-btn--active');
+        renderPalette(btn.dataset.filter);
+      });
+    });
+
+    renderPalette('all');
+  </script>
+</body>
+</html>
