@@ -26,6 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   gsap.ticker.lagSmoothing(0);
 
+  const rootStyles = getComputedStyle(document.documentElement);
+  const navHeight = parseInt(rootStyles.getPropertyValue('--nav-height'), 10) || 0;
+  const announcementHeight = parseInt(rootStyles.getPropertyValue('--announcement-banner-height'), 10) || 0;
+  const scrollOffset = -(navHeight + announcementHeight + 10);
+
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', (e) => {
       const targetId = anchor.getAttribute('href');
@@ -33,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const target = document.querySelector(targetId);
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(target, { offset: -115 });
+      lenis.scrollTo(target, { offset: scrollOffset });
     });
   });
 
@@ -90,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (target) {
             e.preventDefault();
             setTimeout(() => {
-              lenis.scrollTo(target, { offset: -115 });
+              lenis.scrollTo(target, { offset: scrollOffset });
             }, 350);
           }
         }
@@ -108,6 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const cdHours = document.getElementById('cd-hours');
   const cdMinutes = document.getElementById('cd-minutes');
   const cdSeconds = document.getElementById('cd-seconds');
+  const rsvpDeadlineEl = document.getElementById('rsvp-deadline');
+  const rsvpDeadline = new Date('2026-08-24T23:59:59-04:00');
 
   function pad(n) {
     return String(n).padStart(2, '0');
@@ -135,6 +142,49 @@ document.addEventListener('DOMContentLoaded', () => {
   if (cdDays && cdHours && cdMinutes && cdSeconds) {
     updateCountdown();
     setInterval(updateCountdown, 1000);
+  }
+
+  function pluralize(value, singular) {
+    return `${value} ${singular}${value === 1 ? '' : 's'}`;
+  }
+
+  function updateRsvpDeadlineCountdown() {
+    if (!rsvpDeadlineEl) return;
+
+    const now = new Date();
+    let diff = rsvpDeadline - now;
+
+    if (isNaN(rsvpDeadline.getTime())) {
+      rsvpDeadlineEl.textContent = 'RSVP deadline: August 24, 2026.';
+      rsvpDeadlineEl.setAttribute('data-state', 'closed');
+      return;
+    }
+
+    if (diff <= 0) {
+      diff = 0;
+      rsvpDeadlineEl.textContent = 'RSVP deadline has passed. Please contact us directly if needed.';
+      rsvpDeadlineEl.setAttribute('data-state', 'closed');
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    const timeChunks = [];
+    if (days) timeChunks.push(pluralize(days, 'day'));
+    if (hours || timeChunks.length) timeChunks.push(pluralize(hours, 'hour'));
+    if (minutes || timeChunks.length) timeChunks.push(pluralize(minutes, 'minute'));
+    timeChunks.push(pluralize(seconds, 'second'));
+
+    rsvpDeadlineEl.textContent = `RSVP closes in ${timeChunks.join(', ')} (deadline: August 24, 2026).`;
+    rsvpDeadlineEl.setAttribute('data-state', 'active');
+  }
+
+  if (rsvpDeadlineEl) {
+    updateRsvpDeadlineCountdown();
+    setInterval(updateRsvpDeadlineCountdown, 1000);
   }
 
   // ---------------------------------------------------------------------------
@@ -230,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const heroChildren = heroCard.querySelectorAll(
-        '.hero__script, .hero__names, .hero__date, .hero__location'
+        '.hero__script, .hero__names, .hero__date-container, .hero__location'
       );
 
       if (heroChildren.length) {
@@ -700,67 +750,5 @@ document.addEventListener('DOMContentLoaded', () => {
       d.querySelector('.calendar-dropdown__toggle').setAttribute('aria-expanded', 'false');
     });
   });
-
-  // ---------------------------------------------------------------------------
-  // Story Carousel (version picker)
-  // ---------------------------------------------------------------------------
-
-  const storyCarousel = document.querySelector('.story__carousel');
-  if (storyCarousel) {
-    const track = storyCarousel.querySelector('.story__slides');
-    const slides = storyCarousel.querySelectorAll('.story__slide');
-    const dots = storyCarousel.querySelectorAll('.story__dot');
-    const prevBtn = storyCarousel.querySelector('.story__arrow--prev');
-    const nextBtn = storyCarousel.querySelector('.story__arrow--next');
-    let current = 0;
-    const total = slides.length;
-
-    function goTo(index) {
-      if (index < 0 || index >= total) return;
-      current = index;
-      track.style.transform = `translateX(-${current * 100}%)`;
-
-      slides.forEach((s, i) => {
-        s.classList.toggle('story__slide--active', i === current);
-      });
-
-      dots.forEach((d, i) => {
-        d.classList.toggle('story__dot--active', i === current);
-        d.setAttribute('aria-selected', i === current ? 'true' : 'false');
-      });
-
-      prevBtn.disabled = current === 0;
-      nextBtn.disabled = current === total - 1;
-    }
-
-    prevBtn.addEventListener('click', () => goTo(current - 1));
-    nextBtn.addEventListener('click', () => goTo(current + 1));
-
-    dots.forEach((dot) => {
-      dot.addEventListener('click', () => {
-        goTo(parseInt(dot.dataset.dot, 10));
-      });
-    });
-
-    let touchStartX = 0;
-    let touchDelta = 0;
-    const SWIPE_THRESHOLD = 50;
-
-    storyCarousel.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-      touchDelta = 0;
-    }, { passive: true });
-
-    storyCarousel.addEventListener('touchmove', (e) => {
-      touchDelta = e.touches[0].clientX - touchStartX;
-    }, { passive: true });
-
-    storyCarousel.addEventListener('touchend', () => {
-      if (Math.abs(touchDelta) > SWIPE_THRESHOLD) {
-        if (touchDelta < 0) goTo(current + 1);
-        else goTo(current - 1);
-      }
-    });
-  }
 
 });
