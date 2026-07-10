@@ -312,7 +312,7 @@
                     <dd>Oct 2 &ndash; 5, 2026</dd>
                   </div>
                   <div class="details__room-fact">
-                    <dt>Rooms Held</dt>
+                    <dt>Rooms Left</dt>
                     <dd data-rooms-remaining>9</dd>
                   </div>
                 </dl>
@@ -834,189 +834,234 @@
 
       <p class="rsvp__body">We hope you can join us! Please reserve your spot as soon as possible.</p>
 
-      <form class="rsvp__form" id="rsvp-form" novalidate>
-        <div class="rsvp__steps" aria-label="RSVP progress">
-          <span class="rsvp__step-dot active" data-step="1" aria-label="Step 1: Your info"></span>
-          <span class="rsvp__step-line"></span>
-          <span class="rsvp__step-dot" data-step="2" aria-label="Step 2: Dietary needs"></span>
+      <form class="rsvp__form rsvp__wizard" id="rsvp-form" novalidate>
+        <div class="rsvp__progress" role="progressbar" aria-label="RSVP progress" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1" id="rsvp-progress">
+          <span class="rsvp__progress-fill" id="rsvp-progress-fill"></span>
         </div>
+        <p class="rsvp__progress-label" id="rsvp-progress-label">1 of 7</p>
 
-        <div class="rsvp__step-panel active" id="rsvp-step-1">
-          <div class="rsvp__field">
-            <label class="rsvp__label" for="rsvp-first-name">First Name <span class="rsvp__required" aria-hidden="true">*</span></label>
-            <input class="rsvp__input"
-                   type="text"
-                   id="rsvp-first-name"
-                   name="firstName"
-                   required
-                   autocomplete="given-name"
-                   aria-describedby="rsvp-first-name-error">
-            <span class="rsvp__error" id="rsvp-first-name-error" aria-live="polite"></span>
-          </div>
+        <div class="rsvp__screens" id="rsvp-screens">
 
-          <div class="rsvp__field">
-            <label class="rsvp__label" for="rsvp-last-name">Last Name <span class="rsvp__required" aria-hidden="true">*</span></label>
-            <input class="rsvp__input"
-                   type="text"
-                   id="rsvp-last-name"
-                   name="lastName"
-                   required
-                   autocomplete="family-name"
-                   aria-describedby="rsvp-last-name-error">
-            <span class="rsvp__error" id="rsvp-last-name-error" aria-live="polite"></span>
-          </div>
+          <fieldset class="rsvp__screen active" data-screen="name">
+            <legend class="rsvp__question">What's your name?</legend>
+            <div class="rsvp__field">
+              <label class="rsvp__label" for="rsvp-first-name">First Name <span class="rsvp__required" aria-hidden="true">*</span></label>
+              <input class="rsvp__input"
+                     type="text"
+                     id="rsvp-first-name"
+                     name="firstName"
+                     required
+                     autocomplete="given-name"
+                     aria-describedby="rsvp-first-name-error">
+              <span class="rsvp__error" id="rsvp-first-name-error" aria-live="polite"></span>
+            </div>
+            <div class="rsvp__field">
+              <label class="rsvp__label" for="rsvp-last-name">Last Name <span class="rsvp__required" aria-hidden="true">*</span></label>
+              <input class="rsvp__input"
+                     type="text"
+                     id="rsvp-last-name"
+                     name="lastName"
+                     required
+                     autocomplete="family-name"
+                     aria-describedby="rsvp-last-name-error">
+              <span class="rsvp__error" id="rsvp-last-name-error" aria-live="polite"></span>
+            </div>
+            <button class="btn btn--primary rsvp__next" type="button" data-next>Next</button>
+          </fieldset>
 
-          <div class="rsvp__field">
-            <label class="rsvp__label" for="rsvp-phone">Phone <span class="rsvp__required" aria-hidden="true">*</span></label>
-            <input class="rsvp__input"
-                   type="tel"
-                   id="rsvp-phone"
-                   name="phone"
-                   required
-                   autocomplete="tel"
-                   placeholder="(555) 123-4567"
-                   aria-describedby="rsvp-phone-error">
-            <span class="rsvp__error" id="rsvp-phone-error" aria-live="polite"></span>
-          </div>
+          <fieldset class="rsvp__screen" data-screen="contact">
+            <legend class="rsvp__question">How can we reach you?</legend>
+            <div class="rsvp__field">
+              <label class="rsvp__label" for="rsvp-phone">Phone <span class="rsvp__required" aria-hidden="true">*</span></label>
+              <input class="rsvp__input"
+                     type="tel"
+                     id="rsvp-phone"
+                     name="phone"
+                     required
+                     autocomplete="tel"
+                     placeholder="(555) 123-4567"
+                     aria-describedby="rsvp-phone-error">
+              <span class="rsvp__error" id="rsvp-phone-error" aria-live="polite"></span>
+            </div>
+            <div class="rsvp__field">
+              <label class="rsvp__label" for="rsvp-email">Email <span class="rsvp__optional">(optional)</span></label>
+              <input class="rsvp__input"
+                     type="email"
+                     id="rsvp-email"
+                     name="email"
+                     autocomplete="email"
+                     aria-describedby="rsvp-email-error">
+              <span class="rsvp__error" id="rsvp-email-error" aria-live="polite"></span>
+            </div>
+            <button class="btn btn--primary rsvp__next" type="button" data-next>Next</button>
+          </fieldset>
 
-          <div class="rsvp__field">
-            <label class="rsvp__label" for="rsvp-email">Email <span class="rsvp__optional">(optional)</span></label>
-            <input class="rsvp__input"
-                   type="email"
-                   id="rsvp-email"
-                   name="email"
-                   autocomplete="email"
-                   aria-describedby="rsvp-email-error">
-            <span class="rsvp__error" id="rsvp-email-error" aria-live="polite"></span>
-          </div>
+          <fieldset class="rsvp__screen" data-screen="plusone">
+            <legend class="rsvp__question">Bringing a plus one?</legend>
+            <div class="rsvp__choices">
+              <button class="rsvp__choice" type="button" data-choice-group="plusOne" data-choice="yes">
+                <span class="rsvp__choice-title">Yes, bringing someone</span>
+              </button>
+              <button class="rsvp__choice" type="button" data-choice-group="plusOne" data-choice="no">
+                <span class="rsvp__choice-title">Just me</span>
+              </button>
+            </div>
+            <span class="rsvp__error" id="rsvp-plusone-error" aria-live="polite"></span>
+          </fieldset>
 
-          <div class="rsvp__field rsvp__field--checkbox">
-            <label class="rsvp__checkbox-label">
-              <input class="rsvp__checkbox"
-                     type="checkbox"
-                     id="rsvp-plus-one"
-                     name="plusOne">
-              <span class="rsvp__checkbox-custom" aria-hidden="true"></span>
-              I will be bringing a plus one
-            </label>
-          </div>
+          <fieldset class="rsvp__screen" data-screen="plusone-name">
+            <legend class="rsvp__question">What's their name?</legend>
+            <div class="rsvp__field">
+              <label class="rsvp__label" for="rsvp-plusone-name">Your plus one's full name <span class="rsvp__required" aria-hidden="true">*</span></label>
+              <input class="rsvp__input"
+                     type="text"
+                     id="rsvp-plusone-name"
+                     name="plusOneName"
+                     autocomplete="off"
+                     aria-describedby="rsvp-plusone-name-error">
+              <span class="rsvp__error" id="rsvp-plusone-name-error" aria-live="polite"></span>
+            </div>
+            <button class="btn btn--primary rsvp__next" type="button" data-next>Next</button>
+          </fieldset>
 
-          <button class="btn btn--primary rsvp__next" type="button" id="rsvp-next">Next</button>
-        </div>
+          <fieldset class="rsvp__screen" data-screen="entree">
+            <legend class="rsvp__question">Which plate would you like?</legend>
+            <div class="rsvp__plates" id="rsvp-plates-guest"></div>
+            <span class="rsvp__error" id="rsvp-entree-error" aria-live="polite"></span>
+          </fieldset>
 
-        <div class="rsvp__step-panel" id="rsvp-step-2">
-          <p class="rsvp__diet-intro">Do you have any dietary restrictions or allergies we should know about?</p>
+          <fieldset class="rsvp__screen" data-screen="plusone-entree">
+            <legend class="rsvp__question">And a plate for your plus one?</legend>
+            <div class="rsvp__plates" id="rsvp-plates-plusone"></div>
+            <span class="rsvp__error" id="rsvp-plusone-entree-error" aria-live="polite"></span>
+          </fieldset>
 
-          <div class="rsvp__diet-grid">
-            <label class="rsvp__diet-chip">
-              <input type="checkbox" name="diet" value="nuts">
-              <span class="rsvp__diet-chip-label">Nuts</span>
-            </label>
-            <label class="rsvp__diet-chip">
-              <input type="checkbox" name="diet" value="shellfish">
-              <span class="rsvp__diet-chip-label">Shellfish</span>
-            </label>
-            <label class="rsvp__diet-chip">
-              <input type="checkbox" name="diet" value="dairy">
-              <span class="rsvp__diet-chip-label">Dairy</span>
-            </label>
-            <label class="rsvp__diet-chip">
-              <input type="checkbox" name="diet" value="gluten">
-              <span class="rsvp__diet-chip-label">Gluten</span>
-            </label>
-            <label class="rsvp__diet-chip">
-              <input type="checkbox" name="diet" value="eggs">
-              <span class="rsvp__diet-chip-label">Eggs</span>
-            </label>
-            <label class="rsvp__diet-chip">
-              <input type="checkbox" name="diet" value="soy">
-              <span class="rsvp__diet-chip-label">Soy</span>
-            </label>
-            <label class="rsvp__diet-chip">
-              <input type="checkbox" name="diet" value="vegetarian">
-              <span class="rsvp__diet-chip-label">Vegetarian</span>
-            </label>
-            <label class="rsvp__diet-chip">
-              <input type="checkbox" name="diet" value="vegan">
-              <span class="rsvp__diet-chip-label">Vegan</span>
-            </label>
-          </div>
-
-          <div class="rsvp__field">
-            <label class="rsvp__label" for="rsvp-diet-other">Other restrictions <span class="rsvp__optional">(optional)</span></label>
-            <input class="rsvp__input"
-                   type="text"
-                   id="rsvp-diet-other"
-                   name="dietOther"
-                   placeholder="e.g. Halal, Kosher, allergies...">
-          </div>
-
-          <div class="rsvp__plusone-diet" id="rsvp-plusone-diet" style="display: none;">
-            <p class="rsvp__diet-intro">Any dietary restrictions for your plus one?</p>
+          <fieldset class="rsvp__screen" data-screen="dietary">
+            <legend class="rsvp__question">Any dietary restrictions?</legend>
 
             <div class="rsvp__diet-grid">
               <label class="rsvp__diet-chip">
-                <input type="checkbox" name="plusOneDiet" value="nuts">
+                <input type="checkbox" name="diet" value="nuts">
                 <span class="rsvp__diet-chip-label">Nuts</span>
               </label>
               <label class="rsvp__diet-chip">
-                <input type="checkbox" name="plusOneDiet" value="shellfish">
+                <input type="checkbox" name="diet" value="shellfish">
                 <span class="rsvp__diet-chip-label">Shellfish</span>
               </label>
               <label class="rsvp__diet-chip">
-                <input type="checkbox" name="plusOneDiet" value="dairy">
+                <input type="checkbox" name="diet" value="dairy">
                 <span class="rsvp__diet-chip-label">Dairy</span>
               </label>
               <label class="rsvp__diet-chip">
-                <input type="checkbox" name="plusOneDiet" value="gluten">
+                <input type="checkbox" name="diet" value="gluten">
                 <span class="rsvp__diet-chip-label">Gluten</span>
               </label>
               <label class="rsvp__diet-chip">
-                <input type="checkbox" name="plusOneDiet" value="eggs">
+                <input type="checkbox" name="diet" value="eggs">
                 <span class="rsvp__diet-chip-label">Eggs</span>
               </label>
               <label class="rsvp__diet-chip">
-                <input type="checkbox" name="plusOneDiet" value="soy">
+                <input type="checkbox" name="diet" value="soy">
                 <span class="rsvp__diet-chip-label">Soy</span>
               </label>
               <label class="rsvp__diet-chip">
-                <input type="checkbox" name="plusOneDiet" value="vegetarian">
+                <input type="checkbox" name="diet" value="vegetarian">
                 <span class="rsvp__diet-chip-label">Vegetarian</span>
               </label>
               <label class="rsvp__diet-chip">
-                <input type="checkbox" name="plusOneDiet" value="vegan">
+                <input type="checkbox" name="diet" value="vegan">
                 <span class="rsvp__diet-chip-label">Vegan</span>
               </label>
             </div>
 
             <div class="rsvp__field">
-              <label class="rsvp__label" for="rsvp-plusone-diet-other">Other restrictions for +1 <span class="rsvp__optional">(optional)</span></label>
+              <label class="rsvp__label" for="rsvp-diet-other">Other restrictions <span class="rsvp__optional">(optional)</span></label>
               <input class="rsvp__input"
                      type="text"
-                     id="rsvp-plusone-diet-other"
-                     name="plusOneDietOther"
+                     id="rsvp-diet-other"
+                     name="dietOther"
                      placeholder="e.g. Halal, Kosher, allergies...">
             </div>
-          </div>
 
-          <div class="rsvp__status" id="rsvp-status" aria-live="polite"></div>
+            <div class="rsvp__plusone-diet" id="rsvp-plusone-diet" style="display: none;">
+              <p class="rsvp__diet-intro">For your plus one?</p>
+              <div class="rsvp__diet-grid">
+                <label class="rsvp__diet-chip">
+                  <input type="checkbox" name="plusOneDiet" value="nuts">
+                  <span class="rsvp__diet-chip-label">Nuts</span>
+                </label>
+                <label class="rsvp__diet-chip">
+                  <input type="checkbox" name="plusOneDiet" value="shellfish">
+                  <span class="rsvp__diet-chip-label">Shellfish</span>
+                </label>
+                <label class="rsvp__diet-chip">
+                  <input type="checkbox" name="plusOneDiet" value="dairy">
+                  <span class="rsvp__diet-chip-label">Dairy</span>
+                </label>
+                <label class="rsvp__diet-chip">
+                  <input type="checkbox" name="plusOneDiet" value="gluten">
+                  <span class="rsvp__diet-chip-label">Gluten</span>
+                </label>
+                <label class="rsvp__diet-chip">
+                  <input type="checkbox" name="plusOneDiet" value="eggs">
+                  <span class="rsvp__diet-chip-label">Eggs</span>
+                </label>
+                <label class="rsvp__diet-chip">
+                  <input type="checkbox" name="plusOneDiet" value="soy">
+                  <span class="rsvp__diet-chip-label">Soy</span>
+                </label>
+                <label class="rsvp__diet-chip">
+                  <input type="checkbox" name="plusOneDiet" value="vegetarian">
+                  <span class="rsvp__diet-chip-label">Vegetarian</span>
+                </label>
+                <label class="rsvp__diet-chip">
+                  <input type="checkbox" name="plusOneDiet" value="vegan">
+                  <span class="rsvp__diet-chip-label">Vegan</span>
+                </label>
+              </div>
+              <div class="rsvp__field">
+                <label class="rsvp__label" for="rsvp-plusone-diet-other">Other restrictions for your +1 <span class="rsvp__optional">(optional)</span></label>
+                <input class="rsvp__input"
+                       type="text"
+                       id="rsvp-plusone-diet-other"
+                       name="plusOneDietOther"
+                       placeholder="e.g. Halal, Kosher, allergies...">
+              </div>
+            </div>
 
-          <div class="rsvp__step-actions">
-            <button class="btn btn--outline rsvp__back" type="button" id="rsvp-back">Back</button>
+            <button class="btn btn--primary rsvp__next" type="button" data-next>Next</button>
+          </fieldset>
+
+          <fieldset class="rsvp__screen" data-screen="roomblock">
+            <legend class="rsvp__question">Stay with us at the Hilton?</legend>
+            <p class="rsvp__screen-note">We reserved a block of queen rooms at the Hilton Miami Dadeland &mdash; $220 per night, October 2&ndash;5. Book by phone and you're steps from the celebration.</p>
+            <div class="rsvp__choices">
+              <button class="rsvp__choice" type="button" data-choice-group="roomBlock" data-choice="yes">
+                <span class="rsvp__choice-title">Yes, I'd like a room</span>
+                <span class="rsvp__choice-sub">Queen room at the group rate</span>
+              </button>
+              <button class="rsvp__choice" type="button" data-choice-group="roomBlock" data-choice="no">
+                <span class="rsvp__choice-title">No thanks</span>
+                <span class="rsvp__choice-sub">I'll sort out my own stay</span>
+              </button>
+            </div>
+            <span class="rsvp__error" id="rsvp-roomblock-error" aria-live="polite"></span>
+          </fieldset>
+
+          <fieldset class="rsvp__screen" data-screen="review">
+            <legend class="rsvp__question">All set?</legend>
+            <dl class="rsvp__review" id="rsvp-review"></dl>
+            <div class="rsvp__status" id="rsvp-status" aria-live="polite"></div>
             <button class="btn btn--primary rsvp__submit" type="submit">Submit RSVP</button>
-          </div>
-        </div>
-      </form>
+          </fieldset>
 
-      <div class="rsvp__confirm" id="rsvp-confirm">
-        <p class="rsvp__confirm-emoji">&#x1F483;</p>
-        <h3 class="rsvp__confirm-title">Flying solo?</h3>
-        <p class="rsvp__confirm-body">No plus one selected -- just making sure! You can always bring someone to share the dance floor with.</p>
-        <div class="rsvp__confirm-actions">
-          <button class="btn btn--primary rsvp__confirm-solo" id="rsvp-confirm-solo" type="button">Just me!</button>
-          <button class="btn btn--outline rsvp__confirm-back" id="rsvp-confirm-back" type="button">Wait, adding my +1</button>
         </div>
-      </div>
+
+        <button class="rsvp__wizard-back" type="button" id="rsvp-back" aria-label="Go back to the previous question" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back
+        </button>
+      </form>
 
       <div class="rsvp__celebration" id="rsvp-celebration">
         <div class="rsvp__celebration-hearts" aria-hidden="true">

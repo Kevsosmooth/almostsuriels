@@ -531,13 +531,84 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ---------------------------------------------------------------------------
-  // RSVP Form Validation
+  // RSVP Wizard
   // ---------------------------------------------------------------------------
+
+  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzhk4phI-qdAqEZuwDZTLU68Bya4YeNUiQmAXEZ8N3_3o8Etedb19kzHWmw_l3VlYS9MA/exec';
 
   const rsvpForm = document.getElementById('rsvp-form');
 
   if (rsvpForm) {
-    const nameRegex = /^[A-Za-z\u00C0-\u024F\s'\-]{2,50}$/;
+    // Dinner plates -- add a new object here and both pickers pick it up.
+    const PLATES = [
+      {
+        value: 'Grilled Salmon',
+        desc: 'Topped with mango sauce, served with herb butter mashed potatoes and grilled asparagus, zucchini & squash.',
+        vegan: false
+      },
+      {
+        value: 'Grilled Churrasco',
+        desc: 'Topped with chimichurri, served with moro rice and sweet maduros.',
+        vegan: false
+      },
+      {
+        value: 'Vegan Lasagna',
+        desc: 'Grilled vegetables, cauliflower and mushrooms layered with tomato sauce and vegan cheese.',
+        vegan: true
+      },
+      {
+        value: 'Zucchini Pasta',
+        desc: 'Zucchini noodles in tomato sauce, served with vegan meatballs.',
+        vegan: true
+      }
+    ];
+
+    function renderPlates(container, radioName) {
+      PLATES.forEach(function(plate) {
+        const label = document.createElement('label');
+        label.className = 'rsvp__plate';
+
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = radioName;
+        input.value = plate.value;
+
+        const card = document.createElement('span');
+        card.className = 'rsvp__plate-card';
+
+        const head = document.createElement('span');
+        head.className = 'rsvp__plate-head';
+
+        const name = document.createElement('span');
+        name.className = 'rsvp__plate-name';
+        name.textContent = plate.value;
+        head.appendChild(name);
+
+        if (plate.vegan) {
+          const tag = document.createElement('span');
+          tag.className = 'rsvp__plate-tag';
+          tag.textContent = 'Vegan';
+          head.appendChild(tag);
+        }
+
+        const desc = document.createElement('span');
+        desc.className = 'rsvp__plate-desc';
+        desc.textContent = plate.desc;
+
+        card.appendChild(head);
+        card.appendChild(desc);
+        label.appendChild(input);
+        label.appendChild(card);
+        container.appendChild(label);
+      });
+    }
+
+    renderPlates(document.getElementById('rsvp-plates-guest'), 'entree');
+    renderPlates(document.getElementById('rsvp-plates-plusone'), 'plusOneEntree');
+
+    // --- Field validation (same rules as the old form) ---
+
+    const nameRegex = /^[A-Za-zÀ-ɏ\s'\-]{2,50}$/;
     const phoneFormatted = /^\(\d{3}\) \d{3}-\d{4}$/;
     const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9\-]+(\.[a-zA-Z]{2,})+$/;
 
@@ -594,10 +665,17 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!emailRegex.test(val.trim())) return 'Enter a valid email (e.g. name@example.com)';
           return '';
         }
+      },
+      plusOneName: {
+        el: document.getElementById('rsvp-plusone-name'),
+        error: document.getElementById('rsvp-plusone-name-error'),
+        validate(val) {
+          if (!val.trim()) return "Your plus one's name is required";
+          if (!nameRegex.test(val.trim())) return 'Please enter a valid name';
+          return '';
+        }
       }
     };
-
-    const statusEl = document.getElementById('rsvp-status');
 
     function validateField(field) {
       const msg = field.validate(field.el.value);
@@ -615,48 +693,195 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    const submitBtn = rsvpForm.querySelector('.rsvp__submit');
-    const plusOneCheckbox = document.getElementById('rsvp-plus-one');
-    const confirmPanel = document.getElementById('rsvp-confirm');
-    const confirmSoloBtn = document.getElementById('rsvp-confirm-solo');
-    const confirmBackBtn = document.getElementById('rsvp-confirm-back');
-    let confirmedSolo = false;
+    // --- Wizard state and navigation ---
 
-    const step1 = document.getElementById('rsvp-step-1');
-    const step2 = document.getElementById('rsvp-step-2');
-    const nextBtn = document.getElementById('rsvp-next');
+    const screens = Array.from(rsvpForm.querySelectorAll('.rsvp__screen'));
+    const progressBar = document.getElementById('rsvp-progress');
+    const progressFill = document.getElementById('rsvp-progress-fill');
+    const progressLabel = document.getElementById('rsvp-progress-label');
     const backBtn = document.getElementById('rsvp-back');
-    const stepDots = rsvpForm.querySelectorAll('.rsvp__step-dot');
-    const stepLine = rsvpForm.querySelector('.rsvp__step-line');
+    const statusEl = document.getElementById('rsvp-status');
     const plusOneDietSection = document.getElementById('rsvp-plusone-diet');
 
-    function goToStep(step) {
-      step1.classList.toggle('active', step === 1);
-      step2.classList.toggle('active', step === 2);
-      stepDots[0].classList.toggle('active', step === 1);
-      stepDots[0].classList.toggle('completed', step === 2);
-      stepDots[1].classList.toggle('active', step === 2);
-      stepLine.classList.toggle('completed', step === 2);
+    const state = { plusOne: null, roomBlock: null };
 
-      if (step === 2) {
-        plusOneDietSection.style.display = plusOneCheckbox.checked ? '' : 'none';
+    function screenVisible(name) {
+      if (name === 'plusone-name' || name === 'plusone-entree') return state.plusOne === true;
+      return true;
+    }
+
+    function visibleScreens() {
+      return screens.filter((s) => screenVisible(s.dataset.screen));
+    }
+
+    function currentScreen() {
+      return screens.find((s) => s.classList.contains('active'));
+    }
+
+    function showScreen(el, skipFocus) {
+      screens.forEach((s) => s.classList.toggle('active', s === el));
+
+      const vis = visibleScreens();
+      const pos = vis.indexOf(el) + 1;
+      progressFill.style.width = ((pos / vis.length) * 100) + '%';
+      progressLabel.textContent = pos + ' of ' + vis.length;
+      progressBar.setAttribute('aria-valuemax', String(vis.length));
+      progressBar.setAttribute('aria-valuenow', String(pos));
+      backBtn.hidden = pos <= 1;
+
+      if (el.dataset.screen === 'review') buildReview();
+
+      // Only autofocus screens whose main job is typing -- focusing the
+      // dietary "other" field would pop the phone keyboard uninvited.
+      const TYPING_SCREENS = ['name', 'contact', 'plusone-name'];
+      if (!skipFocus && TYPING_SCREENS.indexOf(el.dataset.screen) !== -1) {
+        const firstInput = el.querySelector('.rsvp__input');
+        if (firstInput) firstInput.focus({ preventScroll: true });
       }
     }
 
-    nextBtn.addEventListener('click', function() {
-      var isValid = true;
-      Object.values(fields).forEach(function(field) {
-        if (!validateField(field)) isValid = false;
+    function go(dir) {
+      const vis = visibleScreens();
+      const next = vis[vis.indexOf(currentScreen()) + dir];
+      if (next) showScreen(next);
+    }
+
+    function selectedRadio(name) {
+      const checked = rsvpForm.querySelector('input[name="' + name + '"]:checked');
+      return checked ? checked.value : '';
+    }
+
+    function screenError(id, msg) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = msg;
+    }
+
+    function validateScreen(el) {
+      switch (el.dataset.screen) {
+        case 'name': {
+          const a = validateField(fields.firstName);
+          const b = validateField(fields.lastName);
+          return a && b;
+        }
+        case 'contact': {
+          const a = validateField(fields.phone);
+          const b = validateField(fields.email);
+          return a && b;
+        }
+        case 'plusone-name':
+          return validateField(fields.plusOneName);
+        case 'plusone':
+          if (state.plusOne === null) {
+            screenError('rsvp-plusone-error', 'Please pick one to continue');
+            return false;
+          }
+          return true;
+        case 'entree':
+          if (!selectedRadio('entree')) {
+            screenError('rsvp-entree-error', 'Please choose a plate to continue');
+            return false;
+          }
+          return true;
+        case 'plusone-entree':
+          if (!selectedRadio('plusOneEntree')) {
+            screenError('rsvp-plusone-entree-error', 'Please choose their plate to continue');
+            return false;
+          }
+          return true;
+        case 'roomblock':
+          if (state.roomBlock === null) {
+            screenError('rsvp-roomblock-error', 'Please pick one to continue');
+            return false;
+          }
+          return true;
+        default:
+          return true;
+      }
+    }
+
+    rsvpForm.querySelectorAll('[data-next]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const screen = currentScreen();
+        if (validateScreen(screen)) go(1);
       });
-      if (!isValid) return;
-      goToStep(2);
     });
 
-    backBtn.addEventListener('click', function() {
-      goToStep(1);
+    showScreen(screens[0], true);
+
+    backBtn.addEventListener('click', () => go(-1));
+
+    // Enter inside a text input advances instead of submitting early
+    rsvpForm.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' || e.target.tagName !== 'INPUT') return;
+      const screen = currentScreen();
+      if (screen.dataset.screen === 'review') return;
+      e.preventDefault();
+      const nextBtn = screen.querySelector('[data-next]');
+      if (nextBtn) nextBtn.click();
+      else if (validateScreen(screen)) go(1);
     });
 
-    rsvpForm.style.minHeight = rsvpForm.offsetHeight + 'px';
+    // Big choice buttons (plus one / room block): select, then auto-advance
+    rsvpForm.querySelectorAll('.rsvp__choice').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const group = btn.dataset.choiceGroup;
+        state[group] = btn.dataset.choice === 'yes';
+
+        rsvpForm.querySelectorAll('[data-choice-group="' + group + '"]').forEach((b) => {
+          b.classList.toggle('selected', b === btn);
+        });
+
+        screenError('rsvp-' + group.toLowerCase() + '-error', '');
+        if (group === 'plusOne') {
+          plusOneDietSection.style.display = state.plusOne ? '' : 'none';
+        }
+
+        setTimeout(() => go(1), 250);
+      });
+    });
+
+    // Plate cards auto-advance on selection
+    rsvpForm.addEventListener('change', (e) => {
+      if (e.target.name === 'entree') {
+        screenError('rsvp-entree-error', '');
+        setTimeout(() => go(1), 250);
+      } else if (e.target.name === 'plusOneEntree') {
+        screenError('rsvp-plusone-entree-error', '');
+        setTimeout(() => go(1), 250);
+      }
+    });
+
+    // --- Review screen ---
+
+    function buildReview() {
+      const review = document.getElementById('rsvp-review');
+      review.textContent = '';
+
+      const plusOneName = fields.plusOneName.el.value.trim();
+      const rows = [
+        ['Name', fields.firstName.el.value.trim() + ' ' + fields.lastName.el.value.trim()],
+        ['Plus one', state.plusOne ? plusOneName : 'Just me'],
+        ['Your plate', selectedRadio('entree')]
+      ];
+      if (state.plusOne) {
+        rows.push([plusOneName ? plusOneName + "'s plate" : 'Their plate', selectedRadio('plusOneEntree')]);
+      }
+      rows.push(['Hilton room block', state.roomBlock ? 'Yes, at the group rate' : 'No thanks']);
+
+      rows.forEach(function(row) {
+        const wrap = document.createElement('div');
+        wrap.className = 'rsvp__review-row';
+        const dt = document.createElement('dt');
+        dt.textContent = row[0];
+        const dd = document.createElement('dd');
+        dd.textContent = row[1];
+        wrap.appendChild(dt);
+        wrap.appendChild(dd);
+        review.appendChild(wrap);
+      });
+    }
+
+    // --- Payload and submit ---
 
     function getCheckedValues(name) {
       return Array.from(rsvpForm.querySelectorAll('input[name="' + name + '"]:checked'))
@@ -673,11 +898,15 @@ document.addEventListener('DOMContentLoaded', () => {
         lastName: fields.lastName.el.value.trim(),
         phone: fields.phone.el.value.trim(),
         email: fields.email.el.value.trim(),
-        plusOne: plusOneCheckbox.checked,
-        dietary: dietSelections.join(', ')
+        plusOne: state.plusOne === true,
+        entree: selectedRadio('entree'),
+        dietary: dietSelections.join(', '),
+        roomBlock: state.roomBlock === true
       };
 
-      if (plusOneCheckbox.checked) {
+      if (state.plusOne) {
+        payload.plusOneName = fields.plusOneName.el.value.trim();
+        payload.plusOneEntree = selectedRadio('plusOneEntree');
         var plusOneDiet = getCheckedValues('plusOneDiet');
         var plusOneDietOther = document.getElementById('rsvp-plusone-diet-other').value.trim();
         if (plusOneDietOther) plusOneDiet.push(plusOneDietOther);
@@ -688,7 +917,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function sendToSheets(payload) {
-      await fetch('https://script.google.com/macros/s/AKfycbzhk4phI-qdAqEZuwDZTLU68Bya4YeNUiQmAXEZ8N3_3o8Etedb19kzHWmw_l3VlYS9MA/exec', {
+      await fetch(SHEETS_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
@@ -696,8 +925,27 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    async function submitAndCelebrate() {
-      var payload = collectPayload();
+    function resetWizard() {
+      rsvpForm.reset();
+      state.plusOne = null;
+      state.roomBlock = null;
+      plusOneDietSection.style.display = 'none';
+      rsvpForm.querySelectorAll('.rsvp__choice.selected').forEach(function(b) {
+        b.classList.remove('selected');
+      });
+      Object.values(fields).forEach(function(field) {
+        field.el.setAttribute('aria-invalid', 'false');
+        field.error.textContent = '';
+      });
+      showScreen(screens[0], true);
+    }
+
+    const submitBtn = rsvpForm.querySelector('.rsvp__submit');
+
+    rsvpForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      if (currentScreen().dataset.screen !== 'review') return;
+
       var originalText = submitBtn.textContent;
       submitBtn.textContent = 'Sending...';
       submitBtn.disabled = true;
@@ -705,62 +953,19 @@ document.addEventListener('DOMContentLoaded', () => {
       statusEl.className = 'rsvp__status';
 
       try {
-        await sendToSheets(payload);
-        rsvpForm.reset();
-        confirmedSolo = false;
-        goToStep(1);
-        Object.values(fields).forEach(function(field) {
-          field.el.setAttribute('aria-invalid', 'false');
-          field.error.textContent = '';
-        });
+        await sendToSheets(collectPayload());
+        resetWizard();
         showCelebration();
       } catch (err) {
         statusEl.textContent = 'Network error. Please check your connection and try again.';
         statusEl.className = 'rsvp__status rsvp__status--error';
-        confirmPanel.classList.remove('active');
-        rsvpForm.style.display = '';
       } finally {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
       }
-    }
-
-    rsvpForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      if (!plusOneCheckbox.checked && !confirmedSolo) {
-        rsvpForm.style.display = 'none';
-        confirmPanel.classList.add('active');
-        return;
-      }
-
-      submitAndCelebrate();
     });
 
-    if (confirmSoloBtn) {
-      confirmSoloBtn.addEventListener('click', function() {
-        confirmedSolo = true;
-        var soloOriginal = confirmSoloBtn.textContent;
-        confirmSoloBtn.textContent = 'Sending...';
-        confirmSoloBtn.disabled = true;
-        confirmBackBtn.disabled = true;
-        submitAndCelebrate().finally(function() {
-          confirmSoloBtn.textContent = soloOriginal;
-          confirmSoloBtn.disabled = false;
-          confirmBackBtn.disabled = false;
-        });
-      });
-    }
-
-    if (confirmBackBtn) {
-      confirmBackBtn.addEventListener('click', () => {
-        confirmPanel.classList.remove('active');
-        rsvpForm.style.display = '';
-        goToStep(1);
-        plusOneCheckbox.checked = true;
-        plusOneCheckbox.focus();
-      });
-    }
+    // --- Celebration ---
 
     const celebrationPanel = document.getElementById('rsvp-celebration');
     const celebrationCloseBtn = document.getElementById('rsvp-celebration-close');
@@ -801,9 +1006,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showCelebration() {
       rsvpForm.style.display = 'none';
-      confirmPanel.classList.remove('active');
-      statusEl.textContent = '';
-      statusEl.className = 'rsvp__status';
       celebrationPanel.classList.add('active');
       fireCelebration();
     }
@@ -820,6 +1022,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (celebrationCloseBtn) {
       celebrationCloseBtn.addEventListener('click', closeCelebration);
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Hilton room block: live rooms-remaining counter
+  // ---------------------------------------------------------------------------
+
+  const roomsRemainingEl = document.querySelector('[data-rooms-remaining]');
+  if (roomsRemainingEl) {
+    fetch(SHEETS_URL)
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data && typeof data.roomsRemaining === 'number') {
+          roomsRemainingEl.textContent = String(Math.max(0, data.roomsRemaining));
+        }
+      })
+      .catch(function() { /* script not redeployed yet or offline -- keep static count */ });
   }
 
   // Calendar dropdown toggle
