@@ -1,3 +1,12 @@
+// Refreshes always start at the top: scrollRestoration is set to 'manual' by
+// an inline <head> script (before the browser's restore decision); these are
+// the belt-and-braces for engines that restore late anyway.
+window.scrollTo(0, 0);
+window.addEventListener('pageshow', () => {
+  // While the welcome overlay is still up, nobody has scrolled on purpose.
+  if (document.getElementById('welcome-overlay')) window.scrollTo(0, 0);
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
@@ -1179,9 +1188,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Browsers block un-muted autoplay before any interaction, so: try
-  // immediately, and fall back to the visitor's very first tap/scroll/key.
-  tryPlay();
+  // --- Welcome overlay: the entry tap doubles as the audio-unlock gesture ---
+
+  const welcomeEl = document.getElementById('welcome-overlay');
+  const welcomeMusicBtn = document.getElementById('welcome-music');
+  const welcomeQuietBtn = document.getElementById('welcome-quiet');
+
+  function dismissWelcome() {
+    welcomeEl.classList.add('done');
+    document.body.style.overflow = '';
+    setTimeout(() => welcomeEl.remove(), 600);
+  }
 
   const GESTURE_EVENTS = ['pointerdown', 'keydown', 'touchstart', 'click'];
 
@@ -1202,7 +1219,39 @@ document.addEventListener('DOMContentLoaded', () => {
       if (started) detachGestureListeners();
     });
   };
-  GESTURE_EVENTS.forEach((type) => window.addEventListener(type, firstGesture));
+
+  // Retry-on-next-gesture backstop. Armed only AFTER the welcome choice (or
+  // immediately when there is no overlay) -- if it listened from page load,
+  // the pointerdown of the "Continue Without" tap itself would start the song.
+  function armGestureRetry() {
+    GESTURE_EVENTS.forEach((type) => window.addEventListener(type, firstGesture));
+  }
+
+  if (welcomeEl && welcomeMusicBtn && welcomeQuietBtn) {
+    document.body.style.overflow = 'hidden';
+    welcomeMusicBtn.focus({ preventScroll: true });
+
+    welcomeMusicBtn.addEventListener('click', () => {
+      userMuted = false;
+      try { localStorage.setItem(MUTED_KEY, '0'); } catch (e) { /* ignore */ }
+      dismissWelcome();
+      tryPlay().then((started) => {
+        // The tap should always grant permission; arm the backstop just in case.
+        if (!started) armGestureRetry();
+      });
+    });
+
+    welcomeQuietBtn.addEventListener('click', () => {
+      userMuted = true;
+      try { localStorage.setItem(MUTED_KEY, '1'); } catch (e) { /* ignore */ }
+      setToggleState(false);
+      dismissWelcome();
+    });
+  } else {
+    // No overlay in the DOM: old behavior -- try now, retry on first gesture.
+    tryPlay();
+    armGestureRetry();
+  }
 
   toggle.addEventListener('click', () => {
     if (music.paused) {

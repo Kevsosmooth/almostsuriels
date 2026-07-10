@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Arielle &amp; Kevin | October 4, 2026</title>
 
+  <!-- Must run before the browser decides to restore the old scroll spot:
+       every load/refresh starts fresh at the top. -->
+  <script>if ('scrollRestoration' in history) history.scrollRestoration = 'manual';</script>
+
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -18,6 +22,25 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
 </head>
 <body>
+  <!-- Entry overlay: the tap that dismisses it is the user gesture browsers
+       require before any audio can start. -->
+  <div class="welcome" id="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcome-names">
+    <div class="welcome__card">
+      <p class="welcome__script">We're getting married!</p>
+      <p class="welcome__names" id="welcome-names">Arielle &amp; Kevin</p>
+      <div class="flourish" aria-hidden="true">
+        <svg viewBox="0 0 120 20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M0 10 Q30 0 60 10 Q90 20 120 10"/>
+          <circle cx="56" cy="10" r="2" fill="currentColor" stroke="none"/>
+          <circle cx="64" cy="10" r="2" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+      <p class="welcome__note">Our story sounds better with music.</p>
+      <button class="btn btn--primary welcome__btn" id="welcome-music" type="button">Play the Music</button>
+      <button class="btn btn--outline welcome__btn" id="welcome-quiet" type="button">Continue Without</button>
+    </div>
+  </div>
+
   <div class="announcement-banner" role="status" aria-live="polite">
     <p class="announcement-banner__message">RSVP deadline: <strong>August 24th</strong> is the deadline for RSVPing.</p>
   </div>
