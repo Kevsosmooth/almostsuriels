@@ -2714,6 +2714,16 @@ select {
   animation: celebrationFadeIn var(--duration-slow) var(--ease-out) 1s both;
 }
 
+.rsvp__celebration-room-note {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--slate);
+  line-height: 1.6;
+  max-width: 30ch;
+  margin: 0 auto var(--space-4);
+  animation: celebrationFadeIn var(--duration-slow) var(--ease-out) 1s both;
+}
+
 .rsvp__celebration-btn {
   display: block;
   width: 100%;

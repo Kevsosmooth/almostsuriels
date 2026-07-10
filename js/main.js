@@ -953,9 +953,10 @@ document.addEventListener('DOMContentLoaded', () => {
       statusEl.className = 'rsvp__status';
 
       try {
-        await sendToSheets(collectPayload());
+        var payload = collectPayload();
+        await sendToSheets(payload);
         resetWizard();
-        showCelebration();
+        showCelebration(payload.roomBlock);
       } catch (err) {
         statusEl.textContent = 'Network error. Please check your connection and try again.';
         statusEl.className = 'rsvp__status rsvp__status--error';
@@ -1004,7 +1005,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 600);
     }
 
-    function showCelebration() {
+    function showCelebration(wantsRoom) {
+      var roomSection = document.getElementById('rsvp-celebration-room');
+      if (roomSection) roomSection.hidden = !wantsRoom;
       rsvpForm.style.display = 'none';
       celebrationPanel.classList.add('active');
       fireCelebration();
