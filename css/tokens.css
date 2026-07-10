@@ -94,8 +94,11 @@
   --control-height-sm: 40px;
 
   /* --- Hero --- */
-  /* Focal point of the hero photo (the couple's faces) — single source of truth */
-  --hero-focus: 62% 30%;
+  /* Focal point of the hero photo (the couple's faces) — single source of truth.
+     Higher X slides the couple left on screen (Arielle stays off the right edge). */
+  --hero-focus: 72% 30%;
+  --hero-focus-phone: 75% 24%;   /* <=480px */
+  --hero-focus-desktop: 65% 35%; /* >=768px */
   /* Crop-window aspect-ratio bounds (width / height). The hero fills the first
      screen but its height never lets the visible crop get wider than "widest"
      (ultrawide monitors) or taller than "tallest" (portrait phones). */

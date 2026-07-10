@@ -495,7 +495,7 @@ select {
 
 @media (min-width: 768px) {
   .hero__media img {
-    object-position: 65% 35%;
+    object-position: var(--hero-focus-desktop);
   }
 
   .hero__flourish {
@@ -568,7 +568,7 @@ select {
   }
 
   .hero__media img {
-    object-position: 65% 24%;
+    object-position: var(--hero-focus-phone);
   }
 }
 
