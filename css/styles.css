@@ -170,11 +170,12 @@ select {
   transition: box-shadow var(--duration-base) var(--ease-out);
 }
 
+/* No backdrop-filter here: re-blurring the strip behind the nav on every
+   scrolled frame was the site's main scroll-jank source (measured). A
+   near-opaque canvas wash reads the same over the cream page. */
 @media (min-width: 1024px) {
   .navbar {
-    background-color: rgba(var(--canvas-rgb), 0.92);
-    backdrop-filter: blur(var(--space-4));
-    -webkit-backdrop-filter: blur(var(--space-4));
+    background-color: rgba(var(--canvas-rgb), 0.97);
   }
 }
 
@@ -2960,12 +2961,6 @@ select {
 
   .rsvp__heading {
     font-size: var(--text-2xl);
-  }
-}
-
-@media (min-width: 768px) and (hover: hover) {
-  .rsvp__bg {
-    background-attachment: fixed;
   }
 }
 
