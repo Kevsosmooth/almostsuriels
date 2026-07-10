@@ -1,10 +1,10 @@
 // Refreshes always start at the top: scrollRestoration is set to 'manual' by
 // an inline <head> script (before the browser's restore decision); these are
-// the belt-and-braces for engines that restore late anyway.
+// the belt-and-braces for engines that restore late anyway. Back/forward
+// cache returns (persisted) keep their spot -- only real (re)loads reset.
 window.scrollTo(0, 0);
-window.addEventListener('pageshow', () => {
-  // While the welcome overlay is still up, nobody has scrolled on purpose.
-  if (document.getElementById('welcome-overlay')) window.scrollTo(0, 0);
+window.addEventListener('pageshow', (e) => {
+  if (!e.persisted) window.scrollTo(0, 0);
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1173,87 +1173,35 @@ document.addEventListener('DOMContentLoaded', () => {
     if (userMuted) return Promise.resolve(false);
 
     setupAnalyser();
-    const ctxReady = (audioCtx && audioCtx.state === 'suspended')
-      ? audioCtx.resume().catch(() => {})
-      : Promise.resolve();
+    if (audioCtx && audioCtx.state === 'suspended') {
+      // Fire-and-forget: without a user gesture resume() stays pending
+      // forever in Chrome, and awaiting it would hang this whole chain.
+      audioCtx.resume().catch(() => {});
+    }
 
-    return ctxReady.then(() => music.play()).then(() => {
+    return music.play().then(() => {
       setToggleState(true);
       startBeat();
       return true;
     }).catch(() => {
-      // Autoplay blocked: stay quiet until a real gesture (handled below).
+      // Autoplay blocked: stay quiet, the bouncing toggle invites the tap.
       setToggleState(false);
       return false;
     });
   }
 
-  // --- Welcome overlay: the entry tap doubles as the audio-unlock gesture ---
-
-  const welcomeEl = document.getElementById('welcome-overlay');
-  const welcomeMusicBtn = document.getElementById('welcome-music');
-  const welcomeQuietBtn = document.getElementById('welcome-quiet');
-
-  function dismissWelcome() {
-    welcomeEl.classList.add('done');
-    document.body.style.overflow = '';
-    setTimeout(() => welcomeEl.remove(), 600);
+  // No overlay, no tap-anywhere hijack: try autoplay once (usually blocked),
+  // and if the song isn't running, bounce the toggle until the visitor uses it.
+  function setAttract(on) {
+    toggle.classList.toggle('music-toggle--attract', on);
   }
 
-  const GESTURE_EVENTS = ['pointerdown', 'keydown', 'touchstart', 'click'];
-
-  function detachGestureListeners() {
-    GESTURE_EVENTS.forEach((type) => window.removeEventListener(type, firstGesture));
-  }
-
-  const firstGesture = (e) => {
-    // A gesture on the toggle itself is handled by its click handler.
-    if (e.target && toggle.contains(e.target)) return;
-    if (!music.paused || userMuted) {
-      detachGestureListeners();
-      return;
-    }
-    // Scrolls fire touchstart but don't grant autoplay permission, so only
-    // disarm once a play attempt actually succeeds.
-    tryPlay().then((started) => {
-      if (started) detachGestureListeners();
-    });
-  };
-
-  // Retry-on-next-gesture backstop. Armed only AFTER the welcome choice (or
-  // immediately when there is no overlay) -- if it listened from page load,
-  // the pointerdown of the "Continue Without" tap itself would start the song.
-  function armGestureRetry() {
-    GESTURE_EVENTS.forEach((type) => window.addEventListener(type, firstGesture));
-  }
-
-  if (welcomeEl && welcomeMusicBtn && welcomeQuietBtn) {
-    document.body.style.overflow = 'hidden';
-    welcomeMusicBtn.focus({ preventScroll: true });
-
-    welcomeMusicBtn.addEventListener('click', () => {
-      userMuted = false;
-      try { localStorage.setItem(MUTED_KEY, '0'); } catch (e) { /* ignore */ }
-      dismissWelcome();
-      tryPlay().then((started) => {
-        // The tap should always grant permission; arm the backstop just in case.
-        if (!started) armGestureRetry();
-      });
-    });
-
-    welcomeQuietBtn.addEventListener('click', () => {
-      userMuted = true;
-      try { localStorage.setItem(MUTED_KEY, '1'); } catch (e) { /* ignore */ }
-      setToggleState(false);
-      dismissWelcome();
-    });
-  } else {
-    // No overlay in the DOM: old behavior -- try now, retry on first gesture.
-    tryPlay();
-    armGestureRetry();
-  }
+  tryPlay().then((started) => {
+    if (!started && !userMuted) setAttract(true);
+  });
 
   toggle.addEventListener('click', () => {
+    setAttract(false);
     if (music.paused) {
       userMuted = false;
       try { localStorage.setItem(MUTED_KEY, '0'); } catch (e) { /* ignore */ }
@@ -1269,6 +1217,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   music.addEventListener('pause', stopBeat);
   music.addEventListener('play', () => {
+    setAttract(false);
     setToggleState(true);
     startBeat();
   });

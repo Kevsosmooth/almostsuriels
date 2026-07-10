@@ -3242,90 +3242,46 @@ select {
 }
 
 /* ==========================================================================
-   Welcome Overlay (music choice on entry)
+   Background Music
    ========================================================================== */
 
-.welcome {
-  position: fixed;
-  inset: 0;
-  z-index: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  min-height: 100svh;
-  padding: var(--space-6);
-  background-color: var(--canvas);
-  opacity: 1;
-  visibility: visible;
-  transition: opacity var(--duration-slow) var(--ease-out),
-              visibility var(--duration-slow) var(--ease-out);
-}
+/* Until the visitor starts the music, the toggle does a periodic double-hop
+   so it reads as "tap me" without an overlay or autoplay. */
+@keyframes music-attract {
+  0%, 55%, 100% {
+    transform: translateY(0);
+  }
 
-.welcome.done {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
+  65% {
+    transform: translateY(calc(-1 * var(--space-3)));
+  }
 
-.welcome__card {
-  width: 100%;
-  max-width: 400px;
-  padding: var(--space-8) var(--space-6);
-  text-align: center;
-  background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-}
+  75% {
+    transform: translateY(0);
+  }
 
-.welcome__script {
-  font-family: var(--font-script);
-  font-style: italic;
-  font-size: var(--text-lg);
-  color: var(--signal);
-  margin-bottom: var(--space-2);
-}
+  85% {
+    transform: translateY(calc(-1 * var(--space-2)));
+  }
 
-.welcome__names {
-  font-family: var(--font-display);
-  font-size: var(--text-3xl);
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.15;
-  margin-bottom: var(--space-4);
-}
-
-.welcome .flourish {
-  margin-bottom: var(--space-4);
-}
-
-.welcome__note {
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  color: var(--slate);
-  line-height: 1.6;
-  margin-bottom: var(--space-6);
-}
-
-.welcome__btn {
-  display: block;
-  width: 100%;
-}
-
-.welcome__btn + .welcome__btn {
-  margin-top: var(--space-3);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .welcome {
-    transition: none;
+  95% {
+    transform: translateY(0);
   }
 }
 
-/* ==========================================================================
-   Background Music
-   ========================================================================== */
+.music-toggle--attract {
+  animation: music-attract 2.6s var(--ease-in-out) infinite;
+}
+
+.music-toggle--attract:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .music-toggle--attract {
+    animation: none;
+  }
+}
 
 .music-toggle {
   position: fixed;
