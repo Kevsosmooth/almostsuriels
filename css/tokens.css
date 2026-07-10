@@ -88,6 +88,19 @@
   --section-padding-y: var(--space-24);
   --section-padding-x: var(--space-6);
   --nav-height: 64px;
+
+  /* --- Controls (one height for inputs/buttons, one for chips) --- */
+  --control-height: 48px;
+  --control-height-sm: 40px;
+
+  /* --- Hero --- */
+  /* Focal point of the hero photo (the couple's faces) — single source of truth */
+  --hero-focus: 62% 30%;
+  /* Crop-window aspect-ratio bounds (width / height). The hero fills the first
+     screen but its height never lets the visible crop get wider than "widest"
+     (ultrawide monitors) or taller than "tallest" (portrait phones). */
+  --hero-crop-widest: 2.1;
+  --hero-crop-tallest: 0.55;
 }
 
 @media (min-width: 768px) {
@@ -95,6 +108,9 @@
     --section-padding-y: var(--space-32);
     --section-padding-x: var(--space-12);
     --text-display: 5rem;
+    /* Tablets and up: a near-square crop window is the tallest allowed,
+       so portrait iPads don't over-zoom the hero couple */
+    --hero-crop-tallest: 0.9;
   }
 }
 

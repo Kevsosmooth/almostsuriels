@@ -18,6 +18,9 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
 </head>
 <body>
+  <div class="announcement-banner" role="status" aria-live="polite">
+    <p class="announcement-banner__message">RSVP deadline: <strong>August 24th</strong> is the deadline for RSVPing.</p>
+  </div>
 
   <!-- ======================================================================
        NAVBAR
@@ -67,6 +70,9 @@
        HERO
        ====================================================================== -->
   <section class="hero" id="home">
+    <div class="hero__media" aria-hidden="true">
+      <img src="photos/hero/hero-image.jpg" alt="" loading="eager" decoding="async">
+    </div>
     <div class="hero__overlay"></div>
 
     <div class="hero__card">
@@ -152,42 +158,6 @@
         <div class="story__carousel" aria-label="Story variations">
           <div class="story__slides">
             <div class="story__slide story__slide--active" data-slide="0">
-              <p class="story__label">Version 1</p>
-              <p class="story__body">
-                He was the class clown. She was the quiet one who'd rather be anywhere else. It was only a matter of time.
-              </p>
-              <p class="story__body">
-                Kevin and Arielle first met in high school -- "just friends," a couple class projects, and timing that was never quite right. Years later, right before Arielle left for the Disney College Program, they started talking again. She came back, summer 2016 happened... and that was pretty much it.
-              </p>
-              <p class="story__body">
-                Their first date was at this little European spot in Brighton Beach. Charcuterie board, good conversation, and then Arielle realized something on her plate was definitely not what she ordered. It was horse meat. She didn't know that going in. But honestly, if that didn't scare either of them off, nothing was going to.
-              </p>
-              <p class="story__body">
-                They made it official on December 23, 2016, and have been making each other laugh ever since -- through trips, adventures, and a decade of somehow always balancing each other out. Kevin planned the proposal the way he does everything: a beachside picnic, a walk by the water, and a quiet moment on the rocks. She said yes before he finished asking.
-              </p>
-              <p class="story__body">
-                From high school classmates to forever -- turns out opposites don't just attract. They commit.
-              </p>
-            </div>
-
-            <div class="story__slide" data-slide="1">
-              <p class="story__label">Version 2</p>
-              <p class="story__body">
-                Kevin was the kid who could make any room laugh. Arielle was the one quietly plotting her exit from it. On paper, it shouldn't have worked. In reality, it was kind of inevitable.
-              </p>
-              <p class="story__body">
-                They met in high school, did the "just friends" thing for a while, and then went their separate ways. A few years later, right before Arielle took off for the Disney College Program, they reconnected. She came back that summer and the "just friends" thing was officially done.
-              </p>
-              <p class="story__body">
-                Their first date in Brighton Beach set the tone for everything that followed: a European restaurant, a charcuterie board, and an accidental order of horse meat that neither of them saw coming. Arielle didn't order it. But she survived it -- and Kevin took that as a sign.
-              </p>
-              <p class="story__body">
-                They've been together since December 23, 2016. From high school classmates to world travelers, they traded the classroom for real life and never looked back. When the time came, Kevin set up a beachside picnic, they walked along the water, and he asked her on the rocks. She said yes immediately.
-              </p>
-            </div>
-
-            <div class="story__slide" data-slide="2">
-              <p class="story__label">Version 3</p>
               <p class="story__body">
                 They say timing is everything, and Kevin and Arielle spent a few years proving it. They met in high school -- he was loud, she was not -- and they were friends before either of them realized it could be more than that.
               </p>
@@ -201,20 +171,6 @@
                 Kevin proposed with a beachside picnic and a walk along the water. Arielle's answer was yes. His only regret is that he didn't ask sooner.
               </p>
             </div>
-          </div>
-
-          <div class="story__nav">
-            <button class="story__arrow story__arrow--prev" aria-label="Previous version" disabled>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <div class="story__dots" role="tablist" aria-label="Story version">
-              <button class="story__dot story__dot--active" role="tab" aria-selected="true" aria-label="Version 1" data-dot="0"></button>
-              <button class="story__dot" role="tab" aria-selected="false" aria-label="Version 2" data-dot="1"></button>
-              <button class="story__dot" role="tab" aria-selected="false" aria-label="Version 3" data-dot="2"></button>
-            </div>
-            <button class="story__arrow story__arrow--next" aria-label="Next version">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
           </div>
         </div>
       </div>
@@ -335,6 +291,47 @@
           <div class="details__hotel-slides">
             <div class="details__hotel-slide active" data-slide="0">
               <div class="details__card-photo">
+                <img src="photos/hotel/Hilton Miami Dadeland.webp"
+                     alt="Hilton Miami Dadeland hotel exterior"
+                     loading="lazy" width="600" height="400">
+              </div>
+              <div class="details__card-content">
+                <span class="details__badge">Room Block Reserved</span>
+                <h3>Hilton Miami Dadeland</h3>
+                <dl class="details__room-facts">
+                  <div class="details__room-fact">
+                    <dt>Rate</dt>
+                    <dd>$220 / night</dd>
+                  </div>
+                  <div class="details__room-fact">
+                    <dt>Room</dt>
+                    <dd>Queen</dd>
+                  </div>
+                  <div class="details__room-fact">
+                    <dt>Nights</dt>
+                    <dd>Oct 2 &ndash; 5, 2026</dd>
+                  </div>
+                  <div class="details__room-fact">
+                    <dt>Rooms Held</dt>
+                    <dd data-rooms-remaining>9</dd>
+                  </div>
+                </dl>
+                <p>Call the hotel and mention the Arielle &amp; Kevin wedding to book at our group rate.</p>
+                <address>
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  9100 N. Kendall Drive, Miami, FL 33176
+                </address>
+                <div class="details__card-actions">
+                  <a class="btn btn--primary" href="tel:+17869751920" aria-label="Call Hilton Miami Dadeland to book at the wedding rate">Call to Book</a>
+                  <a class="btn btn--outline" href="https://maps.google.com/?q=Hilton+Miami+Dadeland+9100+N+Kendall+Dr+Miami+FL+33176" target="_blank" rel="noopener noreferrer" aria-label="View Hilton Miami Dadeland on map">Map</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="details__hotel-slide" data-slide="1">
+              <div class="details__card-photo">
                 <img src="photos/hotel/Miami Marriott Dadeland.avif"
                      alt="Miami Marriott Dadeland hotel exterior"
                      loading="lazy" width="600" height="400">
@@ -351,28 +348,6 @@
                 <div class="details__card-actions">
                   <a class="btn btn--outline" href="https://maps.google.com/?q=Miami+Marriott+Dadeland+9100+S+Dadeland+Blvd+Miami+FL+33156" target="_blank" rel="noopener noreferrer" aria-label="View Miami Marriott Dadeland on map">Map</a>
                   <a class="btn btn--outline" href="https://www.marriott.com/en-us/hotels/miadd-miami-marriott-dadeland/overview/" target="_blank" rel="noopener noreferrer" aria-label="Book room at Miami Marriott Dadeland">Book Room</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="details__hotel-slide" data-slide="1">
-              <div class="details__card-photo">
-                <img src="photos/hotel/Hilton Miami Dadeland.webp"
-                     alt="Hilton Miami Dadeland hotel exterior"
-                     loading="lazy" width="600" height="400">
-              </div>
-              <div class="details__card-content">
-                <h3>Hilton Miami Dadeland</h3>
-                <p>Details coming soon. We are finalizing our room block at this location and will update with rates and booking information shortly.</p>
-                <address>
-                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-                  </svg>
-                  7250 N Kendall Dr, Miami, FL 33156
-                </address>
-                <div class="details__card-actions">
-                  <a class="btn btn--outline" href="https://maps.google.com/?q=Hilton+Miami+Dadeland+7250+N+Kendall+Dr+Miami+FL+33156" target="_blank" rel="noopener noreferrer" aria-label="View Hilton Miami Dadeland on map">Map</a>
-                  <a class="btn btn--outline" href="https://www.hilton.com/en/hotels/miadahh-hilton-miami-dadeland/" target="_blank" rel="noopener noreferrer" aria-label="Book room at Hilton Miami Dadeland">Book Room</a>
                 </div>
               </div>
             </div>
@@ -528,8 +503,7 @@
                  alt="Jasmine, Bridesmaid"
                  loading="lazy"
                  width="200"
-                 height="200"
-                 style="object-position: center 15%">
+                 height="200">
             <h3 class="party__name">Jasmine</h3>
             <p class="party__role">Bridesmaid</p>
           </div>
@@ -1175,6 +1149,24 @@
       </div>
     </div>
   </footer>
+
+  <!-- ======================================================================
+       BACKGROUND MUSIC
+       ====================================================================== -->
+  <audio id="site-music" src="audio/marry-you.mp3" loop preload="auto"></audio>
+
+  <button class="music-toggle" id="music-toggle" type="button" aria-pressed="false" aria-label="Play music">
+    <svg class="music-toggle__icon music-toggle__icon--playing" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor" stroke="none"/>
+      <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
+      <path d="M18.5 5.5a9.5 9.5 0 0 1 0 13"/>
+    </svg>
+    <svg class="music-toggle__icon music-toggle__icon--muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor" stroke="none"/>
+      <line x1="16" y1="9" x2="22" y2="15"/>
+      <line x1="22" y1="9" x2="16" y2="15"/>
+    </svg>
+  </button>
 
   <!-- CDN Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>

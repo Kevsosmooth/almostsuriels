@@ -26,6 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   gsap.ticker.lagSmoothing(0);
 
+  const rootStyles = getComputedStyle(document.documentElement);
+  const navHeight = parseInt(rootStyles.getPropertyValue('--nav-height'), 10) || 0;
+  const announcementHeight = parseInt(rootStyles.getPropertyValue('--announcement-banner-height'), 10) || 0;
+  const scrollOffset = -(navHeight + announcementHeight + 10);
+
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', (e) => {
       const targetId = anchor.getAttribute('href');
@@ -33,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const target = document.querySelector(targetId);
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(target, { offset: -115 });
+      lenis.scrollTo(target, { offset: scrollOffset });
     });
   });
 
@@ -90,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (target) {
             e.preventDefault();
             setTimeout(() => {
-              lenis.scrollTo(target, { offset: -115 });
+              lenis.scrollTo(target, { offset: scrollOffset });
             }, 350);
           }
         }
@@ -108,6 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const cdHours = document.getElementById('cd-hours');
   const cdMinutes = document.getElementById('cd-minutes');
   const cdSeconds = document.getElementById('cd-seconds');
+  const rsvpDeadlineEl = document.getElementById('rsvp-deadline');
+  const rsvpDeadline = new Date('2026-08-24T23:59:59-04:00');
 
   function pad(n) {
     return String(n).padStart(2, '0');
@@ -137,6 +144,49 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateCountdown, 1000);
   }
 
+  function pluralize(value, singular) {
+    return `${value} ${singular}${value === 1 ? '' : 's'}`;
+  }
+
+  function updateRsvpDeadlineCountdown() {
+    if (!rsvpDeadlineEl) return;
+
+    const now = new Date();
+    let diff = rsvpDeadline - now;
+
+    if (isNaN(rsvpDeadline.getTime())) {
+      rsvpDeadlineEl.textContent = 'RSVP deadline: August 24, 2026.';
+      rsvpDeadlineEl.setAttribute('data-state', 'closed');
+      return;
+    }
+
+    if (diff <= 0) {
+      diff = 0;
+      rsvpDeadlineEl.textContent = 'RSVP deadline has passed. Please contact us directly if needed.';
+      rsvpDeadlineEl.setAttribute('data-state', 'closed');
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    const timeChunks = [];
+    if (days) timeChunks.push(pluralize(days, 'day'));
+    if (hours || timeChunks.length) timeChunks.push(pluralize(hours, 'hour'));
+    if (minutes || timeChunks.length) timeChunks.push(pluralize(minutes, 'minute'));
+    timeChunks.push(pluralize(seconds, 'second'));
+
+    rsvpDeadlineEl.textContent = `RSVP closes in ${timeChunks.join(', ')} (deadline: August 24, 2026).`;
+    rsvpDeadlineEl.setAttribute('data-state', 'active');
+  }
+
+  if (rsvpDeadlineEl) {
+    updateRsvpDeadlineCountdown();
+    setInterval(updateRsvpDeadlineCountdown, 1000);
+  }
+
   // ---------------------------------------------------------------------------
   // GSAP ScrollTrigger Reveals
   // ---------------------------------------------------------------------------
@@ -148,6 +198,21 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   lenis.on('scroll', ScrollTrigger.update);
+
+  // The Zola registry widget (and any late embed) resizes the page after
+  // ScrollTrigger has measured, leaving every trigger below it stale.
+  // Re-measure whenever the document height changes.
+  if ('ResizeObserver' in window) {
+    let lastBodyHeight = document.body.scrollHeight;
+    let refreshTimer = null;
+
+    new ResizeObserver(() => {
+      if (document.body.scrollHeight === lastBodyHeight) return;
+      lastBodyHeight = document.body.scrollHeight;
+      clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 200);
+    }).observe(document.body);
+  }
 
   const revealElements = document.querySelectorAll('.reveal');
 
@@ -191,8 +256,42 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    Object.values(groups).forEach((elements) => {
+    Object.keys(groups).forEach((name) => {
+      var elements = groups[name];
       var inView = isInViewport(elements[0]);
+
+      // The wedding-party crew doesn't fade in -- they bounce onto the dance
+      // floor: springy pop with an alternating tilt, one after another.
+      var isPartyCrew = name.indexOf('party') === 0;
+
+      if (isPartyCrew && !inView) {
+        gsap.fromTo(elements,
+          {
+            y: 70,
+            scale: 0.4,
+            rotation: (i) => (i % 2 ? 8 : -8),
+            opacity: 0,
+            visibility: 'hidden'
+          },
+          {
+            y: 0,
+            scale: 1,
+            rotation: 0,
+            opacity: 1,
+            visibility: 'visible',
+            duration: 0.9,
+            ease: 'back.out(1.9)',
+            stagger: 0.14,
+            scrollTrigger: {
+              trigger: elements[0],
+              start: 'top 90%',
+              toggleActions: 'play none none none'
+            }
+          }
+        );
+        return;
+      }
+
       gsap.fromTo(elements,
         { y: inView ? 0 : 40, opacity: 0, visibility: 'hidden' },
         {
@@ -213,6 +312,52 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ---------------------------------------------------------------------------
+  // Wedding Party: confetti welcome + tap-to-shimmy
+  // ---------------------------------------------------------------------------
+
+  const partySection = document.querySelector('.party');
+
+  if (partySection && !prefersReducedMotion && typeof confetti !== 'undefined') {
+    const rootStyle = getComputedStyle(document.documentElement);
+    const confettiColors = ['--signal', '--signal-light', '--accent-soft', '--canvas']
+      .map((token) => rootStyle.getPropertyValue(token).trim())
+      .filter(Boolean);
+
+    ScrollTrigger.create({
+      trigger: partySection,
+      start: 'top 65%',
+      once: true,
+      onEnter: () => {
+        // Two party poppers, one from each side of the screen
+        confetti({
+          particleCount: 70,
+          angle: 60,
+          spread: 60,
+          origin: { x: 0.05, y: 0.6 },
+          colors: confettiColors,
+          disableForReducedMotion: true
+        });
+        confetti({
+          particleCount: 70,
+          angle: 120,
+          spread: 60,
+          origin: { x: 0.95, y: 0.6 },
+          colors: confettiColors,
+          disableForReducedMotion: true
+        });
+      }
+    });
+  }
+
+  document.querySelectorAll('.party__member').forEach((member) => {
+    member.addEventListener('click', () => {
+      member.classList.remove('shimmy');
+      void member.offsetWidth;
+      member.classList.add('shimmy');
+    });
+  });
+
+  // ---------------------------------------------------------------------------
   // Hero Entrance Animation
   // ---------------------------------------------------------------------------
 
@@ -230,7 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const heroChildren = heroCard.querySelectorAll(
-        '.hero__script, .hero__names, .hero__date, .hero__location'
+        '.hero__script, .hero__names, .hero__date-container, .hero__location'
       );
 
       if (heroChildren.length) {
@@ -701,66 +846,143 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ---------------------------------------------------------------------------
-  // Story Carousel (version picker)
-  // ---------------------------------------------------------------------------
+});
 
-  const storyCarousel = document.querySelector('.story__carousel');
-  if (storyCarousel) {
-    const track = storyCarousel.querySelector('.story__slides');
-    const slides = storyCarousel.querySelectorAll('.story__slide');
-    const dots = storyCarousel.querySelectorAll('.story__dot');
-    const prevBtn = storyCarousel.querySelector('.story__arrow--prev');
-    const nextBtn = storyCarousel.querySelector('.story__arrow--next');
-    let current = 0;
-    const total = slides.length;
+// -----------------------------------------------------------------------------
+// Background Music + beat-driven party pulse
+// Independent of the GSAP/Lenis block above so music works even if a CDN fails.
+// -----------------------------------------------------------------------------
 
-    function goTo(index) {
-      if (index < 0 || index >= total) return;
-      current = index;
-      track.style.transform = `translateX(-${current * 100}%)`;
+document.addEventListener('DOMContentLoaded', () => {
+  'use strict';
 
-      slides.forEach((s, i) => {
-        s.classList.toggle('story__slide--active', i === current);
-      });
+  const music = document.getElementById('site-music');
+  const toggle = document.getElementById('music-toggle');
 
-      dots.forEach((d, i) => {
-        d.classList.toggle('story__dot--active', i === current);
-        d.setAttribute('aria-selected', i === current ? 'true' : 'false');
-      });
+  if (!music || !toggle) return;
 
-      prevBtn.disabled = current === 0;
-      nextBtn.disabled = current === total - 1;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const MUTED_KEY = 'wedding-music-muted';
+  let userMuted = false;
+
+  try {
+    userMuted = localStorage.getItem(MUTED_KEY) === '1';
+  } catch (e) { /* private mode: default to unmuted */ }
+
+  let audioCtx = null;
+  let analyser = null;
+  let freqData = null;
+  let beatLevel = 0;
+  let rafId = null;
+
+  function setToggleState(playing) {
+    toggle.setAttribute('aria-pressed', playing ? 'true' : 'false');
+    toggle.setAttribute('aria-label', playing ? 'Mute music' : 'Play music');
+  }
+
+  // Routes the <audio> element through an analyser so the wedding-party
+  // photos can pulse to the actual bass of the track.
+  function setupAnalyser() {
+    if (audioCtx || reducedMotion) return;
+    if (!window.AudioContext && !window.webkitAudioContext) return;
+
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const source = audioCtx.createMediaElementSource(music);
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      source.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      freqData = new Uint8Array(analyser.frequencyBinCount);
+    } catch (e) {
+      audioCtx = null;
+      analyser = null;
+    }
+  }
+
+  function beatLoop() {
+    if (music.paused || !analyser) {
+      rafId = null;
+      document.documentElement.style.setProperty('--beat', '0');
+      return;
     }
 
-    prevBtn.addEventListener('click', () => goTo(current - 1));
-    nextBtn.addEventListener('click', () => goTo(current + 1));
+    analyser.getByteFrequencyData(freqData);
 
-    dots.forEach((dot) => {
-      dot.addEventListener('click', () => {
-        goTo(parseInt(dot.dataset.dot, 10));
-      });
-    });
+    // Average the low bins (bass/kick range), then normalize past a floor so
+    // only the beats -- not the constant rumble -- move the photos.
+    let sum = 0;
+    const bins = 10;
+    for (let i = 1; i <= bins; i++) sum += freqData[i];
+    const bass = sum / (bins * 255);
+    const target = Math.min(1, Math.max(0, (bass - 0.55) / 0.4));
 
-    let touchStartX = 0;
-    let touchDelta = 0;
-    const SWIPE_THRESHOLD = 50;
+    // Fast attack, slow release: snaps up on the kick, eases back down.
+    beatLevel = target > beatLevel ? target : beatLevel * 0.9;
+    document.documentElement.style.setProperty('--beat', beatLevel.toFixed(3));
 
-    storyCarousel.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-      touchDelta = 0;
-    }, { passive: true });
+    rafId = requestAnimationFrame(beatLoop);
+  }
 
-    storyCarousel.addEventListener('touchmove', (e) => {
-      touchDelta = e.touches[0].clientX - touchStartX;
-    }, { passive: true });
+  function startBeat() {
+    if (!analyser || reducedMotion) return;
+    document.body.classList.add('music-playing');
+    if (!rafId) rafId = requestAnimationFrame(beatLoop);
+  }
 
-    storyCarousel.addEventListener('touchend', () => {
-      if (Math.abs(touchDelta) > SWIPE_THRESHOLD) {
-        if (touchDelta < 0) goTo(current + 1);
-        else goTo(current - 1);
-      }
+  function stopBeat() {
+    document.body.classList.remove('music-playing');
+    document.documentElement.style.setProperty('--beat', '0');
+  }
+
+  function tryPlay() {
+    if (userMuted) return;
+
+    setupAnalyser();
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+
+    music.play().then(() => {
+      setToggleState(true);
+      startBeat();
+    }).catch(() => {
+      // Autoplay blocked: stay quiet until the first gesture (handled below).
+      setToggleState(false);
     });
   }
 
+  // Browsers block un-muted autoplay before any interaction, so: try
+  // immediately, and fall back to the visitor's very first tap/scroll/key.
+  tryPlay();
+
+  const firstGesture = (e) => {
+    window.removeEventListener('pointerdown', firstGesture);
+    window.removeEventListener('keydown', firstGesture);
+    window.removeEventListener('touchstart', firstGesture);
+    // A gesture on the toggle itself is handled by its click handler.
+    if (e.target && toggle.contains(e.target)) return;
+    if (music.paused) tryPlay();
+  };
+  window.addEventListener('pointerdown', firstGesture);
+  window.addEventListener('keydown', firstGesture);
+  window.addEventListener('touchstart', firstGesture);
+
+  toggle.addEventListener('click', () => {
+    if (music.paused) {
+      userMuted = false;
+      try { localStorage.setItem(MUTED_KEY, '0'); } catch (e) { /* ignore */ }
+      tryPlay();
+    } else {
+      userMuted = true;
+      try { localStorage.setItem(MUTED_KEY, '1'); } catch (e) { /* ignore */ }
+      music.pause();
+      setToggleState(false);
+      stopBeat();
+    }
+  });
+
+  music.addEventListener('pause', stopBeat);
+  music.addEventListener('play', () => {
+    setToggleState(true);
+    startBeat();
+  });
 });
