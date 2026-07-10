@@ -493,6 +493,10 @@ select {
 }
 
 @media (min-width: 768px) {
+  .hero__media img {
+    object-position: 65% 35%;
+  }
+
   .hero__flourish {
     display: flex;
   }
@@ -554,6 +558,16 @@ select {
 
   .hero__script {
     font-size: var(--text-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    min-height: clamp(460px, 100svh, 620px);
+  }
+
+  .hero__media img {
+    object-position: 65% 24%;
   }
 }
 
