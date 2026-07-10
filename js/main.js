@@ -1080,6 +1080,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!music || !toggle) return;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Phones: skip the WebAudio analyser. Routing the <audio> element through
+  // an AudioContext crackles on iOS, and the per-frame --beat style writes
+  // make scrolling stutter. The party photos keep their CSS heartbeat.
+  const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
   const MUTED_KEY = 'wedding-music-muted';
   let userMuted = false;
 
@@ -1101,7 +1105,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Routes the <audio> element through an analyser so the wedding-party
   // photos can pulse to the actual bass of the track.
   function setupAnalyser() {
-    if (audioCtx || reducedMotion) return;
+    if (audioCtx || reducedMotion || coarsePointer) return;
     if (!window.AudioContext && !window.webkitAudioContext) return;
 
     try {
@@ -1154,17 +1158,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function tryPlay() {
-    if (userMuted) return;
+    if (userMuted) return Promise.resolve(false);
 
     setupAnalyser();
-    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    const ctxReady = (audioCtx && audioCtx.state === 'suspended')
+      ? audioCtx.resume().catch(() => {})
+      : Promise.resolve();
 
-    music.play().then(() => {
+    return ctxReady.then(() => music.play()).then(() => {
       setToggleState(true);
       startBeat();
+      return true;
     }).catch(() => {
-      // Autoplay blocked: stay quiet until the first gesture (handled below).
+      // Autoplay blocked: stay quiet until a real gesture (handled below).
       setToggleState(false);
+      return false;
     });
   }
 
@@ -1172,17 +1180,26 @@ document.addEventListener('DOMContentLoaded', () => {
   // immediately, and fall back to the visitor's very first tap/scroll/key.
   tryPlay();
 
+  const GESTURE_EVENTS = ['pointerdown', 'keydown', 'touchstart', 'click'];
+
+  function detachGestureListeners() {
+    GESTURE_EVENTS.forEach((type) => window.removeEventListener(type, firstGesture));
+  }
+
   const firstGesture = (e) => {
-    window.removeEventListener('pointerdown', firstGesture);
-    window.removeEventListener('keydown', firstGesture);
-    window.removeEventListener('touchstart', firstGesture);
     // A gesture on the toggle itself is handled by its click handler.
     if (e.target && toggle.contains(e.target)) return;
-    if (music.paused) tryPlay();
+    if (!music.paused || userMuted) {
+      detachGestureListeners();
+      return;
+    }
+    // Scrolls fire touchstart but don't grant autoplay permission, so only
+    // disarm once a play attempt actually succeeds.
+    tryPlay().then((started) => {
+      if (started) detachGestureListeners();
+    });
   };
-  window.addEventListener('pointerdown', firstGesture);
-  window.addEventListener('keydown', firstGesture);
-  window.addEventListener('touchstart', firstGesture);
+  GESTURE_EVENTS.forEach((type) => window.addEventListener(type, firstGesture));
 
   toggle.addEventListener('click', () => {
     if (music.paused) {
