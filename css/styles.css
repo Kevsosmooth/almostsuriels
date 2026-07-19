@@ -1603,6 +1603,25 @@ select {
   margin-top: var(--space-12);
 }
 
+/* Three across on phones: share the width evenly, circles stay round */
+@media (max-width: 767px) {
+  .party__bottom-row {
+    gap: var(--space-4);
+  }
+
+  .party__bottom-row .party__member {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .party__bottom-row .party__photo {
+    width: 100%;
+    max-width: var(--party-photo-size);
+    height: auto;
+    aspect-ratio: 1;
+  }
+}
+
 @media (min-width: 640px) {
   .party {
     --party-photo-size: calc(var(--space-32) * 1.25);
