@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ---------------------------------------------------------------------------
-  // Wedding Party: confetti welcome + tap-to-shimmy
+  // Wedding Party: confetti welcome
   // ---------------------------------------------------------------------------
 
   const partySection = document.querySelector('.party');
@@ -357,14 +357,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-
-  document.querySelectorAll('.party__member').forEach((member) => {
-    member.addEventListener('click', () => {
-      member.classList.remove('shimmy');
-      void member.offsetWidth;
-      member.classList.add('shimmy');
-    });
-  });
 
   // ---------------------------------------------------------------------------
   // Hero Entrance Animation
