@@ -1526,7 +1526,6 @@ select {
   align-items: center;
   text-align: center;
   position: relative;
-  cursor: pointer;
 }
 
 /* The crimson ring around each photo: invisible until the music plays,
