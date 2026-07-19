@@ -551,8 +551,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Dinner plates -- add a new object here and both pickers pick it up.
     const PLATES = [
       {
-        value: 'Grilled Salmon',
-        desc: 'Topped with mango sauce, served with herb butter mashed potatoes and grilled asparagus, zucchini & squash.',
+        value: 'Red Snapper Escoveitch',
+        desc: 'Served with coconut rice and sautéed green beans with garlic and butter.',
         vegan: false
       },
       {
