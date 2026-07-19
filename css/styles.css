@@ -1558,7 +1558,7 @@ select {
     var(--shadow-md);
 }
 
-/* A quick dance move on hover or tap */
+/* A quick dance move on tap */
 @keyframes party-shimmy {
   0%, 100% { transform: rotate(0deg) scale(1); }
   20% { transform: rotate(-7deg) scale(1.06); }
@@ -1567,13 +1567,11 @@ select {
   80% { transform: rotate(3deg) scale(1.02); }
 }
 
-.party .party__member:hover .party__photo,
 .party .party__member.shimmy .party__photo {
   animation: party-shimmy 0.7s var(--ease-in-out);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .party .party__member:hover .party__photo,
   .party .party__member.shimmy .party__photo {
     animation: none;
   }
