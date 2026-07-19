@@ -2256,8 +2256,6 @@ select {
 
 .rsvp__screens {
   position: relative;
-  /* Tallest screen (plate picker) sets this; keeps the card steady between questions */
-  min-height: 26rem;
 }
 
 .rsvp__screen {
@@ -2957,6 +2955,22 @@ select {
   .rsvp__card {
     padding: var(--space-6) var(--space-8);
     max-width: 360px;
+  }
+
+  /* One card size across wizard steps: every screen shares the same grid
+     cell, so the tallest one sets the height for all of them. */
+  .rsvp__screens {
+    display: grid;
+  }
+
+  .rsvp__screen {
+    display: flex;
+    grid-area: 1 / 1;
+    visibility: hidden;
+  }
+
+  .rsvp__screen.active {
+    visibility: visible;
   }
 
   .rsvp__heading {
