@@ -939,6 +939,39 @@ select {
   color: var(--accent-soft);
 }
 
+/* Flight callout: loud on purpose so nobody books the wrong airport */
+.details__flight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background-color: var(--signal);
+  color: var(--canvas);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-6);
+  margin-bottom: var(--space-8);
+  box-shadow: var(--shadow-md);
+}
+
+.details__flight-icon {
+  width: var(--space-8);
+  height: var(--space-8);
+  flex-shrink: 0;
+}
+
+.details__flight-title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.details__flight-note {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: rgba(var(--canvas-rgb), 0.92);
+}
+
 .details__cards {
   display: flex;
   flex-direction: column;
@@ -1093,8 +1126,8 @@ select {
 }
 
 .calendar-dropdown__item svg {
-  width: var(--space-5);
-  height: var(--space-5);
+  width: var(--space-6);
+  height: var(--space-6);
   flex-shrink: 0;
   color: var(--signal);
 }
