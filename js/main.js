@@ -1192,12 +1192,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // No overlay, no tap-anywhere hijack: try autoplay once (usually blocked),
   // and if the song isn't running, bounce the toggle until the visitor uses it.
+  // Runs even for returning visitors who muted before: the whole point of the
+  // attract state (bounce + arrow) is making the toggle findable while silent.
   function setAttract(on) {
     toggle.classList.toggle('music-toggle--attract', on);
   }
 
   tryPlay().then((started) => {
-    if (!started && !userMuted) setAttract(true);
+    if (!started) setAttract(true);
   });
 
   toggle.addEventListener('click', () => {
