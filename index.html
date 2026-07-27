@@ -864,14 +864,27 @@
       <p class="rsvp__body">We hope you can join us! Please reserve your spot as soon as possible.</p>
 
       <form class="rsvp__form rsvp__wizard" id="rsvp-form" novalidate>
-        <div class="rsvp__progress" role="progressbar" aria-label="RSVP progress" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1" id="rsvp-progress">
+        <div class="rsvp__progress" role="progressbar" aria-label="RSVP progress" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1" id="rsvp-progress">
           <span class="rsvp__progress-fill" id="rsvp-progress-fill"></span>
         </div>
-        <p class="rsvp__progress-label" id="rsvp-progress-label">1 of 7</p>
+        <p class="rsvp__progress-label" id="rsvp-progress-label">1 of 8</p>
 
         <div class="rsvp__screens" id="rsvp-screens">
 
-          <fieldset class="rsvp__screen active" data-screen="name">
+          <fieldset class="rsvp__screen active" data-screen="attending">
+            <legend class="rsvp__question">Will you be attending?</legend>
+            <div class="rsvp__choices">
+              <button class="rsvp__choice" type="button" data-choice-group="attending" data-choice="yes">
+                <span class="rsvp__choice-title">Yes, I'll be there</span>
+              </button>
+              <button class="rsvp__choice" type="button" data-choice-group="attending" data-choice="no">
+                <span class="rsvp__choice-title">Sorry, I can't make it</span>
+              </button>
+            </div>
+            <span class="rsvp__error" id="rsvp-attending-error" aria-live="polite"></span>
+          </fieldset>
+
+          <fieldset class="rsvp__screen" data-screen="name">
             <legend class="rsvp__question">What's your name?</legend>
             <div class="rsvp__field">
               <label class="rsvp__label" for="rsvp-first-name">First Name <span class="rsvp__required" aria-hidden="true">*</span></label>
@@ -896,6 +909,20 @@
               <span class="rsvp__error" id="rsvp-last-name-error" aria-live="polite"></span>
             </div>
             <button class="btn btn--primary rsvp__next" type="button" data-next>Next</button>
+          </fieldset>
+
+          <fieldset class="rsvp__screen" data-screen="decline-note">
+            <legend class="rsvp__question">We'll be sorry to miss you</legend>
+            <p class="rsvp__screen-note">Thank you for letting us know. If you'd like, leave us a little note before you go.</p>
+            <div class="rsvp__field">
+              <label class="rsvp__label" for="rsvp-decline-note">A note for us <span class="rsvp__optional">(optional)</span></label>
+              <textarea class="rsvp__input"
+                        id="rsvp-decline-note"
+                        name="declineNote"
+                        rows="4"></textarea>
+            </div>
+            <div class="rsvp__status" id="rsvp-decline-status" aria-live="polite"></div>
+            <button class="btn btn--primary rsvp__submit" type="submit">Send</button>
           </fieldset>
 
           <fieldset class="rsvp__screen" data-screen="contact">
@@ -1114,6 +1141,19 @@
         <p class="rsvp__celebration-registry">If you'd like to send a gift, we've put together a little wish list just for you.</p>
         <a class="btn btn--primary rsvp__celebration-btn" href="https://www.zola.com/registry/almostsuriel/" target="_blank" rel="noopener noreferrer">View Our Registry</a>
         <button class="btn btn--outline rsvp__celebration-close" id="rsvp-celebration-close" type="button">Close</button>
+      </div>
+
+      <div class="rsvp__celebration" id="rsvp-decline-panel">
+        <h3 class="rsvp__celebration-title">We'll miss you</h3>
+        <p class="rsvp__celebration-subtitle">Thank you for letting us know</p>
+        <div class="rsvp__celebration-divider" aria-hidden="true">
+          <svg viewBox="0 0 120 20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M0 10 Q30 0 60 10 Q90 20 120 10"/>
+            <circle cx="56" cy="10" r="2" fill="currentColor" stroke="none"/>
+            <circle cx="64" cy="10" r="2" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <button class="btn btn--outline rsvp__celebration-close" id="rsvp-decline-close" type="button">Close</button>
       </div>
     </div>
   </section>

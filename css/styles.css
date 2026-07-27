@@ -2167,6 +2167,11 @@ select {
   border-color: var(--danger);
 }
 
+textarea.rsvp__input {
+  min-height: calc(var(--control-height) * 2);
+  resize: vertical;
+}
+
 .rsvp__error {
   font-family: var(--font-body);
   font-size: var(--text-xs);

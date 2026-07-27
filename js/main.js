@@ -704,9 +704,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusEl = document.getElementById('rsvp-status');
     const plusOneDietSection = document.getElementById('rsvp-plusone-diet');
 
-    const state = { plusOne: null, roomBlock: null };
+    const state = { attending: null, plusOne: null, roomBlock: null };
 
     function screenVisible(name) {
+      if (name === 'decline-note') return state.attending === false;
+      if (name === 'attending' || name === 'name') return true;
+      if (state.attending === false) return false;
       if (name === 'plusone-name' || name === 'plusone-entree') return state.plusOne === true;
       return true;
     }
@@ -719,8 +722,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return screens.find((s) => s.classList.contains('active'));
     }
 
+    const rsvpBody = document.querySelector('.rsvp__body');
+
     function showScreen(el, skipFocus) {
       screens.forEach((s) => s.classList.toggle('active', s === el));
+
+      // "We hope you can join us!" reads wrong once someone says they can't.
+      if (rsvpBody) rsvpBody.style.display = state.attending === false ? 'none' : '';
 
       const vis = visibleScreens();
       const pos = vis.indexOf(el) + 1;
@@ -759,6 +767,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function validateScreen(el) {
       switch (el.dataset.screen) {
+        case 'attending':
+          if (state.attending === null) {
+            screenError('rsvp-attending-error', 'Please pick one to continue');
+            return false;
+          }
+          return true;
         case 'name': {
           const a = validateField(fields.firstName);
           const b = validateField(fields.lastName);
@@ -895,6 +909,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (dietOther) dietSelections.push(dietOther);
 
       var payload = {
+        attending: true,
         firstName: fields.firstName.el.value.trim(),
         lastName: fields.lastName.el.value.trim(),
         phone: fields.phone.el.value.trim(),
@@ -917,6 +932,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return payload;
     }
 
+    function collectDeclinePayload() {
+      return {
+        attending: false,
+        firstName: fields.firstName.el.value.trim(),
+        lastName: fields.lastName.el.value.trim(),
+        note: document.getElementById('rsvp-decline-note').value.trim()
+      };
+    }
+
     async function sendToSheets(payload) {
       await fetch(SHEETS_URL, {
         method: 'POST',
@@ -928,6 +952,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resetWizard() {
       rsvpForm.reset();
+      state.attending = null;
       state.plusOne = null;
       state.roomBlock = null;
       plusOneDietSection.style.display = 'none';
@@ -941,26 +966,33 @@ document.addEventListener('DOMContentLoaded', () => {
       showScreen(screens[0], true);
     }
 
-    const submitBtn = rsvpForm.querySelector('.rsvp__submit');
+    const declineStatusEl = document.getElementById('rsvp-decline-status');
 
     rsvpForm.addEventListener('submit', async function(e) {
       e.preventDefault();
-      if (currentScreen().dataset.screen !== 'review') return;
+      var screen = currentScreen();
+      var screenName = screen.dataset.screen;
+      if (screenName !== 'review' && screenName !== 'decline-note') return;
+
+      var declining = screenName === 'decline-note';
+      var submitBtn = screen.querySelector('.rsvp__submit');
+      var status = declining ? declineStatusEl : statusEl;
 
       var originalText = submitBtn.textContent;
       submitBtn.textContent = 'Sending...';
       submitBtn.disabled = true;
-      statusEl.textContent = '';
-      statusEl.className = 'rsvp__status';
+      status.textContent = '';
+      status.className = 'rsvp__status';
 
       try {
-        var payload = collectPayload();
+        var payload = declining ? collectDeclinePayload() : collectPayload();
         await sendToSheets(payload);
         resetWizard();
-        showCelebration(payload.roomBlock);
+        if (declining) showDecline();
+        else showCelebration(payload.roomBlock);
       } catch (err) {
-        statusEl.textContent = 'Network error. Please check your connection and try again.';
-        statusEl.className = 'rsvp__status rsvp__status--error';
+        status.textContent = 'Network error. Please check your connection and try again.';
+        status.className = 'rsvp__status rsvp__status--error';
       } finally {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
@@ -971,6 +1003,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const celebrationPanel = document.getElementById('rsvp-celebration');
     const celebrationCloseBtn = document.getElementById('rsvp-celebration-close');
+    const declinePanel = document.getElementById('rsvp-decline-panel');
+    const declineCloseBtn = document.getElementById('rsvp-decline-close');
 
     function fireCelebration() {
       if (typeof confetti !== 'function') return;
@@ -1014,8 +1048,14 @@ document.addEventListener('DOMContentLoaded', () => {
       fireCelebration();
     }
 
+    function showDecline() {
+      rsvpForm.style.display = 'none';
+      declinePanel.classList.add('active');
+    }
+
     function closeCelebration() {
       celebrationPanel.classList.remove('active');
+      if (declinePanel) declinePanel.classList.remove('active');
       rsvpForm.style.display = '';
       if (rsvpCard.classList.contains('open')) {
         rsvpCard.classList.remove('open');
@@ -1025,6 +1065,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (celebrationCloseBtn) {
       celebrationCloseBtn.addEventListener('click', closeCelebration);
+    }
+    if (declineCloseBtn) {
+      declineCloseBtn.addEventListener('click', closeCelebration);
     }
   }
 
