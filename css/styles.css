@@ -41,7 +41,7 @@ body {
   justify-content: center;
   text-align: center;
   padding: 0 var(--space-4);
-  background: linear-gradient(90deg, var(--signal), #8b243f);
+  background: var(--signal);
   color: var(--canvas);
   font-family: var(--font-body);
   font-size: var(--text-sm);
@@ -2402,6 +2402,14 @@ textarea.rsvp__input {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+}
+
+.rsvp__closed-note {
+  margin: 0 0 var(--space-6);
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: 1.6;
 }
 
 .rsvp__choice {

@@ -23,7 +23,7 @@
 </head>
 <body>
   <div class="announcement-banner" role="status" aria-live="polite">
-    <p class="announcement-banner__message">RSVP deadline: <strong>August 24th</strong> is the deadline for RSVPing.</p>
+    <p class="announcement-banner__message">RSVPs are closed &mdash; <strong data-guest-count>43</strong> of us are confirmed. We'll see everyone on <strong>October 4th</strong>, <strong data-days-until>23</strong> days away!</p>
   </div>
 
   <!-- ======================================================================
@@ -867,7 +867,7 @@
   <section class="rsvp" id="rsvp">
     <div class="rsvp__bg" role="img" aria-label="Kevin and Arielle together, smiling"></div>
 
-    <button class="btn btn--primary rsvp__trigger" type="button" id="rsvp-trigger">RSVP Now</button>
+    <button class="btn btn--primary rsvp__trigger" type="button" id="rsvp-trigger">Update Your RSVP</button>
 
     <div class="rsvp__card">
       <button class="rsvp__close" type="button" id="rsvp-close" aria-label="Close RSVP form">
@@ -885,10 +885,10 @@
         </svg>
       </div>
 
-      <p class="rsvp__body">We hope you can join us! Please reserve your spot as soon as possible.</p>
+      <p class="rsvp__body">Our guest list is final and the headcount is with the caterer. Use this form only if your plans have changed.</p>
 
       <form class="rsvp__form rsvp__wizard" id="rsvp-form" novalidate>
-        <div class="rsvp__progress" role="progressbar" aria-label="RSVP progress" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1" id="rsvp-progress">
+        <div class="rsvp__progress" role="progressbar" aria-label="RSVP progress" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1" id="rsvp-progress">
           <span class="rsvp__progress-fill" id="rsvp-progress-fill"></span>
         </div>
         <p class="rsvp__progress-label" id="rsvp-progress-label">1 of 8</p>
@@ -896,13 +896,11 @@
         <div class="rsvp__screens" id="rsvp-screens">
 
           <fieldset class="rsvp__screen active" data-screen="attending">
-            <legend class="rsvp__question">Will you be attending?</legend>
+            <legend class="rsvp__question">RSVPs are closed</legend>
+            <p class="rsvp__closed-note">Our final headcount is already with the caterer, so we can't add any more seats. If something has changed and you can no longer join us, let us know below so we can update the count.</p>
             <div class="rsvp__choices">
-              <button class="rsvp__choice" type="button" data-choice-group="attending" data-choice="yes">
-                <span class="rsvp__choice-title">Yes, I'll be there</span>
-              </button>
               <button class="rsvp__choice" type="button" data-choice-group="attending" data-choice="no">
-                <span class="rsvp__choice-title">Sorry, I can't make it</span>
+                <span class="rsvp__choice-title">I can no longer make it</span>
               </button>
             </div>
             <span class="rsvp__error" id="rsvp-attending-error" aria-live="polite"></span>

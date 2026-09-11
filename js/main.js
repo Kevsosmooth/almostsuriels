@@ -143,13 +143,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const seconds = Math.floor((diff / 1000) % 60);
 
     if (cdDays) cdDays.textContent = days;
+    document.querySelectorAll('[data-days-until]').forEach(function (el) {
+      el.textContent = String(days);
+    });
     if (cdHours) cdHours.textContent = pad(hours);
     if (cdMinutes) cdMinutes.textContent = pad(minutes);
     if (cdSeconds) cdSeconds.textContent = pad(seconds);
   }
 
+  updateCountdown();
   if (cdDays && cdHours && cdMinutes && cdSeconds) {
-    updateCountdown();
     setInterval(updateCountdown, 1000);
   }
 
@@ -706,10 +709,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const state = { attending: null, plusOne: null, roomBlock: null };
 
+    // RSVPs closed 2026-09-11: the headcount is locked with the caterer, so the
+    // wizard is a decline-only path. Flip this back to false to reopen.
+    const RSVPS_CLOSED = true;
+
     function screenVisible(name) {
-      if (name === 'decline-note') return state.attending === false;
+      if (name === 'decline-note') return RSVPS_CLOSED || state.attending === false;
       if (name === 'attending' || name === 'name') return true;
-      if (state.attending === false) return false;
+      if (RSVPS_CLOSED || state.attending === false) return false;
       if (name === 'plusone-name' || name === 'plusone-entree') return state.plusOne === true;
       return true;
     }
@@ -1076,12 +1083,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---------------------------------------------------------------------------
 
   const roomsRemainingEl = document.querySelector('[data-rooms-remaining]');
-  if (roomsRemainingEl) {
+  const guestCountEls = document.querySelectorAll('[data-guest-count]');
+  if (roomsRemainingEl || guestCountEls.length) {
     fetch(SHEETS_URL)
       .then(function(res) { return res.json(); })
       .then(function(data) {
-        if (data && typeof data.roomsRemaining === 'number') {
+        if (!data) return;
+        if (roomsRemainingEl && typeof data.roomsRemaining === 'number') {
           roomsRemainingEl.textContent = String(Math.max(0, data.roomsRemaining));
+        }
+        if (typeof data.guests === 'number') {
+          guestCountEls.forEach(function(el) {
+            el.textContent = String(Math.max(0, data.guests));
+          });
         }
       })
       .catch(function() { /* script not redeployed yet or offline -- keep static count */ });
