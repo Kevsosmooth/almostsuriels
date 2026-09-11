@@ -1614,7 +1614,7 @@ select {
   margin-top: var(--space-12);
 }
 
-/* Three across on phones: share the width evenly, circles stay round */
+/* Kids row on phones: share the width evenly, circles stay round */
 @media (max-width: 767px) {
   .party__bottom-row {
     gap: var(--space-4);
