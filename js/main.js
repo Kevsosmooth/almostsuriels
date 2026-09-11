@@ -143,13 +143,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const seconds = Math.floor((diff / 1000) % 60);
 
     if (cdDays) cdDays.textContent = days;
-    document.querySelectorAll('[data-days-until]').forEach(function (el) {
-      el.textContent = String(days);
-    });
     if (cdHours) cdHours.textContent = pad(hours);
     if (cdMinutes) cdMinutes.textContent = pad(minutes);
     if (cdSeconds) cdSeconds.textContent = pad(seconds);
   }
+
+  // Announcement banner counts calendar days in Miami time, so it flips to the
+  // day-of message at midnight on the wedding date rather than at the ceremony.
+  const bannerCountdownEl = document.querySelector('[data-banner-countdown]');
+  const bannerTodayEl = document.querySelector('[data-banner-today]');
+  const bannerDaysEls = document.querySelectorAll('[data-days-until]');
+  const miamiDateFormat = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/New_York',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+
+  function calendarDayUtc(date) {
+    const parts = miamiDateFormat.formatToParts(date);
+    const part = function (type) {
+      return Number(parts.find(function (p) { return p.type === type; }).value);
+    };
+    return Date.UTC(part('year'), part('month') - 1, part('day'));
+  }
+
+  function updateBanner() {
+    if (!bannerCountdownEl || !bannerTodayEl) return;
+    const daysLeft = Math.round((calendarDayUtc(weddingDate) - calendarDayUtc(new Date())) / 86400000);
+    const isWeddingDay = daysLeft <= 0;
+    bannerCountdownEl.hidden = isWeddingDay;
+    bannerTodayEl.hidden = !isWeddingDay;
+    bannerDaysEls.forEach(function (el) {
+      el.textContent = pluralize(Math.max(0, daysLeft), 'day');
+    });
+  }
+
+  updateBanner();
+  setInterval(updateBanner, 60000);
 
   updateCountdown();
   if (cdDays && cdHours && cdMinutes && cdSeconds) {
@@ -1083,19 +1114,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---------------------------------------------------------------------------
 
   const roomsRemainingEl = document.querySelector('[data-rooms-remaining]');
-  const guestCountEls = document.querySelectorAll('[data-guest-count]');
-  if (roomsRemainingEl || guestCountEls.length) {
+  if (roomsRemainingEl) {
     fetch(SHEETS_URL)
       .then(function(res) { return res.json(); })
       .then(function(data) {
-        if (!data) return;
-        if (roomsRemainingEl && typeof data.roomsRemaining === 'number') {
+        if (data && typeof data.roomsRemaining === 'number') {
           roomsRemainingEl.textContent = String(Math.max(0, data.roomsRemaining));
-        }
-        if (typeof data.guests === 'number') {
-          guestCountEls.forEach(function(el) {
-            el.textContent = String(Math.max(0, data.guests));
-          });
         }
       })
       .catch(function() { /* script not redeployed yet or offline -- keep static count */ });
